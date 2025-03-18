@@ -587,8 +587,8 @@
 <h2 id="多态对象">
 <a class="header-anchor" href="#%e5%a4%9a%e6%80%81%e5%af%b9%e8%b1%a1"></a>
 多态对象
-</h2><p><strong>一个数据对象可能由不止一种有用的表示，我们也许会想要设计能够处理多种表示形式的系统</strong>。这是cs61a对多态对象系统的表述。在构建一个对象时，我们可以从多个角度来描述构建该对象所需要的属性，从而使这个对象有多种表示形态。 <!-- raw HTML omitted -->
-举一个简单的例子，一个向量在空间中的表示通常有<strong>坐标表示</strong>和**分解表示（通常是正交分解）**两种形式，前者在代数运算上具有极大的方便，后者在几何意义的表示上具有优势。因此在构造一个向量时，我们就可以通过两种方式进行构造： <!-- raw HTML omitted --></p>
+</h2><p><strong>一个数据对象可能由不止一种有用的表示，我们也许会想要设计能够处理多种表示形式的系统</strong>。这是cs61a对多态对象系统的表述。在构建一个对象时，我们可以从多个角度来描述构建该对象所需要的属性，从而使这个对象有多种表示形态。 <!-- raw HTML omitted --></p>
+<p>举一个简单的例子，一个向量在空间中的表示通常有<strong>坐标表示</strong>和**分解表示（通常是正交分解）**两种形式，前者在代数运算上具有极大的方便，后者在几何意义的表示上具有优势。因此在构造一个向量时，我们就可以通过两种方式进行构造： <!-- raw HTML omitted --></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">VectorWithPoint</span><span class="p">(</span><span class="n">VectorOperation</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39;Vector represent with point.&#39;&#39;&#39;</span>
 </span></span><span class="line"><span class="cl">    <span class="n">branch</span> <span class="o">=</span> <span class="s1">&#39;geometry&#39;</span>
@@ -661,8 +661,8 @@
 <h3 id="对象共享接口">
 <a class="header-anchor" href="#%e5%af%b9%e8%b1%a1%e5%85%b1%e4%ba%ab%e6%8e%a5%e5%8f%a3"></a>
 对象共享接口
-</h3><p><del>你已经对继承和组合的概念有了初步的了解，现在来手搓一个计算器吧🤓👆</del> <!-- raw HTML omitted -->
-通过上一节，对继承和组合有了一定的了解后，是时候将其运用于实际项目中了。 <!-- raw HTML omitted --></p>
+</h3><p><del>你已经对继承和组合的概念有了初步的了解，现在来手搓一个计算器吧🤓👆</del> <!-- raw HTML omitted --></p>
+<p>通过上一节，对继承和组合有了一定的了解后，是时候将其运用于实际项目中了。 <!-- raw HTML omitted --></p>
 <p>为了内容能够同时涵盖<strong>组合</strong>与<strong>继承</strong>，我们选取源码中概念综合度相对较高的平面操作模块为例展开解读。 <!-- raw HTML omitted -->
 整个平面模块的代码如下： <!-- raw HTML omitted --></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">PlaneOperation</span><span class="p">:</span>
@@ -767,9 +767,9 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">PlaneOperation</span><span class="o">.</span><span class="n">type_tag</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">general_repr</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
-</span></span></code></pre></div><p>看似很长，将其拆分来看并辅以课程思想实则非常简单。 <!-- raw HTML omitted -->
-快速过一遍源码，不难看出<code>PlaneWithGeo</code>与<code>PlaneWithAlg</code>均<em>继承</em>于<code>PlaneOperation</code>。现在我们将注意力转移到<code>PlaneOperation</code>上，注意到这个类的定义中并没有构造器，只有一些方法。这些方法所定义的就是针对平面的操作或运算，我们暂时忽略这些实现的细节，着眼于整个<code>PlaneOperation</code>与其派生类（子类）的继承关系。 <!-- raw HTML omitted -->
-不难发现同属“平面”的两种形态的运算定义<strong>共享</strong>于它们共同的父类，用上一节所提到的关系说明就是<strong>几何形态平面和代数形态平面都是平面</strong>。同时，这里我们可以可以换一个角度理解，根据前句提到的关系，我们也可以说<strong>几何形态的平面与代数形态的平面都可以通过一个统一的接口相互地进行操作与运算</strong>，因为它们都是<strong>平面</strong>。而我们就把这个统一的接口（这里即<code>PlaneOperation</code>）称为继承于它的多态对象的<strong>共享接口</strong>。 <!-- raw HTML omitted --></p>
+</span></span></code></pre></div><p>看似很长，将其拆分来看并辅以课程思想实则非常简单。 <!-- raw HTML omitted --></p>
+<p>快速过一遍源码，不难看出<code>PlaneWithGeo</code>与<code>PlaneWithAlg</code>均<em>继承</em>于<code>PlaneOperation</code>。现在我们将注意力转移到<code>PlaneOperation</code>上，注意到这个类的定义中并没有构造器，只有一些方法。这些方法所定义的就是针对平面的操作或运算，我们暂时忽略这些实现的细节，着眼于整个<code>PlaneOperation</code>与其派生类（子类）的继承关系。 <!-- raw HTML omitted --></p>
+<p>不难发现同属“平面”的两种形态的运算定义<strong>共享</strong>于它们共同的父类，用上一节所提到的关系说明就是<strong>几何形态平面和代数形态平面都是平面</strong>。同时，这里我们可以可以换一个角度理解，根据前句提到的关系，我们也可以说<strong>几何形态的平面与代数形态的平面都可以通过一个统一的接口相互地进行操作与运算</strong>，因为它们都是<strong>平面</strong>。而我们就把这个统一的接口（这里即<code>PlaneOperation</code>）称为继承于它的多态对象的<strong>共享接口</strong>。 <!-- raw HTML omitted --></p>
 <p>从整个平面操作模块内部来看，我们定义了平面的多态，并且在他们的父类中定义了操作平面的共享接口。现在，我们将目光放在第一个子类的构造器上，可以看出我们在构造时传入了<code>Point</code>类的实例作为<code>PlaneWithGeo</code>的实例属性，其在数学上的定义就是<em>三点确定一个平面</em>，在<strong>组合</strong>关系上，我们就可以将其描述为<strong>平面上有三个点</strong>。 <!-- raw HTML omitted --></p>
 <h2 id="总结">
 <a class="header-anchor" href="#%e6%80%bb%e7%bb%93"></a>
@@ -813,7 +813,7 @@
           
           
             <img
-              data-src="https://blog.sakugabooru.com/wp-content/uploads/2023/11/frieren-prod-5-9.jpg"
+              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
               data-sizes="auto"
               alt="Hello :)"
               class="lazyload"
@@ -836,7 +836,7 @@
           
           
             <img
-              data-src="https://blacknerdproblems.com/wp-content/uploads/2024/01/Frieren-Beyond-Journeys-End-The-first-fellowship.jpg"
+              data-src="https://c.wallhere.com/photos/bd/26/Sousou_No_Frieren_anime_Stark_Sousou_no_Frieren_Fern_Sousou_No_Frieren-2288928.jpg!d"
               data-sizes="auto"
               alt="基于FPGA的图形加速器实现：FPGA-GPU项目日志"
               class="lazyload"
@@ -916,7 +916,7 @@
       <div>
         <span class="icon-brush"
           >&nbsp;
-            523
+            540
           </span
         >
         &nbsp;|&nbsp;
@@ -924,7 +924,7 @@
           
           
 
-          00:04
+          00:05
         </span>
       </div>
     

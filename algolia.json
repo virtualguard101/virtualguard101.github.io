@@ -7,7 +7,7 @@
     "permalink": "/post/fpga_gpu/gpu_researching/",
     "title": "基于FPGA的图形加速器实现：FPGA-GPU项目日志",
     
-    "content": "",
+    "content": " 导言 在互联网上，我们能够找到数不胜数的有关手搓CPU的项目资料，甚至有大佬为此出版专门的教程，但很少能够看到有关GPU的资料。本次项目旨在通过参考网上上少有的资料，基于FPGA（可编程门阵列）实现一个寄存器传输级（RTL）的图形加速器，即显卡或GPU（Graphics Processing Unit）。当然，商业级的显卡与单纯的GPU芯片并不是同一个概念，我们的目标仅仅只是设计一个能够加速图形渲染速度的IP核（Intellectual Property Core）。 项目主要分为两个阶段：模板复现与功能扩展。 在模板复现阶段，我们将根据知乎文章从零开始制作一个属于你自己的GPU | 基于FPGA的图形加速器实现原理的指导复现出其中的图形渲染场景。 Let\u0026rsquo;s begin our journey! 项目成员：virtualguard 项目指导：vigosser 复现阶段 ",
     
     "date": "2025-03-18 09:00:10",
     "updated": "2025-03-18 10:09:15"
