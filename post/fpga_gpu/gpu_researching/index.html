@@ -630,7 +630,7 @@
 </span></span></code></pre></div><p>复制Makefile并进行修改：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /path/to/PainterEngine/platform/linux/makefile .
 </span></span><span class="line"><span class="cl">code ./makefile
-</span></span></code></pre></div><p>Makefile配置如下：</p>
+</span></span></code></pre></div><p>Makefile配置如下： - code_01</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="c">#gcc freeglut makefile
 </span></span></span><span class="line"><span class="cl"><span class="c">#####################################################
 </span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nv">target</span> <span class="o">:=</span>painterEngine
@@ -716,24 +716,24 @@
 <p>另外需要注意的是，运行Vivado对设备硬件有一定需求，主要参考设备CPU的单核性能以及内存容量，内存最好在32G以上。同时，虽然Vivado存在linux版本，但安装过程相当繁琐，且极易出现兼容性问题，故不展开。</p>
 <p>在安装过程中，需要AMD的官方账号，安装时需要的地址信息可通过<a href="https://www.meiguodizhi.com/">美国地址生成器</a>生成。</p>
 <p>参考资料：</p>
-<p><a href="https://zhuanlan.zhihu.com/p/714400366">原文评论区</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/637955706">Vivado全版本下载分享</a></p>
-<p><a href="https://blog.csdn.net/DongDong314/article/details/144565249">Vivado安装问题（linux）</a></p>
-<p><a href="http://www.hellofpga.com/index.php/2023/03/22/vivado-2018-3/">Vivado 2018.3 下载及安装</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/714400366">原文评论区</a> - resource_01</p>
+<p><a href="https://zhuanlan.zhihu.com/p/637955706">Vivado全版本下载分享</a> - resource_02</p>
+<p><a href="https://blog.csdn.net/DongDong314/article/details/144565249">Vivado安装问题（linux）</a> - resource_03</p>
+<p><a href="http://www.hellofpga.com/index.php/2023/03/22/vivado-2018-3/">Vivado 2018.3 下载及安装</a> - resource_04</p>
 <ul>
 <li>基础概念了解</li>
 </ul>
 <p>这个方式多样，需要日积月累，碎片化的概念可以通过AI和浏览器查询；也可以在一些平台上阅读一些相关的文章，反向利用大数据的推送机制。</p>
-<p><a href="https://community.sslcode.com.cn/6785e3ad2db35d119530170e.html">芯片基础概念划分</a></p>
+<p><a href="https://community.sslcode.com.cn/6785e3ad2db35d119530170e.html">芯片基础概念划分</a> - resource_05</p>
 <p>系统性的知识体系可以通过一些书籍和课程来学习</p>
-<p><a href="https://csapp.cs.cmu.edu/">csapp：深入理解计算机系统</a></p>
-<p><a href="https://www.bilibili.com/video/BV1cD4y1D7uR/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&amp;vd_source=bf4f387b9668a681bfdcd3b4b0a3b4ee">csapp中文讲解</a></p>
+<p><a href="https://csapp.cs.cmu.edu/">csapp：深入理解计算机系统</a> -resource_06</p>
+<p><a href="https://www.bilibili.com/video/BV1cD4y1D7uR/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&amp;vd_source=bf4f387b9668a681bfdcd3b4b0a3b4ee">csapp中文讲解</a> - resource_07</p>
 <ul>
 <li>GPU架构开源资料（项目指导提供）</li>
 </ul>
-<p><a href="https://github.com/adam-maj/tiny-gpu">tiny-gpu | github repository</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/679719858">FlexGripPlus-兼容CUDA的开源GPGPU实现简介</a></p>
-<p><a href="https://github.com/Jerc007/Open-GPGPU-FlexGrip-">FlexGripPlus | github repository</a></p>
+<p><a href="https://github.com/adam-maj/tiny-gpu">tiny-gpu | github repository</a> - resource_08</p>
+<p><a href="https://zhuanlan.zhihu.com/p/679719858">FlexGripPlus-兼容CUDA的开源GPGPU实现简介</a> - resource_09</p>
+<p><a href="https://github.com/Jerc007/Open-GPGPU-FlexGrip-">FlexGripPlus | github repository</a> - resource_10</p>
 <h5 id="2025318">
 <a class="header-anchor" href="#2025318"></a>
 2025.3.18
@@ -745,8 +745,8 @@
 <li><strong>获取硬件（型号ZYNQ-xc7z020clg484-1）</strong></li>
 </ul>
 <p>硬件平台是Zynq7000系列的SoC开发板, 详情参考原文</p>
-<p><a href="http://www.hellofpga.com/index.php/2024/01/21/smart-zynq-sp2/">硬件详细资料</a></p>
-<p><a href="https://docs.amd.com/v/u/en-US/ds190-Zynq-7000-Overview">AMD官方文档</a></p>
+<p><a href="http://www.hellofpga.com/index.php/2024/01/21/smart-zynq-sp2/">硬件详细资料</a> - resource_01</p>
+<p><a href="https://docs.amd.com/v/u/en-US/ds190-Zynq-7000-Overview">AMD官方文档</a> - resource_02</p>
 <h3 id="基础理论学习阶段">
 <a class="header-anchor" href="#%e5%9f%ba%e7%a1%80%e7%90%86%e8%ae%ba%e5%ad%a6%e4%b9%a0%e9%98%b6%e6%ae%b5"></a>
 基础理论学习阶段
@@ -763,24 +763,24 @@
 </h5><ul>
 <li>准备阶段基本结束，进入<strong>基础理论学习阶段</strong></li>
 </ul>
-<p><a href="https://kimi.moonshot.cn/share/cvd410k5rbs5nmtf5b8g">项目复现核心概念专有名词简要解释</a></p>
+<p><a href="https://kimi.moonshot.cn/share/cvd410k5rbs5nmtf5b8g">项目复现核心概念专有名词简要解释</a> - resource_01</p>
 <ul>
 <li><strong>软渲染器的c语言实现原理</strong></li>
 </ul>
 <p>可直接参考项目原文</p>
-<p><a href="https://zhuanlan.zhihu.com/p/714400366?utm_psn=1883987006549374851">从零开始制作一个属于你自己的GPU | 基于FPGA的图形加速器实现原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/714400366?utm_psn=1883987006549374851">从零开始制作一个属于你自己的GPU | 基于FPGA的图形加速器实现原理</a> - resource_02</p>
 <p>其实就是我们在预备阶段配置的demo</p>
 <p><strong>相关理论基础：C语言、计算机图形学</strong></p>
-<p><a href="https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html">GAMES101: 现代计算机图形学入门</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/480142555">《Fundamental Of Computer Graphics 4th Edition》（计算机图形学基础）</a></p>
-<p><a href="https://zh.z-lib.gs/book/23613699/ee1131/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6-%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E8%B7%B5-%E7%AC%AC3%E7%89%88-%E5%9F%BA%E7%A1%80%E7%AF%87.html">《计算机图形学：原理与实践（基础版）》| 机械工业出版社</a></p>
+<p><a href="https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html">GAMES101: 现代计算机图形学入门</a> - resource_03</p>
+<p><a href="https://zhuanlan.zhihu.com/p/480142555">《Fundamental Of Computer Graphics 4th Edition》（计算机图形学基础）</a> - resource_04</p>
+<p><a href="https://zh.z-lib.gs/book/23613699/ee1131/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6-%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E8%B7%B5-%E7%AC%AC3%E7%89%88-%E5%9F%BA%E7%A1%80%E7%AF%87.html">《计算机图形学：原理与实践（基础版）》| 机械工业出版社</a> - resource_05</p>
 <h5 id="2025320">
 <a class="header-anchor" href="#2025320"></a>
 2025.3.20
 </h5><p>针对【resources-250319】<em>（注：此后本日志以{data}-date形式指代对应日期（一般是首次）整理至此的参考文献、问题等资料，方便回溯）</em>，为了节约时间，我们无需全篇通读，仅需了解与项目对应的概念。</p>
 <p>例如，针对《计算机图形学：原理与实践（基础版）》，我们只需迅速地通读<strong>七至十五章</strong>的内容，对计算机图形学的数学原理和基础概念与实现作个快速了解即可。</p>
 <p>另外，由于C++面向对象的特性，图形学在编程过程中更倾向于使用C++而不是C（虽然二者在语法上差别不大），《计算机图形学：原理与实践（基础版）》中的测试实现语言也是C++，故在此整理如下参考文献：</p>
-<p><a href="https://web.stanford.edu/class/cs106b/resources/python_to_cpp.html">Python to C++ Guide | CS106B</a></p>
+<p><a href="https://web.stanford.edu/class/cs106b/resources/python_to_cpp.html">Python to C++ Guide | CS106B</a> - resource_01</p>
 
       
     </div>
@@ -818,7 +818,7 @@
           
           
             <img
-              data-src="https://images.mubicdn.net/images/film/388826/cache-904566-1707001272/image-w1280.jpg?size=800x"
+              data-src="https://blacknerdproblems.com/wp-content/uploads/2024/01/Frieren-Beyond-Journeys-End-The-first-fellowship.jpg"
               data-sizes="auto"
               alt="多态对象共享接口：一个简易立体几何计算器的python实现"
               class="lazyload"
@@ -900,7 +900,7 @@
       <div>
         <span class="icon-brush"
           >&nbsp;
-            837
+            874
           </span
         >
         &nbsp;|&nbsp;
