@@ -900,6 +900,19 @@
 <p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/error01-250326_1.jpg" alt="Error01_2"></p>
 <p><strong>依照<a href="https://docs.amd.com/r/zh-CN/ug1400-vitis-embedded/%E5%88%9B%E5%BB%BA%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1-XSA-%E6%96%87%E4%BB%B6">官方文档</a>、<a href="http://www.hellofpga.com/index.php/2023/11/04/vitis/">上文指导</a>以及<a href="https://zhuanlan.zhihu.com/p/714400366">项目原文</a>，在vitis的<code>welcome</code>界面上和<code>file</code> &raquo; <code>New Component</code>选项上都应存在<code>Create Platform Component</code>（<code>file</code> &raquo; <code>New Component</code> 是<code>platform</code>选项）选项可供选择，但上图所示并不存在该选项</strong></p>
 <hr>
+<h5 id="2025327">
+<a class="header-anchor" href="#2025327"></a>
+2025.3.27
+</h5><ul>
+<li>初步解决【E01-250325】</li>
+</ul>
+<p>初步解决方案：直接更换vivado版本，<code>2024.02</code> -&gt; <code>2023.02</code>，简单粗暴</p>
+<p>同时注意在下载时勾选下图中箭头所指的选项</p>
+<p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/e01-solution.jpg" alt="solution-e01-250325"></p>
+<ul>
+<li>第一次【半】黑盒复现失败</li>
+</ul>
+<p>失败原因：<code>app_component</code>模块执行<code>built</code>时发生致命错误，现有了解无法解决该问题</p>
 
       
     </div>
@@ -937,7 +950,7 @@
           
           
             <img
-              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+              data-src="https://c.wallhere.com/photos/bd/26/Sousou_No_Frieren_anime_Stark_Sousou_no_Frieren_Fern_Sousou_No_Frieren-2288928.jpg!d"
               data-sizes="auto"
               alt="多态对象共享接口：一个简易立体几何计算器的python实现"
               class="lazyload"
