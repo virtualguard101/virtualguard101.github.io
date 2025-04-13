@@ -414,7 +414,7 @@
   <div class="sidebar-state-article">
     <div>文章</div>
     
-    <div class="sidebar-state-number">4</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -802,8 +802,8 @@
 </h5><ul>
 <li><strong>SoC主板上电测试成功</strong></li>
 </ul>
-<p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/soc_boot.jpg" alt="Zynq7020-boot"> - image_01</p>
-<p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/soc_boot_1.jpg" alt="Zynq7020-boot"> - image_02</p>
+<p><img src="https://virtualguard101.github.io/post/projects/fpga_gpu/image/soc_boot.jpg" alt="Zynq7020-boot"> - image_01</p>
+<p><img src="https://virtualguard101.github.io/post/projects/fpga_gpu/image/soc_boot_1.jpg" alt="Zynq7020-boot"> - image_02</p>
 <p>这里采用的是<em>测试固件二</em>，结果标准参考<a href="http://www.hellofpga.com/index.php/2024/01/21/smart-zynq-sp2/">硬件详细资料</a> - resource_01</p>
 <ul>
 <li>上传计算机图形学材料（🐯书原版第四版 | 文件来源：<a href="https://zh.z-lib.gs/book/3373253/4d3541/fundamentals-of-computer-graphics-fourth-edition.html">z-library</a>）</li>
@@ -906,10 +906,10 @@
 <p>vivado工程的创建与配置这里不再赘述，详情参考<a href="http://www.hellofpga.com/index.php/2023/11/04/vitis/">vivado 2019.2 以上带vitis 版本的简单教程演示</a>中的第一到五步</p>
 <p>接下来就是问题的关键所在：</p>
 <p>根据上面的指导导出硬件后，整个工程的结构如下图所示</p>
-<p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/structrue.jpg" alt="engine structure"></p>
+<p><img src="https://virtualguard101.github.io/post/projects/fpga_gpu/image/structrue.jpg" alt="engine structure"></p>
 <p>通过<code>Tools</code> &raquo; <code>Launch Vitis IDE</code>选项打开vitis，或通过点击应用快捷方式直接进入，加载后的界面如图所示</p>
-<p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/error01-250326.jpg" alt="Error01_1"></p>
-<p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/error01-250326_1.jpg" alt="Error01_2"></p>
+<p><img src="https://virtualguard101.github.io/post/projects/fpga_gpu/image/error01-250326.jpg" alt="Error01_1"></p>
+<p><img src="https://virtualguard101.github.io/post/projects/fpga_gpu/image/error01-250326_1.jpg" alt="Error01_2"></p>
 <p><strong>依照<a href="https://docs.amd.com/r/zh-CN/ug1400-vitis-embedded/%E5%88%9B%E5%BB%BA%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1-XSA-%E6%96%87%E4%BB%B6">官方文档</a>、<a href="http://www.hellofpga.com/index.php/2023/11/04/vitis/">上文指导</a>以及<a href="https://zhuanlan.zhihu.com/p/714400366">项目原文</a>，在vitis的<code>welcome</code>界面上和<code>file</code> &raquo; <code>New Component</code>选项上都应存在<code>Create Platform Component</code>（<code>file</code> &raquo; <code>New Component</code> 是<code>platform</code>选项）选项可供选择，但上图所示并不存在该选项</strong></p>
 <hr>
 <h5 id="2025327">
@@ -920,7 +920,7 @@
 </ul>
 <p>初步解决方案：直接更换vivado版本，<code>2024.02</code> -&gt; <code>2023.02</code>，简单粗暴</p>
 <p>同时注意在下载时勾选下图中箭头所指的选项</p>
-<p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/e01-solution.jpg" alt="solution-e01-250325"></p>
+<p><img src="https://virtualguard101.github.io/post/projects/fpga_gpu/image/e01-solution.jpg" alt="solution-e01-250325"></p>
 <ul>
 <li>第三次【半】黑盒复现失败</li>
 </ul>
@@ -933,7 +933,7 @@
 <li>第四次【半】黑盒复现失败</li>
 </ul>
 <p>尝试通过黑盒测试解决第三次复现致命错误的努力失败，黑盒测试中断，转向理论学习与工程代码解析，即<strong>黑盒白盒化</strong></p>
-<p><img src="https://virtualguard101.github.io/post/fpga_gpu/image/test-250329.png" alt="error"></p>
+<p><img src="https://virtualguard101.github.io/post/projects/fpga_gpu/image/test-250329.png" alt="error"></p>
 <h4 id="第三周">
 <a class="header-anchor" href="#%e7%ac%ac%e4%b8%89%e5%91%a8"></a>
 第三周
@@ -999,7 +999,7 @@
           
           
             <img
-              data-src="https://c.wallhere.com/photos/bd/26/Sousou_No_Frieren_anime_Stark_Sousou_no_Frieren_Fern_Sousou_No_Frieren-2288928.jpg!d"
+              data-src="https://cdn.svipaigc.com/bizi/2024/04/232246-166351456668a2.jpg"
               data-sizes="auto"
               alt="多态对象共享接口：一个简易立体几何计算器的python实现"
               class="lazyload"
@@ -1016,27 +1016,6 @@
       </div>
     
 
-    
-      <div class="article-nav-link-wrap article-nav-link-right">
-        
-          
-          
-            <img
-              data-src="https://www.siliconera.com/wp-content/uploads/2023/12/frieren-second-cour-header-12222023.png?fit=1200%2C675"
-              data-sizes="auto"
-              alt="基于FPGA的图形加速器实现：FPGA-GPU项目日志"
-              class="lazyload"
-            />
-          
-        
-        <a href="/post/fpga_gpu/gpu_researching/"></a>
-        <div class="article-nav-caption">后一篇</div>
-        <h3 class="article-nav-title">
-          
-            基于FPGA的图形加速器实现：FPGA-GPU项目日志
-          
-        </h3>
-      </div>
     
   </nav>
 
@@ -1066,9 +1045,6 @@
         
 
 
-
-  
-  
 
   
   
@@ -1113,7 +1089,7 @@
       <div>
         <span class="icon-brush"
           >&nbsp;
-            1.8k
+            1.2k
           </span
         >
         &nbsp;|&nbsp;
@@ -1121,7 +1097,7 @@
           
           
 
-          00:10
+          00:07
         </span>
       </div>
     
@@ -1193,7 +1169,7 @@
   <div class="sidebar-state-article">
     <div>文章</div>
     
-    <div class="sidebar-state-number">4</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
