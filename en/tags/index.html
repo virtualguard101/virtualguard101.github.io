@@ -106,7 +106,7 @@
 
 
   
- <link rel="stylesheet" href="/css/loader.min.2ad0e9bbffb534e893c0ecefc44787a277cf851387e8ad9dccfbc3a5f0886dbe.css" />
+ <link rel="stylesheet" href="/css/loader.min.b49e7f4d94c1e0e5d7615bfc3bf74a2e5c42a85a02069dbad13a1736da692381.css" />
 
 
 
@@ -153,7 +153,7 @@
 
 
   
- <link rel="stylesheet" href="/css/main.min.67d0c66fb5e6f276d9bbe748eac266af3e5a8050c21a1999db7a930a11298ade.css" />
+ <link rel="stylesheet" href="/css/main.min.a11ba7f0f0384e3a83bc190acfd7026888ce67f963e3a56d62c512eaa6dac2dc.css" />
 
 
 
@@ -187,6 +187,10 @@
 
   
 
+  
+  
+    
+  
   
   
   
@@ -224,12 +228,12 @@
     <div class="loading-left-bg loading-bg"></div>
     <div class="loading-right-bg loading-bg"></div>
     <div class="spinner-box">
-      <div class="loading-taichi">
+      <div class="loading-taichi rotate">
         
           <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
-            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
             <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
-          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
           </svg>
         
       </div>
@@ -320,7 +324,7 @@
     <a id="main-nav-toggle" class="nav-icon"></a>
   </nav>
   <nav id="sub-nav">
-    <a id="nav-rss-link" class="nav-icon" href="https://virtualguard101.github.io/en/tags/index.xml" title="RSS Feed" target="_blank"></a>
+    <a id="nav-rss-link" class="nav-icon" href="/en/tags/index.xml" title="RSS Feed" target="_blank"></a>
     
     
       <a id="nav-search-btn" class="nav-icon popup-trigger" title="Search"></a>
@@ -329,11 +333,13 @@
 </div>
 <header id="header">
   
-    <picture>
-      
-    </picture>
     
-      <img fetchpriority="high" src="/images/banner.webp" alt="Tags">
+      <picture>
+        
+      </picture>
+      
+        <img  fetchpriority="high" src="/images/banner.webp" alt="Tags">
+      
     
   
 
@@ -550,8 +556,6 @@
 </section>
         </div>
         
-        
-        
 
 
 
@@ -565,8 +569,10 @@
     
     <div>
       <span class="icon-copyright"></span>
-      2020 -
-      2025
+      
+        2020 -
+        2025
+      
       <span class="footer-info-sep rotate"></span>
       virtualguard
     </div>
@@ -775,12 +781,18 @@
       </div>
     
     
+    
+    
 
 
 
 
 
 
+  
+  
+    
+  
   
   
   
@@ -801,6 +813,10 @@
 
   
   
+    
+  
+  
+  
   
   
   
@@ -813,6 +829,8 @@
     
     integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"
   ></script>
+
+
 
 
 
@@ -892,6 +910,10 @@
 
   
   
+    
+  
+  
+  
   
   
   
@@ -908,6 +930,10 @@
 
   
 
+  
+  
+    
+  
   
   
   
@@ -942,6 +968,10 @@
 
   
   
+    
+  
+  
+  
   
   
   
@@ -971,6 +1001,10 @@
 
   
 
+  
+  
+    
+  
   
   
   
@@ -1026,21 +1060,26 @@
       
       
       <script type="module" data-pjax>
+        
         const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;
-
+        
         const pswp = () => {
           if (_$$('.article-entry a.article-gallery-item').length > 0) {
             new PhotoSwipeLightbox({
               gallery: '.article-entry',
               children: 'a.article-gallery-item',
+              
               pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
             }).init();
           }
           if(_$$('.article-gallery a.article-gallery-item').length > 0) {
             new PhotoSwipeLightbox({
               gallery: '.article-gallery',
               children: 'a.article-gallery-item',
+              
               pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
             }).init();
           }
           window.lightboxStatus = 'done';
@@ -1060,8 +1099,15 @@
 
 
 
+  
 
+  
 
+  
+
+  
+
+  
 
 
 
@@ -1096,6 +1142,10 @@
 
   
 
+  
+  
+    
+  
   
   
   
@@ -1142,6 +1192,8 @@
     "padding:4px;border:1px solid #ff5252;",
   );
 </script>
+
+
 
 
 
