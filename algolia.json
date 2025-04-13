@@ -3,6 +3,66 @@
   
   
   {
+    "objectID": "1744535292",
+    "permalink": "/post/resource/market/",
+    "title": "行情类资源",
+    
+    "content": " 行业黑话 行情讨论 行业杂谈 ",
+    
+    "date": "2025-04-13 17:08:12",
+    "updated": "2025-04-13 17:08:12"
+  }
+  
+  , 
+  {
+    "objectID": "1744535233",
+    "permalink": "/post/resource/engineered/",
+    "title": "工程类资源",
+    
+    "content": " 教程 文章杂谈 文档 博客 ",
+    
+    "date": "2025-04-13 17:07:13",
+    "updated": "2025-04-13 17:07:13"
+  }
+  
+  , 
+  {
+    "objectID": "1744535200",
+    "permalink": "/post/resource/academic/",
+    "title": "学术类资源",
+    
+    "content": " 学术论文 团队主页 科研成果文章杂谈 ",
+    
+    "date": "2025-04-13 17:06:40",
+    "updated": "2025-04-13 17:06:40"
+  }
+  
+  , 
+  {
+    "objectID": "1744535184",
+    "permalink": "/post/resource/advanced/",
+    "title": "理论进阶类资源",
+    
+    "content": " 教程 文章杂谈 文档 博客 ",
+    
+    "date": "2025-04-13 17:06:24",
+    "updated": "2025-04-13 17:06:24"
+  }
+  
+  , 
+  {
+    "objectID": "1744535118",
+    "permalink": "/post/resource/basic/",
+    "title": "理论基础类资源",
+    
+    "content": " 教程 文章杂谈 文档 博客 ",
+    
+    "date": "2025-04-13 17:05:18",
+    "updated": "2025-04-13 17:05:18"
+  }
+  
+  , 
+  {
     "objectID": "1742256000",
     "permalink": "/post/projects/fpga_gpu/gpu_researching/",
     "title": "基于FPGA的图形加速器实现：FPGA-GPU项目日志",

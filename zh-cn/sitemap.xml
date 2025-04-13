@@ -2,8 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://virtualguard101.github.io/</loc>
+    <lastmod>2025-04-13T17:08:12+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://virtualguard101.github.io/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://virtualguard101.github.io/"
+                />
+  </url><url>
+    <loc>https://virtualguard101.github.io/post/resource/market/</loc>
+    <lastmod>2025-04-13T17:08:12+08:00</lastmod>
+  </url><url>
     <loc>https://virtualguard101.github.io/categories/</loc>
-    <lastmod>2025-04-13T00:00:00+00:00</lastmod>
+    <lastmod>2025-04-13T17:07:13+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -15,21 +31,23 @@
                 href="https://virtualguard101.github.io/categories/"
                 />
   </url><url>
+    <loc>https://virtualguard101.github.io/categories/resources/</loc>
+    <lastmod>2025-04-13T17:07:13+08:00</lastmod>
+  </url><url>
+    <loc>https://virtualguard101.github.io/post/resource/engineered/</loc>
+    <lastmod>2025-04-13T17:07:13+08:00</lastmod>
+  </url><url>
+    <loc>https://virtualguard101.github.io/post/resource/academic/</loc>
+    <lastmod>2025-04-13T17:06:40+08:00</lastmod>
+  </url><url>
+    <loc>https://virtualguard101.github.io/post/resource/advanced/</loc>
+    <lastmod>2025-04-13T17:06:24+08:00</lastmod>
+  </url><url>
+    <loc>https://virtualguard101.github.io/post/resource/basic/</loc>
+    <lastmod>2025-04-13T17:05:18+08:00</lastmod>
+  </url><url>
     <loc>https://virtualguard101.github.io/categories/projects/</loc>
     <lastmod>2025-04-13T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://virtualguard101.github.io/</loc>
-    <lastmod>2025-04-13T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://virtualguard101.github.io/en/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://virtualguard101.github.io/"
-                />
   </url><url>
     <loc>https://virtualguard101.github.io/post/projects/fpga_gpu/gpu_researching/</loc>
     <lastmod>2025-04-13T00:00:00+00:00</lastmod>
