@@ -2039,6 +2039,11 @@ a {
     background: var(--color-mobile-nav-background);
     z-index: 1001;
     transition: 0.3s;
+    overflow: auto;
+  }
+  #mobile-nav::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
   }
   .mobile-nav-on #mobile-nav {
     left: 0;
