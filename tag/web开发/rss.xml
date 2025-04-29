@@ -113,6 +113,12 @@ ssh私钥需在服务器上生成。&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&lt;strong&gt;END&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;到此为止，所有的配置也就完成了。此时我们的个人站点已经可以被世界上所有接入互联网的设备访问了，同时我们也可根据个人需求为站点添加各种各样的功能与服务。&lt;/p&gt;
+&lt;p&gt;主要参考文献：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://cloud.tsyidc.com/web/822.html&#34;&gt;docker部署nginx多级子域名 | 蓝易云&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cnblogs.com/vishun/p/15746849.html&#34;&gt;docker部署certbot与nginx来获取ssl证书添加https及自动更新 | vishun&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kasuie.cc/article/22&#34;&gt;使用Certbot自签SSL证书 | kasuie&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
  ]]></description>
         </item>
     </channel>
