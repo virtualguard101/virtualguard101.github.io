@@ -3,9 +3,22 @@
     <channel>
         <title>virtualguard&#39;s Blog • Posts by &#34;test&#34; category</title>
         <link>http://blog.virtualguard101.xyz</link>
-        <description>This is a blog page powered by virtualguard{}</description>
+        <description>&lt;/&gt;</description>
         <language>zh-CN</language>
-        <pubDate>Sat, 26 Apr 2025 22:51:41 +0800</pubDate>
-        <lastBuildDate>Sat, 26 Apr 2025 22:51:41 +0800</lastBuildDate>
+        <pubDate>Mon, 10 Mar 2025 02:09:15 +0800</pubDate>
+        <lastBuildDate>Mon, 10 Mar 2025 02:09:15 +0800</lastBuildDate>
+        <category>工具使用</category>
+        <category>web开发</category>
+        <category>docker</category>
+        <item>
+            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/03/10/Hello/</guid>
+            <title>Hello :)</title>
+            <link>http://blog.virtualguard101.xyz/2025/03/10/Hello/</link>
+            <pubDate>Mon, 10 Mar 2025 02:09:15 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;This is the first content for my blog 😃 &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://butterblock233.github.io/posts/images/Hello.gif&#34; alt=&#34;Hello&#34; /&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;GIF source: &lt;a href=&#34;https://dribbble.com/shots/17347386-Hello-Apple&#34;&gt;Hello Apple by Meritt Thomas&lt;/a&gt; &lt;br&gt;&lt;/p&gt;
+ ]]></description>
+        </item>
     </channel>
 </rss>
