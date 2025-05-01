@@ -14,7 +14,7 @@
 
   
 
-  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.outdate = {"enable":true,"daysAgo":-1,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};window.REIMU_CONFIG.code_block = {"expand":5};window.REIMU_CONFIG.base = 'http://blog.virtualguard101.xyz';</script>
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"license_type":"by-nc-sa","content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.outdate = {"enable":true,"daysAgo":-1,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};window.REIMU_CONFIG.code_block = {"expand":5};window.REIMU_CONFIG.base = 'http://blog.virtualguard101.xyz';</script>
   
   <title>
     远程服务器的基础使用 |
@@ -99,6 +99,8 @@
           </svg>
         
       </div>
+      
+      
       <div class="loading-word">少女祈祷中...</div>
     </div>
   </div>
@@ -173,6 +175,8 @@
     
       <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" target="_blank"></a>
     
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
     
     
   </nav>
@@ -473,7 +477,7 @@
       
         
         
-          <img data-src="https://images.mubicdn.net/images/film/388826/cache-904566-1707001272/image-w1280.jpg?size=800x" data-sizes="auto" alt="docker-compose + nginx快速构建个人站点" class="lazyload">
+          <img data-src="https://i.imgtg.com/2023/03/09/YS2LU.jpg" data-sizes="auto" alt="docker-compose + nginx快速构建个人站点" class="lazyload">
         
       
       <a href="/2025/04/26/web-build/"></a>
@@ -497,30 +501,6 @@
 
 
 
-
-  <section id="comments" data-aos="fade-up">
-    <div class="comment-header">
-      
-      
-      <h2 class="comment-title">说些什么吧！</h2>
-      <div class="comment-selector">
-        <div class="comment-selector-wrap">
-            
-            <div class="selector-item" data-selector="giscus">
-              <span>giscus</span>
-            </div>
-            
-        </div>
-      </div>
-    </div>
-    <div class="comment-content">
-      
-        <div class="comment giscus-comment" data-aos="fade-up"
-          id="giscus-comment">
-        </div>
-      
-    </div>
-  </section>
 
 
 </section>
@@ -674,6 +654,22 @@
 
     </div>
     
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
     
     
     
@@ -715,6 +711,34 @@
 
 
 
+
+
+  <script>
+    var ALGOLIA_CONFIG = {
+      logo: "/images/algolia_logo.svg",
+      algolia: {
+        applicationID: "Z7A3XW4R2I",
+        apiKey: "12db1ad54372045549ef465881c17e743",
+        indexName: "my-hexo-blog",
+        hits: {
+          "per_page": parseInt("10")
+        },
+        labels: {
+          "input_placeholder": "搜索.....",
+          "hits_empty": "未发现与 「${query}」相关内容",
+          "hits_stats": "找到${hits}条结果（用时 ${time} ms）"
+        }
+      }
+    };
+  </script>
+  
+<script src="https://npm.webcache.cn/algoliasearch@4.17.1/dist/algoliasearch-lite.umd.js" integrity="sha384-xvLS0jfKuoREs7pqkRI&#x2F;OI8GcqohO5S+jQz7ZBtQXnsXmD+9jDOOY4cL6dCPzlrk" crossorigin="anonymous" defer></script>
+
+  
+<script src="https://npm.webcache.cn/instantsearch.js@4.56.1/dist/instantsearch.production.min.js" integrity="sha384-hHJCflT4KBLQyHfKO9vpstIcFKn&#x2F;Y+KHTORelMMEn7mOp2AVPp+7fr03dLgZiV3J" crossorigin="anonymous" defer></script>
+
+  
+<script src="/js/algolia_search.js" defer></script>
 
 
 
@@ -812,304 +836,6 @@
 
 
 
-<script data-pjax>
-  var loadScript = (src, integrity) => {
-    const script = document.createElement('script');
-    script.src = src;
-    if (integrity) script.integrity = integrity;
-    script.crossOrigin = 'anonymous';
-    return script;
-  };
-
-  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus'];
-  var commentConfig = {
-    valine: {
-      enable: false,
-      load: () => {
-        const container = document.querySelector('.valine-comment');
-        if (!container) return;
-        container.style.display = 'block';
-
-        const script = loadScript(
-          'https://npm.webcache.cn/valine@1.5.1/dist/Valine.min.js',
-          'sha384-3ma91AExDeMAZ1rjTjaP8V2A2obQE+s5ltKRwYlwdpArz9xVbp0tF3b0VV2ACNPn'
-        );
-        script.onload = () => {
-          var GUEST_INFO = ['nick', 'mail', 'link'];
-          var guest_info = 'nick,mail,link'.split(',').filter((item) => {
-            return GUEST_INFO.indexOf(item) > -1
-          });
-          var recordIP = JSON.parse('true');
-          var highlight = JSON.parse('true');
-          var visitor = JSON.parse('false');
-
-          if (window.Valine) {
-            new Valine({
-              el: '.valine-comment',
-              appId: "",
-              appKey: "",
-              placeholder: "Just go go",
-              pageSize: '10',
-              avatar: 'mp',
-              lang: 'zh-cn',
-              recordIP: recordIP,
-              highlight: highlight,
-              visitor: visitor,
-              requiredFields: guest_info,
-              path: window.location.pathname
-            });
-          }
-        };
-        document.head.appendChild(script);
-      }
-    },
-    waline: {
-      enable: false,
-      load: async () => {
-        const container = document.querySelector('.waline-comment');
-        if (!container) return;
-        container.style.display = 'block';
-
-        let walineInit;
-        const walineCdn = 'https://npm.webcache.cn/@waline/client@2.15.8/dist/waline.mjs';
-        const walineIntegrity = 'sha384-9sbqJjrfGjbkI6/PI4nU/MvBfEmkkPC4YK9I4zBeMIf1CVCZdCMH/KinBEAZII/5';
-
-        const module = await safeImport(walineCdn, walineIntegrity);
-        walineInit = module.init;
-
-        window.walineInstance = walineInit({
-          el: '.waline-comment',
-          serverURL: '',
-          lang: 'zh-CN',
-          locale: {},
-          emoji: ["https://unpkg.com/@waline/emojis@1.2.0/weibo","https://unpkg.com/@waline/emojis@1.2.0/alus","https://unpkg.com/@waline/emojis@1.2.0/bilibili","https://unpkg.com/@waline/emojis@1.2.0/qq","https://unpkg.com/@waline/emojis@1.2.0/tieba","https://unpkg.com/@waline/emojis@1.2.0/tw-emoji"],
-          meta: ["nick","mail","link"],
-          requiredMeta: ["nick","mail"],
-          wordLimit: JSON.parse('0'),
-          comment: true,
-          pageSize: JSON.parse('10'),
-          dark: 'html[data-theme="dark"]',
-          pageview: JSON.parse('true'),
-        });
-      }
-    },
-    twikoo: {
-      enable: false,
-      load: () => {
-        const container = document.querySelector('.twikoo-comment');
-        if (!container) return;
-        container.style.display = 'block';
-
-        const script = loadScript(
-          'https://npm.webcache.cn/twikoo@1.6.16/dist/twikoo.all.min.js',
-          'sha384-lDHsr5aZmkMS0eKnsUu6e9RWP+dRmn7sgjRAKGOAoXfMyzbUK6Qi86zZK7R+KvRV'
-        );
-
-        script.onload = () => {
-          if (window.twikoo) {
-            twikoo.init({
-              envId: '',
-              el: '.tcomment',
-              region: '',
-            })
-          }
-        } 
-        document.head.appendChild(script);
-      }
-    },
-    gitalk: {
-      enable: false,
-      load: () => {
-        const container = document.querySelector('.gitalk-comment');
-        if (!container) return;
-        container.style.display = 'block';
-
-        const script = loadScript(
-          'https://npm.webcache.cn/gitalk@1.8.0/dist/gitalk.min.js',
-          'sha384-kspnZUWBoSWwoJHa0hBCXYbHGbhvU/lcEH5O8eVbSDhbPwsiVUTp/aGX/z/5EuMA'
-        );
-
-        script.onload = () => {
-          if (false) {
-            const md5Script = loadScript(
-              'https://npm.webcache.cn/blueimp-md5@2.19.0/js/md5.min.js',
-              'sha384-JmVtRz6RWiXnA14QbIOJzPuU3MidULOpBP66deeLLyyoF4Tr/gZlbkHkL6vTthxH'
-            );
-            md5Script.onload = initGitalk;
-            document.head.appendChild(md5Script);
-          } else {
-            initGitalk();
-          }
-        }
-        document.head.appendChild(script);
-
-        function initGitalk() {
-          var gitalkId = location.pathname;
-          var gitalk = new Gitalk({
-            clientID: '',
-            clientSecret: '',
-            repo: '',
-            owner: '',
-            admin: null,
-            id: gitalkId, // Ensure uniqueness and length less than 50
-            distractionFreeMode: false // Facebook-like distraction free mode
-          })
-          gitalk.render('gitalk-comment');
-        }
-      }
-    },
-    giscus: {
-      enable: true,
-      load: () => {
-        const container = document.querySelector('.giscus-comment');
-        if (!container) return;
-        container.style.display = 'block';
-
-        // 删除可能已存在的 giscus 脚本和 iframe
-        const existingScript = container.querySelector('script[src*="giscus.app/client.js"]');
-        if (existingScript) existingScript.remove();
-        const existingFrame = document.querySelector('iframe.giscus-frame');
-        if (existingFrame) existingFrame.remove();
-
-        const giscusScript = document.createElement('script');
-        const domMode = document.documentElement.getAttribute("data-theme");
-        giscusScript.src = 'https://giscus.app/client.js';
-        giscusScript.setAttribute('data-repo', 'virtualguard101/virtualguard101.github.io');
-        giscusScript.setAttribute('data-repo-id', 'R_kgDOOGPc1w');
-        giscusScript.setAttribute('data-category', 'Announcements'); 
-        giscusScript.setAttribute('data-category-id', 'DIC_kwDOOGPc184CprGJ');
-        giscusScript.setAttribute('data-mapping', '0');
-        giscusScript.setAttribute('data-strict', '0');
-        giscusScript.setAttribute('data-reactions-enabled', '1');
-        giscusScript.setAttribute('data-emit-metadata', '0');
-        giscusScript.setAttribute('data-input-position', 'bottom');
-        giscusScript.setAttribute('data-theme', domMode === 'dark' ? 'dark' : 'light');
-        giscusScript.setAttribute('data-lang', 'zh-CN');
-        giscusScript.setAttribute('crossorigin', 'anonymous');
-        giscusScript.async = true;
-        container.appendChild(giscusScript);
-        document.body.addEventListener('light-theme-set', () => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return;
-          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'light' } } }, 'https://giscus.app');
-        });
-        document.body.addEventListener('dark-theme-set', () => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return;
-          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'dark' } } }, 'https://giscus.app');
-        });
-      }
-    }
-  }
-  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
-
-  var defaultComment = '';
-  if (commentConfig.enable) {
-    // 1. 首先检查localStorage中是否有保存的评论类型
-    var savedCommentType = localStorage.getItem('commentType');
-    
-    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
-    if (savedCommentType) {
-      if (commentConfig[savedCommentType]?.enable) {
-        defaultComment = savedCommentType;
-      }
-    }
-    
-    // 3. 如果localStorage无效，检查配置的默认评论系统
-    if (!defaultComment) {
-      var configDefault = 'giscus';
-      if (commentConfig[configDefault]?.enable) {
-        defaultComment = configDefault;
-      }
-    }
-    
-    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
-    if (!defaultComment) {
-      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
-    }
-  }
-  function loadComments() {
-    if (!commentConfig.enable) return;
-    // 评论组件加载状态跟踪
-    const loadedComments = {
-      valine: false,
-      waline: false,
-      twikoo: false,
-      gitalk: false,
-      giscus: false
-    };
-
-    // 隐藏所有评论容器
-    const hideAllComments = () => {
-      const commentContainers = document.querySelectorAll('.comment');
-      commentContainers.forEach(container => {
-        container.style.display = 'none';
-      });
-    };
-
-    // 按需加载评论系统
-    const loadCommentSystem = (type) => {
-      if (loadedComments[type]) {
-        // 如果已加载，只需显示对应容器
-        document.querySelector(`.${type}-comment`).style.display = 'block';
-        return;
-      }
-
-      // 根据类型加载对应的脚本
-      commentConfig[type]?.load();
-      loadedComments[type] = true;
-    };
-
-    // 评论组件选择器
-    const changeActiveCommentItems = (item) => {
-      const commentItems = document.querySelectorAll('.selector-item');
-      for (let i = 0; i < commentItems.length; i++) {
-        commentItems[i].classList.remove('active');
-      }
-      item.classList.add('active');
-
-      // 获取要加载的评论系统类型
-      const commentType = item.getAttribute('data-selector');
-
-      // 隐藏所有评论系统
-      hideAllComments();
-
-      // 加载选中的评论系统
-      loadCommentSystem(commentType);
-    };
-
-    const commentInit = () => {
-      // 评论组件选择器点击事件
-      const commentItems = document.querySelectorAll('.selector-item');
-      for (let item of commentItems) {
-        item.addEventListener('click', () => {
-          // 保存选择器状态
-          const commentType = item.getAttribute('data-selector');
-          window.localStorage.setItem('commentType', commentType);
-          // 切换选中状态
-          changeActiveCommentItems(item);
-        });
-      }
-
-      // 检查是否需要加载默认评论系统
-      if (defaultComment) {
-        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
-        if (!defaultSelectorItem) return;
-        defaultSelectorItem.style.display = 'block';
-        defaultSelectorItem.classList.add('active');
-        loadCommentSystem(defaultComment);
-      }
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', commentInit);
-    } else {
-      commentInit();
-    }
-  };
-  loadComments();
-</script>
-
       
     
   </div>
@@ -1125,7 +851,7 @@
   \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
                                                   
 `,'color: #ff5252;')
-    console.log('%c Theme.Reimu v' + '1.8.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.8.2' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
   </script>
   
 
@@ -1139,7 +865,16 @@
     const days = diff / 86400000;
     const { daysAgo, message: template } = window.REIMU_CONFIG.outdate;
     if (days >= daysAgo) {
-      const message = template.replace(/{time}/, updateTime);
+      let message = `This article was last updated on ${updateTime}. Please note that the content may no longer be applicable.`;
+      if (typeof template === 'string') {
+        message = template.replace(/{time}/, updateTime);
+      } else if (typeof template === 'object') {
+        const lang = document.documentElement.lang;
+        const messageKey = Object.keys(template).find(key => key.toLowerCase() === lang.toLowerCase());
+        if (messageKey && template[messageKey]) {
+          message = template[messageKey].replace(/{time}/, updateTime);
+        }
+      }
       const blockquote = _$('#outdate-blockquote');
       if (blockquote) {
         blockquote.querySelector('p').innerText = message;
