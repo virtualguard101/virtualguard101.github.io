@@ -4,7 +4,6 @@
     <title>virtualguard&#39;s Blog • Posts by &#34;projects&#34; category</title>
     <link href="http://blog.virtualguard101.xyz" />
     <updated>2025-04-26T15:28:57.000Z</updated>
-    <category term="工具使用" />
     <category term="web开发" />
     <category term="docker" />
     <entry>
@@ -33,7 +32,7 @@
 &lt;p&gt;&lt;strong&gt;域名&lt;/strong&gt;同样需要在运营商购买，也可通过特殊手段申请免费域名（不过免费申请的域名如有人出钱购买就会被回收）。获得域名后根据DNS云解析平台的文档进行解析配置即可。&lt;/p&gt;
 &lt;h2 id=&#34;准备工作&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#准备工作&#34;&gt;&lt;/a&gt; 准备工作&lt;/h2&gt;
 &lt;h3 id=&#34;部署环境&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署环境&#34;&gt;&lt;/a&gt; 部署环境&lt;/h3&gt;
-&lt;p&gt;服务器的初始配置可参考这篇文章&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/04/27/remote-server-usage/&#34;&gt;远程服务器的基础使用&lt;/a&gt;，这里不再赘述。由于需要使用&lt;code&gt;docker&lt;/code&gt;进行部署，我们需要先在服务器上安装一下docker。通过以下命令安装：&lt;/p&gt;
+&lt;p&gt;服务器的初始配置可参考这篇文章&lt;a href=&#34;https://note.virtualguard101.xyz/notes/%E5%B7%A5%E5%85%B7/ssh/&#34;&gt;远程服务器的基础使用&lt;/a&gt;，这里不再赘述。由于需要使用&lt;code&gt;docker&lt;/code&gt;进行部署，我们需要先在服务器上安装一下docker。通过以下命令安装：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -fsSL https://get.docker.com | bash -s docker&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install docker-compose&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;将当前用户添加到docker用户组：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; groupadd docker &lt;span class=&#34;comment&#34;&gt;# 若尚不存在 docker 组，则需先创建&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; usermod -aG docker &lt;span class=&#34;variable&#34;&gt;$USER&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
