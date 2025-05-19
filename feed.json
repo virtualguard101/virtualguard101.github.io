@@ -5,6 +5,16 @@
     "home_page_url": "http://blog.virtualguard101.xyz",
     "items": [
         {
+            "id": "http://blog.virtualguard101.xyz/2025/05/19/arch-linux/",
+            "url": "http://blog.virtualguard101.xyz/2025/05/19/arch-linux/",
+            "title": "在可移动设备上安装Arch Linux",
+            "date_published": "2025-05-19T00:52:48.000Z",
+            "content_html": "<ul>\n<li>\n<p><a href=\"https://wiki.archlinuxcn.org/zh-sg/%E5%9C%A8%E5%8F%AF%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E4%B8%8A%E5%AE%89%E8%A3%85_Arch_Linux\">在可移动设备上安装 Arch Linux | Arch Wiki</a></p>\n</li>\n<li>\n<p><a href=\"https://b2og.com/archives/23\">将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG</a></p>\n</li>\n<li>\n<p><a href=\"https://arch.icekylin.online/guide/\">Arch Guide | Nakano Miku</a></p>\n</li>\n<li>\n<p><a href=\"https://archlinuxstudio.github.io/ArchLinuxTutorial/#/\">ArchLinuxTutorial | Arch Linux Studio</a></p>\n</li>\n</ul>\n",
+            "tags": [
+                "Linux"
+            ]
+        },
+        {
             "id": "http://blog.virtualguard101.xyz/2025/04/26/web-build/",
             "url": "http://blog.virtualguard101.xyz/2025/04/26/web-build/",
             "title": "docker-compose + nginx快速构建个人站点",

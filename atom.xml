@@ -3,9 +3,32 @@
     <id>http://blog.virtualguard101.xyz</id>
     <title>virtualguard&#39;s Blog</title>
     <link href="http://blog.virtualguard101.xyz" />
-    <updated>2025-04-26T15:28:57.000Z</updated>
+    <updated>2025-05-19T00:52:48.000Z</updated>
+    <category term="Linux" />
     <category term="web开发" />
     <category term="docker" />
+    <entry>
+        <id>http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</id>
+        <title>在可移动设备上安装Arch Linux</title>
+        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/05/19/arch-linux/"/>
+        <content type="html">&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://wiki.archlinuxcn.org/zh-sg/%E5%9C%A8%E5%8F%AF%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E4%B8%8A%E5%AE%89%E8%A3%85_Arch_Linux&#34;&gt;在可移动设备上安装 Arch Linux | Arch Wiki&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://b2og.com/archives/23&#34;&gt;将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://arch.icekylin.online/guide/&#34;&gt;Arch Guide | Nakano Miku&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://archlinuxstudio.github.io/ArchLinuxTutorial/#/&#34;&gt;ArchLinuxTutorial | Arch Linux Studio&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="Linux" />
+        <updated>2025-05-19T00:52:48.000Z</updated>
+    </entry>
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/04/26/web-build/</id>
         <title>docker-compose + nginx快速构建个人站点</title>
