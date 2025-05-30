@@ -180,6 +180,9 @@
 &lt;p&gt;&lt;img src=&#34;https://i.imgur.com/8fTXOCP.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;h3 id=&#34;输入法异常&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#输入法异常&#34;&gt;&lt;/a&gt; 输入法异常&lt;/h3&gt;
 &lt;p&gt;这在教程&lt;a href=&#34;https://arch.icekylin.online/guide/&#34;&gt;Arch Guide | Nakano Miku&lt;/a&gt;有提示，（如果是按照此教程进行的安装）执行命令&lt;code&gt;fcitx5-diagnose&lt;/code&gt;进行问题诊断并按照输出提示修复即可。&lt;/p&gt;
+&lt;h3 id=&#34;杂项&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#杂项&#34;&gt;&lt;/a&gt; 杂项&lt;/h3&gt;
+&lt;p&gt;关于桌面环境的选择，可以参考这篇文章：&lt;a href=&#34;https://linuxiac.com/xorg-x11-wayland-linux-display-servers-and-protocols-explained/&#34;&gt;Xorg, X11, Wayland? Linux Display Servers And Protocols Explained&lt;br /&gt;
+&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;在可移动设备安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#在可移动设备安装&#34;&gt;&lt;/a&gt; 在可移动设备安装&lt;/h2&gt;
 &lt;p&gt;该部分可参考&lt;a href=&#34;https://b2og.com/archives/23&#34;&gt;将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;第一次安装中，我就将Arch装在了一个256G、使用USB3.1的U盘上，同时由于使用&lt;a href=&#34;https://arch.icekylin.online/guide/rookie/pre-virt.html&#34;&gt;虚拟机&lt;/a&gt;运行安装镜像，所以并没有碰到什么大问题。&lt;/p&gt;
