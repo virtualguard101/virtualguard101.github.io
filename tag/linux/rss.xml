@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>virtualguard&#39;s Blog • Posts by &#34;linux&#34; tag</title>
+        <link>http://blog.virtualguard101.xyz</link>
+        <description>&lt;/&gt;</description>
+        <language>zh-CN</language>
+        <pubDate>Mon, 19 May 2025 08:52:48 +0800</pubDate>
+        <lastBuildDate>Mon, 19 May 2025 08:52:48 +0800</lastBuildDate>
+        <category>C++</category>
+        <category>Python</category>
+        <category>vcpkg</category>
+        <category>CMake</category>
+        <category>Linux</category>
+        <category>云计算</category>
+        <category>计算机网络</category>
+        <category>web开发</category>
+        <category>docker</category>
+        <item>
+            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</guid>
+            <title>Arch Linux安装要点记录</title>
+            <link>http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</link>
+            <category>Linux</category>
+            <pubDate>Mon, 19 May 2025 08:52:48 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;Arch Linux是一个支持高度定制化的Linux发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
+&lt;p&gt;这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。&lt;/p&gt;
+&lt;h2 id=&#34;基本安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#基本安装&#34;&gt;&lt;/a&gt; 基本安装&lt;/h2&gt;
+&lt;p&gt;针对这部分内容，教程&lt;a href=&#34;https://arch.icekylin.online/guide/&#34;&gt;Arch Guide | Nakano Miku&lt;/a&gt;有详尽的阐述，包括从安装准备到系统美化的所有内容。&lt;/p&gt;
+&lt;p&gt;这里记录几个我在真机安装过程中遇到的问题。&lt;/p&gt;
+&lt;h3 id=&#34;格式化efi分区前未备份原有系统启动引导双系统&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#格式化efi分区前未备份原有系统启动引导双系统&#34;&gt;&lt;/a&gt; 格式化EFI分区前未备份原有系统启动引导（双系统）&lt;/h3&gt;
+&lt;p&gt;我在安装过程中由于急于求成，在为EFI分区扩容时未备份原有系统（这里是Win11）的启动引导程序就直接将其格式化了，结果安装完Arch的基本系统才发现Win11进不去了…&lt;/p&gt;
+&lt;p&gt;虽说安装前有备份Win11的系统映像，但为了一个EFI分区动用这个实属大材小用，因为基本数据的分区并没有任何问题。在这个问题上，我选择使用WinPE镜像系统对Win11的启动引导进行还原。只需准备一个装有WinPE镜像的U盘，启动进入WinPE，按照下图的提示，选择修&lt;code&gt;UEFI&lt;/code&gt;引导进行修复即可：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/8fTXOCP.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;输入法异常&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#输入法异常&#34;&gt;&lt;/a&gt; 输入法异常&lt;/h3&gt;
+&lt;p&gt;这在教程&lt;a href=&#34;https://arch.icekylin.online/guide/&#34;&gt;Arch Guide | Nakano Miku&lt;/a&gt;有提示，（如果是按照此教程进行的安装）执行命令&lt;code&gt;fcitx5-diagnose&lt;/code&gt;进行问题诊断并按照输出提示修复即可。&lt;/p&gt;
+&lt;h2 id=&#34;在可移动设备安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#在可移动设备安装&#34;&gt;&lt;/a&gt; 在可移动设备安装&lt;/h2&gt;
+&lt;p&gt;该部分可参考&lt;a href=&#34;https://b2og.com/archives/23&#34;&gt;将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;第一次安装中，我就将Arch装在了一个256G、使用USB3.1的U盘上，同时由于使用&lt;a href=&#34;https://arch.icekylin.online/guide/rookie/pre-virt.html&#34;&gt;虚拟机&lt;/a&gt;运行安装镜像，所以并没有碰到什么大问题。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;[参考文献]：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://wiki.archlinuxcn.org/zh-sg/%E5%9C%A8%E5%8F%AF%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E4%B8%8A%E5%AE%89%E8%A3%85_Arch_Linux&#34;&gt;在可移动设备上安装 Arch Linux | Arch Wiki&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://b2og.com/archives/23&#34;&gt;将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://arch.icekylin.online/guide/&#34;&gt;Arch Guide | Nakano Miku&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://archlinuxstudio.github.io/ArchLinuxTutorial/#/&#34;&gt;ArchLinuxTutorial | Arch Linux Studio&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>
