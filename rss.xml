@@ -5,17 +5,27 @@
         <link>http://blog.virtualguard101.xyz</link>
         <description>&lt;/&gt;</description>
         <language>zh-CN</language>
-        <pubDate>Fri, 23 May 2025 14:18:21 +0800</pubDate>
-        <lastBuildDate>Fri, 23 May 2025 14:18:21 +0800</lastBuildDate>
+        <pubDate>Thu, 05 Jun 2025 22:19:38 +0800</pubDate>
+        <lastBuildDate>Thu, 05 Jun 2025 22:19:38 +0800</lastBuildDate>
         <category>C++</category>
         <category>Python</category>
         <category>vcpkg</category>
         <category>CMake</category>
         <category>Linux</category>
-        <category>云计算</category>
-        <category>计算机网络</category>
+        <category>云原生</category>
+        <category>游戏开发</category>
+        <category>构建开发</category>
         <category>web开发</category>
         <category>docker</category>
+        <item>
+            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/05/devops-practice/</guid>
+            <title>游戏构建/部署/测试DevOps实践记录</title>
+            <link>http://blog.virtualguard101.xyz/2025/06/05/devops-practice/</link>
+            <category>游戏开发</category>
+            <category>构建开发</category>
+            <pubDate>Thu, 05 Jun 2025 22:19:38 +0800</pubDate>
+            <description><![CDATA[  ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/</guid>
             <title>3BodySimulator：Python &amp; C++ 项目标准化构建</title>
@@ -158,10 +168,9 @@
         </item>
         <item>
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/05/19/container-tech/</guid>
-            <title>容器化技术与云技术</title>
+            <title>DevOps学习摘要</title>
             <link>http://blog.virtualguard101.xyz/2025/05/19/container-tech/</link>
-            <category>云计算</category>
-            <category>计算机网络</category>
+            <category>云原生</category>
             <pubDate>Mon, 19 May 2025 22:42:25 +0800</pubDate>
             <description><![CDATA[ &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.thebyte.com.cn/&#34;&gt;深入高可用系统原理与设计&lt;/a&gt;&lt;/li&gt;
