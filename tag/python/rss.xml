@@ -11,6 +11,7 @@
         <category>Python</category>
         <category>vcpkg</category>
         <category>CMake</category>
+        <category>Build Tools</category>
         <category>Linux</category>
         <category>DevOps</category>
         <category>游戏开发</category>
@@ -25,6 +26,7 @@
             <category>Python</category>
             <category>vcpkg</category>
             <category>CMake</category>
+            <category>Build Tools</category>
             <pubDate>Fri, 23 May 2025 14:18:21 +0800</pubDate>
             <description><![CDATA[ &lt;h2 id=&#34;导言&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#导言&#34;&gt;&lt;/a&gt; 导言&lt;/h2&gt;
 &lt;p&gt;近期刚刚结束&lt;a href=&#34;https://web.stanford.edu/class/cs106l/&#34;&gt;CS106L | Standard C++ features and syntax&lt;/a&gt;的学习，想借此机会完善一下对C++项目构建的学习，如&lt;code&gt;CMake&lt;/code&gt;等构建工具的使用，故立此项。&lt;/p&gt;

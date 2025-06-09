@@ -14,7 +14,8 @@
                 "C++",
                 "Python",
                 "vcpkg",
-                "CMake"
+                "CMake",
+                "Build Tools"
             ]
         }
     ]
