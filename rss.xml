@@ -12,7 +12,7 @@
         <category>vcpkg</category>
         <category>CMake</category>
         <category>Linux</category>
-        <category>云原生</category>
+        <category>DevOps</category>
         <category>游戏开发</category>
         <category>构建开发</category>
         <category>web开发</category>
@@ -21,6 +21,7 @@
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/05/devops-practice/</guid>
             <title>游戏构建/部署/测试DevOps实践记录</title>
             <link>http://blog.virtualguard101.xyz/2025/06/05/devops-practice/</link>
+            <category>DevOps</category>
             <category>游戏开发</category>
             <category>构建开发</category>
             <pubDate>Thu, 05 Jun 2025 22:19:38 +0800</pubDate>
@@ -164,17 +165,6 @@
 &lt;p&gt;随后就可以直接通过脚本进行自动化构建了：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;./build.sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;此时由于项目环境独立于系统全局的Python环境，构建运行均基于这个虚拟环境，确保了环境的一致性，也就不会出现像上面的环境冲突问题了。&lt;/p&gt;
- ]]></description>
-        </item>
-        <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/05/19/container-tech/</guid>
-            <title>DevOps学习摘要</title>
-            <link>http://blog.virtualguard101.xyz/2025/05/19/container-tech/</link>
-            <category>云原生</category>
-            <pubDate>Mon, 19 May 2025 22:42:25 +0800</pubDate>
-            <description><![CDATA[ &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.thebyte.com.cn/&#34;&gt;深入高可用系统原理与设计&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
  ]]></description>
         </item>
         <item>

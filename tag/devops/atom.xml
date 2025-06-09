@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.virtualguard101.xyz</id>
-    <title>virtualguard&#39;s Blog • Posts by &#34;devops&#34; category</title>
+    <title>virtualguard&#39;s Blog • Posts by &#34;devops&#34; tag</title>
     <link href="http://blog.virtualguard101.xyz" />
     <updated>2025-06-05T14:19:38.000Z</updated>
     <category term="C++" />
@@ -9,7 +9,7 @@
     <category term="vcpkg" />
     <category term="CMake" />
     <category term="Linux" />
-    <category term="云原生" />
+    <category term="DevOps" />
     <category term="游戏开发" />
     <category term="构建开发" />
     <category term="web开发" />
@@ -19,19 +19,9 @@
         <title>游戏构建/部署/测试DevOps实践记录</title>
         <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/06/05/devops-practice/"/>
         <content type="html"></content>
+        <category term="DevOps" />
         <category term="游戏开发" />
         <category term="构建开发" />
         <updated>2025-06-05T14:19:38.000Z</updated>
-    </entry>
-    <entry>
-        <id>http://blog.virtualguard101.xyz/2025/05/19/container-tech/</id>
-        <title>DevOps学习摘要</title>
-        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/05/19/container-tech/"/>
-        <content type="html">&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.thebyte.com.cn/&#34;&gt;深入高可用系统原理与设计&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-        <category term="云原生" />
-        <updated>2025-05-19T14:42:25.000Z</updated>
     </entry>
 </feed>

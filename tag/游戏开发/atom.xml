@@ -9,7 +9,7 @@
     <category term="vcpkg" />
     <category term="CMake" />
     <category term="Linux" />
-    <category term="云原生" />
+    <category term="DevOps" />
     <category term="游戏开发" />
     <category term="构建开发" />
     <category term="web开发" />
@@ -19,6 +19,7 @@
         <title>游戏构建/部署/测试DevOps实践记录</title>
         <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/06/05/devops-practice/"/>
         <content type="html"></content>
+        <category term="DevOps" />
         <category term="游戏开发" />
         <category term="构建开发" />
         <updated>2025-06-05T14:19:38.000Z</updated>

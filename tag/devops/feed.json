@@ -1,6 +1,6 @@
 {
     "version": "https://jsonfeed.org/version/1",
-    "title": "virtualguard's Blog • All posts by \"devops\" category",
+    "title": "virtualguard's Blog • All posts by \"devops\" tag",
     "description": "</>",
     "home_page_url": "http://blog.virtualguard101.xyz",
     "items": [
@@ -11,18 +11,9 @@
             "date_published": "2025-06-05T14:19:38.000Z",
             "content_html": "",
             "tags": [
+                "DevOps",
                 "游戏开发",
                 "构建开发"
-            ]
-        },
-        {
-            "id": "http://blog.virtualguard101.xyz/2025/05/19/container-tech/",
-            "url": "http://blog.virtualguard101.xyz/2025/05/19/container-tech/",
-            "title": "DevOps学习摘要",
-            "date_published": "2025-05-19T14:42:25.000Z",
-            "content_html": "<ul>\n<li><a href=\"https://www.thebyte.com.cn/\">深入高可用系统原理与设计</a></li>\n</ul>\n",
-            "tags": [
-                "云原生"
             ]
         }
     ]
