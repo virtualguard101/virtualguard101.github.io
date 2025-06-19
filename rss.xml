@@ -5,29 +5,16 @@
         <link>http://blog.virtualguard101.xyz</link>
         <description>&lt;/&gt;</description>
         <language>zh-CN</language>
-        <pubDate>Thu, 05 Jun 2025 22:19:38 +0800</pubDate>
-        <lastBuildDate>Thu, 05 Jun 2025 22:19:38 +0800</lastBuildDate>
+        <pubDate>Fri, 23 May 2025 14:18:21 +0800</pubDate>
+        <lastBuildDate>Fri, 23 May 2025 14:18:21 +0800</lastBuildDate>
+        <category>Linux</category>
         <category>C++</category>
         <category>Python</category>
         <category>vcpkg</category>
         <category>CMake</category>
         <category>Build Tools</category>
-        <category>DevOps</category>
-        <category>游戏开发</category>
-        <category>构建开发</category>
-        <category>Linux</category>
         <category>web开发</category>
         <category>docker</category>
-        <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/05/devops-practice/</guid>
-            <title>游戏构建/部署/测试DevOps实践记录</title>
-            <link>http://blog.virtualguard101.xyz/2025/06/05/devops-practice/</link>
-            <category>DevOps</category>
-            <category>游戏开发</category>
-            <category>构建开发</category>
-            <pubDate>Thu, 05 Jun 2025 22:19:38 +0800</pubDate>
-            <description><![CDATA[  ]]></description>
-        </item>
         <item>
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/</guid>
             <title>3BodySimulator：Python &amp; C++ 项目标准化构建</title>

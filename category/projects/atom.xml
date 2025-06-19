@@ -3,28 +3,15 @@
     <id>http://blog.virtualguard101.xyz</id>
     <title>virtualguard&#39;s Blog • Posts by &#34;projects&#34; category</title>
     <link href="http://blog.virtualguard101.xyz" />
-    <updated>2025-06-05T14:19:38.000Z</updated>
+    <updated>2025-05-23T06:18:21.000Z</updated>
+    <category term="Linux" />
     <category term="C++" />
     <category term="Python" />
     <category term="vcpkg" />
     <category term="CMake" />
     <category term="Build Tools" />
-    <category term="DevOps" />
-    <category term="游戏开发" />
-    <category term="构建开发" />
-    <category term="Linux" />
     <category term="web开发" />
     <category term="docker" />
-    <entry>
-        <id>http://blog.virtualguard101.xyz/2025/06/05/devops-practice/</id>
-        <title>游戏构建/部署/测试DevOps实践记录</title>
-        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/06/05/devops-practice/"/>
-        <content type="html"></content>
-        <category term="DevOps" />
-        <category term="游戏开发" />
-        <category term="构建开发" />
-        <updated>2025-06-05T14:19:38.000Z</updated>
-    </entry>
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/</id>
         <title>3BodySimulator：Python &amp; C++ 项目标准化构建</title>

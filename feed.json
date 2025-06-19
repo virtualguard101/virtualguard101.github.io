@@ -5,18 +5,6 @@
     "home_page_url": "http://blog.virtualguard101.xyz",
     "items": [
         {
-            "id": "http://blog.virtualguard101.xyz/2025/06/05/devops-practice/",
-            "url": "http://blog.virtualguard101.xyz/2025/06/05/devops-practice/",
-            "title": "游戏构建/部署/测试DevOps实践记录",
-            "date_published": "2025-06-05T14:19:38.000Z",
-            "content_html": "",
-            "tags": [
-                "DevOps",
-                "游戏开发",
-                "构建开发"
-            ]
-        },
-        {
             "id": "http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/",
             "url": "http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/",
             "title": "3BodySimulator：Python & C++ 项目标准化构建",
