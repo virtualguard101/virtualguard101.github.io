@@ -8,12 +8,12 @@
         <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
         <lastBuildDate>Fri, 20 Jun 2025 21:10:33 +0800</lastBuildDate>
         <category>学年总结</category>
+        <category>Linux</category>
         <category>C++</category>
         <category>Python</category>
         <category>vcpkg</category>
         <category>CMake</category>
         <category>Build Tools</category>
-        <category>Linux</category>
         <category>web开发</category>
         <category>docker</category>
         <item>
@@ -104,17 +104,23 @@
 &lt;li&gt;
 &lt;p&gt;构建了自己的&lt;a href=&#34;https://virtualguard101.xyz/&#34;&gt;第一个个人站点&lt;/a&gt;（这个才是真正的“斯大林格勒”）&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://i.imgur.com/euiV0r7.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;站点背景图片来源：&lt;a href=&#34;https://b23.tv/7vno0Mx&#34;&gt;为生而战，向死而生 | 何春秋-宙道分身&lt;/a&gt;（图片作了分辨率处理），已获得作者授权：&lt;img src=&#34;https://i.imgur.com/CMNtFos.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;在正式踏上自学之路后不久，我一直在探索能够高效整合信息/资源（人话：记笔记）的方式，特别是在五月份受导师邀请开始“手搓GPU”后，单位时间里需要接收的信息量越来越多，脑子里能留住的有效信息却越来越少。最后思来想去还是发现&lt;strong&gt;使用&lt;code&gt;CI/CD&lt;/code&gt;工具链构建的个人站点&lt;/strong&gt;最合适。&lt;/p&gt;
 &lt;p&gt;这里要特别感谢学校技术协会的大佬，对站点建设提供了一系列相对现代化的构建建议。&lt;/p&gt;
 &lt;p&gt;建站后在协调大量信息的存储与分类时我也遇到了不少麻烦，包括但不限于如何选取合适的主题/文档构建工具来使博客更加美观且实用；哪些构建工具/框架适合用于笔记以使其能够被高效地回顾、查阅等，这些我们&lt;a href=&#34;#%E7%AB%99%E7%82%B9%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%B8%BB%E9%A2%98%E7%9A%84%E9%80%89%E6%8B%A9&#34;&gt;后面&lt;/a&gt;再谈&lt;/p&gt;
-&lt;/li&gt;
+&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;自学&lt;a href=&#34;https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/cpp/CS106L/&#34;&gt;CS106L&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;这是建设了个人站点后的第一个具有&lt;a href=&#34;https://note.virtualguard101.xyz/notes/Programming%20Language/c%2B%2B/C%2B%2B%20Fundamental/00-type-structure/&#34;&gt;相对完善笔记&lt;/a&gt;的自学课程，我快速过了一下，其中大部分的&lt;a href=&#34;https://github.com/virtualguard101/cs106l-assignments&#34;&gt;Assignments&lt;/a&gt;还没来得及做。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;开始使用Arch Linux作为主操作系统&lt;/p&gt;
-&lt;p&gt;&lt;s&gt;因为我是男娘&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/oVkMHug.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;因为我是南梁&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;使用了近半年的Ubuntu，终于还是对Arch动心了。&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/05/19/arch-linux/&#34;&gt;这篇文章&lt;/a&gt;记录了一些我在安装过程遇到的一些要点与问题。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
