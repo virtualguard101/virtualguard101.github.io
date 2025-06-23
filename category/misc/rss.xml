@@ -8,12 +8,12 @@
         <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
         <lastBuildDate>Fri, 20 Jun 2025 21:10:33 +0800</lastBuildDate>
         <category>学年总结</category>
-        <category>Linux</category>
         <category>C++</category>
         <category>Python</category>
         <category>vcpkg</category>
         <category>CMake</category>
         <category>Build Tools</category>
+        <category>Linux</category>
         <category>web开发</category>
         <category>docker</category>
         <item>
@@ -102,7 +102,7 @@
 &lt;h4 id=&#34;5月份&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#5月份&#34;&gt;&lt;/a&gt; 5月份&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;构建了自己的&lt;a href=&#34;https://virtualguard101.xyz/&#34;&gt;个人站点&lt;/a&gt;（这个才是真正的“斯大林格勒”）&lt;/p&gt;
+&lt;p&gt;构建了自己的&lt;a href=&#34;https://virtualguard101.xyz/&#34;&gt;第一个个人站点&lt;/a&gt;（这个才是真正的“斯大林格勒”）&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://i.imgur.com/euiV0r7.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;在正式踏上自学之路后不久，我一直在探索能够高效整合信息/资源（人话：记笔记）的方式，特别是在五月份受导师邀请开始“手搓GPU”后，单位时间里需要接收的信息量越来越多，脑子里能留住的有效信息却越来越少。最后思来想去还是发现&lt;strong&gt;使用&lt;code&gt;CI/CD&lt;/code&gt;工具链构建的个人站点&lt;/strong&gt;最合适。&lt;/p&gt;
 &lt;p&gt;这里要特别感谢学校技术协会的大佬，对站点建设提供了一系列相对现代化的构建建议。&lt;/p&gt;
