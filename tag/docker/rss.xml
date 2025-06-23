@@ -8,20 +8,19 @@
         <pubDate>Sat, 26 Apr 2025 23:28:57 +0800</pubDate>
         <lastBuildDate>Sat, 26 Apr 2025 23:28:57 +0800</lastBuildDate>
         <category>学年总结</category>
-        <category>Linux</category>
-        <category>C++</category>
-        <category>Python</category>
+        <category>c++</category>
+        <category>python</category>
         <category>vcpkg</category>
-        <category>CMake</category>
-        <category>Build Tools</category>
+        <category>项目构建</category>
+        <category>linux</category>
         <category>web开发</category>
-        <category>docker</category>
+        <category>Docker</category>
         <item>
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/04/26/web-build/</guid>
             <title>docker-compose + nginx快速构建个人站点</title>
             <link>http://blog.virtualguard101.xyz/2025/04/26/web-build/</link>
             <category>web开发</category>
-            <category>docker</category>
+            <category>Docker</category>
             <pubDate>Sat, 26 Apr 2025 23:28:57 +0800</pubDate>
             <description><![CDATA[ &lt;h2 id=&#34;导言&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#导言&#34;&gt;&lt;/a&gt; 导言&lt;/h2&gt;
 &lt;p&gt;起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了&lt;a href=&#34;https://github.com/kasuie/remio-home&#34;&gt;remio-home | kasuie&lt;/a&gt;，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行&lt;code&gt;docker-compose up -d&lt;/code&gt;即可。结合大佬的一些建议和我自己的一些&lt;s&gt;偷懒&lt;/s&gt;自动化的想法，便有了下文。&lt;/p&gt;

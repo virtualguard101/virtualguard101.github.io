@@ -5,14 +5,13 @@
     <link href="http://blog.virtualguard101.xyz" />
     <updated>2025-04-26T15:28:57.000Z</updated>
     <category term="学年总结" />
-    <category term="Linux" />
-    <category term="C++" />
-    <category term="Python" />
+    <category term="c++" />
+    <category term="python" />
     <category term="vcpkg" />
-    <category term="CMake" />
-    <category term="Build Tools" />
+    <category term="项目构建" />
+    <category term="linux" />
     <category term="web开发" />
-    <category term="docker" />
+    <category term="Docker" />
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/04/26/web-build/</id>
         <title>docker-compose + nginx快速构建个人站点</title>
@@ -213,7 +212,7 @@ ssh私钥需在服务器上生成。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;END&lt;/strong&gt;&lt;/p&gt;
 </content>
         <category term="web开发" />
-        <category term="docker" />
+        <category term="Docker" />
         <updated>2025-04-26T15:28:57.000Z</updated>
     </entry>
 </feed>

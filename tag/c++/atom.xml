@@ -5,14 +5,13 @@
     <link href="http://blog.virtualguard101.xyz" />
     <updated>2025-05-23T06:18:21.000Z</updated>
     <category term="学年总结" />
-    <category term="Linux" />
-    <category term="C++" />
-    <category term="Python" />
+    <category term="c++" />
+    <category term="python" />
     <category term="vcpkg" />
-    <category term="CMake" />
-    <category term="Build Tools" />
+    <category term="项目构建" />
+    <category term="linux" />
     <category term="web开发" />
-    <category term="docker" />
+    <category term="Docker" />
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/</id>
         <title>3BodySimulator：Python &amp; C++ 项目标准化构建</title>
@@ -147,11 +146,10 @@
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;./build.sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;此时由于项目环境独立于系统全局的Python环境，构建运行均基于这个虚拟环境，确保了环境的一致性，也就不会出现像上面的环境冲突问题了。&lt;/p&gt;
 </content>
-        <category term="C++" />
-        <category term="Python" />
+        <category term="c++" />
+        <category term="python" />
         <category term="vcpkg" />
-        <category term="CMake" />
-        <category term="Build Tools" />
+        <category term="项目构建" />
         <updated>2025-05-23T06:18:21.000Z</updated>
     </entry>
 </feed>

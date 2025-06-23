@@ -8,14 +8,13 @@
         <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
         <lastBuildDate>Fri, 20 Jun 2025 21:10:33 +0800</lastBuildDate>
         <category>学年总结</category>
-        <category>Linux</category>
-        <category>C++</category>
-        <category>Python</category>
+        <category>c++</category>
+        <category>python</category>
         <category>vcpkg</category>
-        <category>CMake</category>
-        <category>Build Tools</category>
+        <category>项目构建</category>
+        <category>linux</category>
         <category>web开发</category>
-        <category>docker</category>
+        <category>Docker</category>
         <item>
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</guid>
             <title>2024-2025：艰难的起步</title>
@@ -223,7 +222,7 @@
 &lt;p&gt;这是在通过搭建个人站点来整合信息时总结得出的经验，对于我这样的初学者也是一个容易走弯路的地方，我在这个地方至少“浪费”了近一个月的时间。&lt;/p&gt;
 &lt;p&gt;长话短说，首先来看一些工具——我目前调研过的构建工具有四个：&lt;a href=&#34;https://hugo.opendocs.io/&#34;&gt;Hugo&lt;/a&gt;、&lt;a href=&#34;https://hexo.io/zh-cn/&#34;&gt;Hexo&lt;/a&gt;、&lt;a href=&#34;https://squidfunk.github.io/mkdocs-material/&#34;&gt;Material for MkDocs&lt;/a&gt;和&lt;a href=&#34;https://vuepress.vuejs.org/zh/&#34;&gt;VuePress&lt;/a&gt;，其中前面三个我都用过，第四个简单看了一下。&lt;/p&gt;
 &lt;p&gt;我个人的建议是，针对&lt;strong&gt;博客&lt;/strong&gt;等&lt;strong&gt;非信息密集型&lt;/strong&gt;且&lt;strong&gt;注重美观&lt;/strong&gt;的文档或站点，可以使用前两个构建；同时，Hexo会比Hugo更加成熟一些，大部分第三方主题对前者的支持会更好，但是容易出现依赖问题，且可能需要手动解决。因此建议小白用Hugo，有一定经验了再迁移到Hexo。&lt;/p&gt;
-&lt;p&gt;而对于类似&lt;strong&gt;学习笔记&lt;/strong&gt;这样&lt;strong&gt;结构复杂&lt;/strong&gt;的&lt;strong&gt;信息密集型&lt;/strong&gt;文档，建议使用Material for Mkdocs。其社区支持十分完善，且支持&lt;a href=&#34;https://pypi.org/project/mkdocs-material/&#34;&gt;PyPI集成&lt;/a&gt;，可通过自行编写Python插件自定义样式。&lt;a href=&#34;https://csdiy.wiki/&#34;&gt;csdiy&lt;/a&gt;就是使用其构建的一个站点。&lt;/p&gt;
+&lt;p&gt;而对于类似&lt;strong&gt;学习笔记&lt;/strong&gt;这样&lt;strong&gt;结构复杂&lt;/strong&gt;的&lt;strong&gt;信息密集型&lt;/strong&gt;文档，建议使用Material for Mkdocs（一个基于&lt;a href=&#34;https://www.mkdocs.org/&#34;&gt;Mkdocs&lt;/a&gt;的&lt;strong&gt;主题&lt;/strong&gt;，后面所提到的&lt;a href=&#34;https://www.mkdocs.org/dev-guide/plugins/#developing-plugins&#34;&gt;支持PyPI集成&lt;/a&gt;是指可利用其进行插件开发）。其社区支持十分完善，且支持&lt;a href=&#34;https://pypi.org/project/mkdocs-material/&#34;&gt;PyPI集成&lt;/a&gt;，可通过自行编写Python插件自定义样式。&lt;a href=&#34;https://csdiy.wiki/&#34;&gt;csdiy&lt;/a&gt;就是使用其构建的一个站点。&lt;/p&gt;
 &lt;p&gt;VuePress我倒是没使用过，不过通过观察使用其构建的文档，我个人认为它适合用于构建结构相对没那么复杂的&lt;strong&gt;单主题&lt;/strong&gt;的&lt;strong&gt;信息密集型&lt;/strong&gt;文档，如某个中大型项目的使用文档。&lt;/p&gt;
 &lt;h2 id=&#34;新的开始&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#新的开始&#34;&gt;&lt;/a&gt; 新的开始&lt;/h2&gt;
 &lt;p&gt;新的学年，不出意外的话，我就是网安专业的学生了。&lt;s&gt;芜湖～水课水课逃逃逃！😋&lt;/s&gt;&lt;/p&gt;
@@ -243,7 +242,7 @@
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</guid>
             <title>Arch Linux安装要点记录</title>
             <link>http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</link>
-            <category>Linux</category>
+            <category>linux</category>
             <pubDate>Mon, 19 May 2025 08:52:48 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;Arch Linux是一个支持高度定制化的Linux发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
 &lt;p&gt;这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。&lt;/p&gt;

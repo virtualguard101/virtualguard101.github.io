@@ -5,14 +5,13 @@
     <link href="http://blog.virtualguard101.xyz" />
     <updated>2025-05-19T00:52:48.000Z</updated>
     <category term="学年总结" />
-    <category term="Linux" />
-    <category term="C++" />
-    <category term="Python" />
+    <category term="c++" />
+    <category term="python" />
     <category term="vcpkg" />
-    <category term="CMake" />
-    <category term="Build Tools" />
+    <category term="项目构建" />
+    <category term="linux" />
     <category term="web开发" />
-    <category term="docker" />
+    <category term="Docker" />
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</id>
         <title>Arch Linux安装要点记录</title>
@@ -51,7 +50,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 </content>
-        <category term="Linux" />
+        <category term="linux" />
         <updated>2025-05-19T00:52:48.000Z</updated>
     </entry>
 </feed>

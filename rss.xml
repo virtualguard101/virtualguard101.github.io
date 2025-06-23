@@ -5,17 +5,94 @@
         <link>http://blog.virtualguard101.xyz</link>
         <description>&lt;/&gt;</description>
         <language>zh-CN</language>
-        <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
-        <lastBuildDate>Fri, 20 Jun 2025 21:10:33 +0800</lastBuildDate>
+        <pubDate>Mon, 23 Jun 2025 12:38:07 +0800</pubDate>
+        <lastBuildDate>Mon, 23 Jun 2025 12:38:07 +0800</lastBuildDate>
         <category>学年总结</category>
-        <category>Linux</category>
-        <category>C++</category>
-        <category>Python</category>
+        <category>c++</category>
+        <category>python</category>
         <category>vcpkg</category>
-        <category>CMake</category>
-        <category>Build Tools</category>
+        <category>项目构建</category>
+        <category>linux</category>
         <category>web开发</category>
-        <category>docker</category>
+        <category>Docker</category>
+        <item>
+            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/23/web/</guid>
+            <title>个人站点构建要点(改良版) &amp;&amp; Web 开发简要实践</title>
+            <link>http://blog.virtualguard101.xyz/2025/06/23/web/</link>
+            <category>web开发</category>
+            <pubDate>Mon, 23 Jun 2025 12:38:07 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;近期在&lt;a href=&#34;https://www.spaceship.com/zh/&#34;&gt;spaceship&lt;/a&gt;上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。&lt;/p&gt;
+&lt;p&gt;做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。&lt;/p&gt;
+&lt;h2 id=&#34;部署要点-杂项&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署要点-杂项&#34;&gt;&lt;/a&gt; 部署要点 &amp;amp; 杂项&lt;/h2&gt;
+&lt;h3 id=&#34;部署改良&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署改良&#34;&gt;&lt;/a&gt; 部署改良&lt;/h3&gt;
+&lt;h4 id=&#34;改良要点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#改良要点&#34;&gt;&lt;/a&gt; 改良要点&lt;/h4&gt;
+&lt;p&gt;在今年的四月份我曾发布了一篇&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/04/26/web-build/&#34;&gt;文章&lt;/a&gt;，里面主要提及了 &lt;strong&gt;Docker Compose + Nginx&lt;/strong&gt; “一键部署”的部署方式。如果所部署的服务模块基本高度稳定，基本不需要通过暂停服务来处理集成/交付问题，或者服务之间几乎不存在依赖关系或依赖关系十分简单，那么这这种部署方式就不会有什么太大的问题；然而，倘若需要灵活的开发场景，例如需要经常性为站点添加新的服务，或是存在需要通过停止服务来进行配置的服务，同时服务与服务之间的依赖关系错综复杂，使用这样&lt;strong&gt;一体化&lt;/strong&gt;的部署方式就需要将所有服务一并停止，这样就不利于高效开发且会降低站点的可访问性。&lt;/p&gt;
+&lt;p&gt;会降低可访问性很好理解——需要频繁地关闭服务在访问者眼里就是不稳定的表现。对于不利于高效开发的问题我们举一个例子：假设你想部署一个服务，但是这个服务需要调用另一个同样部署在该主机上的某个服务的API。为了添加这个服务，你首先需要把该主机上部署的所有服务先通过&lt;code&gt;docker compose down&lt;/code&gt;停止运行，然后添加这个服务的配置；在正式部署前，你想要测试一下这个服务的功能如何，结果发现依赖的API无法调用——因为它被停止了；然后你索性就不测试了，直接&lt;code&gt;docker compose up -d&lt;/code&gt;一键部署，结果配置出了问题——运气好点的话，只有新服务的容器无法运行；运气不好的话，新服务可能执行了一个未定义行为在，或者传入了一个未定义参数到API服务里，结果导致API服务也崩溃了，依赖这个API服务的其他服务也就跟着崩溃了，留下一大堆与看上去新服务毫无关联的报错信息和阅读着如💩山一般报错信息风中凌乱的你…原本只要看一个服务的报错，现在要看好几个，而且其中的依赖关系可能还很复杂！那样的报错信息懂的都懂，根本就不是给人看的。这种情况就会大大增加debug的压力，也就降低了开发效率。&lt;/p&gt;
+&lt;p&gt;解决这个问题，我们就需要通过把原来高度集中的微服务分散开来配置与部署来解决可能被“一锅端”的问题。针对普通的个人站点，实现的思路也很简单，现成服务的部署工具仍然是Docker + Nginx，但这次我们将二者独立开来。简单来说，旧版的部署方式是&lt;strong&gt;将Nginx的转发服务也一并运行于Docker&lt;/strong&gt;，各个由Nginx转发的子服务由Docker部署，&lt;strong&gt;所有的服务均配置于单个&lt;code&gt;docker-compose.yml&lt;/code&gt;中&lt;/strong&gt;，可参考下图理解：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
+
+  A: docker-compose.yml
+  state A {
+    [*] --&gt; service1
+    [*] --&gt; service2
+    [*] --&gt; ........
+    [*] --&gt; serviceN
+
+    B: Backend Services
+    state B {
+      service1 --&gt; Nginx: forward
+      service2 --&gt; Nginx: forward
+      ........ --&gt; Nginx: forward
+      serviceN --&gt; Nginx: forward
+    }
+
+    state Nginx {
+      Description: High-performance Web Server and Reverse Proxy Handle
+    }
+  }
+
+  Nginx --&gt; Front&lt;/pre&gt;
+&lt;p&gt;而我们现在的思路则是将不同服务的&lt;strong&gt;部署配置&lt;/strong&gt;(这里特指&lt;code&gt;docker-compose.yml&lt;/code&gt;)分散到各个服务独立的配置路径上进行配置并由Docker部署，最后由运行于全局环境的Nginx进行转发：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
+
+  A: Backend Services
+  state A {
+    B: docker-compose.yml
+    C: docker-compose.yml
+    D: docker-compose.ymls
+    E: docker-compose.yml
+
+    state B {
+      [*] --&gt; service1
+    }
+
+    state C {
+      [*] --&gt; service2
+    }
+
+    state D {
+      [*] --&gt; ........
+    }
+
+    state E {
+      [*] --&gt; serviceN
+    }
+  }
+
+  state Nginx {
+    Description: High-performance Web Server and Reverse Proxy Handle(Running Globally)
+  }
+
+  service1 --&gt; Nginx: forward
+  service2 --&gt; Nginx: forward
+  ........ --&gt; Nginx: forward
+  serviceN --&gt; Nginx: forward
+
+  Nginx --&gt; Front&lt;/pre&gt;
+&lt;p&gt;理论存在，接下来就是 &lt;s&gt;魔法时间&lt;/s&gt; 实际配置了。&lt;/p&gt;
+&lt;h4 id=&#34;部署流程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署流程&#34;&gt;&lt;/a&gt; 部署流程&lt;/h4&gt;
+ ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</guid>
             <title>2024-2025：艰难的起步</title>
@@ -223,7 +300,7 @@
 &lt;p&gt;这是在通过搭建个人站点来整合信息时总结得出的经验，对于我这样的初学者也是一个容易走弯路的地方，我在这个地方至少“浪费”了近一个月的时间。&lt;/p&gt;
 &lt;p&gt;长话短说，首先来看一些工具——我目前调研过的构建工具有四个：&lt;a href=&#34;https://hugo.opendocs.io/&#34;&gt;Hugo&lt;/a&gt;、&lt;a href=&#34;https://hexo.io/zh-cn/&#34;&gt;Hexo&lt;/a&gt;、&lt;a href=&#34;https://squidfunk.github.io/mkdocs-material/&#34;&gt;Material for MkDocs&lt;/a&gt;和&lt;a href=&#34;https://vuepress.vuejs.org/zh/&#34;&gt;VuePress&lt;/a&gt;，其中前面三个我都用过，第四个简单看了一下。&lt;/p&gt;
 &lt;p&gt;我个人的建议是，针对&lt;strong&gt;博客&lt;/strong&gt;等&lt;strong&gt;非信息密集型&lt;/strong&gt;且&lt;strong&gt;注重美观&lt;/strong&gt;的文档或站点，可以使用前两个构建；同时，Hexo会比Hugo更加成熟一些，大部分第三方主题对前者的支持会更好，但是容易出现依赖问题，且可能需要手动解决。因此建议小白用Hugo，有一定经验了再迁移到Hexo。&lt;/p&gt;
-&lt;p&gt;而对于类似&lt;strong&gt;学习笔记&lt;/strong&gt;这样&lt;strong&gt;结构复杂&lt;/strong&gt;的&lt;strong&gt;信息密集型&lt;/strong&gt;文档，建议使用Material for Mkdocs。其社区支持十分完善，且支持&lt;a href=&#34;https://pypi.org/project/mkdocs-material/&#34;&gt;PyPI集成&lt;/a&gt;，可通过自行编写Python插件自定义样式。&lt;a href=&#34;https://csdiy.wiki/&#34;&gt;csdiy&lt;/a&gt;就是使用其构建的一个站点。&lt;/p&gt;
+&lt;p&gt;而对于类似&lt;strong&gt;学习笔记&lt;/strong&gt;这样&lt;strong&gt;结构复杂&lt;/strong&gt;的&lt;strong&gt;信息密集型&lt;/strong&gt;文档，建议使用Material for Mkdocs（一个基于&lt;a href=&#34;https://www.mkdocs.org/&#34;&gt;Mkdocs&lt;/a&gt;的&lt;strong&gt;主题&lt;/strong&gt;，后面所提到的&lt;a href=&#34;https://www.mkdocs.org/dev-guide/plugins/#developing-plugins&#34;&gt;支持PyPI集成&lt;/a&gt;是指可利用其进行插件开发）。其社区支持十分完善，且支持&lt;a href=&#34;https://pypi.org/project/mkdocs-material/&#34;&gt;PyPI集成&lt;/a&gt;，可通过自行编写Python插件自定义样式。&lt;a href=&#34;https://csdiy.wiki/&#34;&gt;csdiy&lt;/a&gt;就是使用其构建的一个站点。&lt;/p&gt;
 &lt;p&gt;VuePress我倒是没使用过，不过通过观察使用其构建的文档，我个人认为它适合用于构建结构相对没那么复杂的&lt;strong&gt;单主题&lt;/strong&gt;的&lt;strong&gt;信息密集型&lt;/strong&gt;文档，如某个中大型项目的使用文档。&lt;/p&gt;
 &lt;h2 id=&#34;新的开始&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#新的开始&#34;&gt;&lt;/a&gt; 新的开始&lt;/h2&gt;
 &lt;p&gt;新的学年，不出意外的话，我就是网安专业的学生了。&lt;s&gt;芜湖～水课水课逃逃逃！😋&lt;/s&gt;&lt;/p&gt;
@@ -243,11 +320,10 @@
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/</guid>
             <title>3BodySimulator：Python &amp; C++ 项目标准化构建</title>
             <link>http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/</link>
-            <category>C++</category>
-            <category>Python</category>
+            <category>c++</category>
+            <category>python</category>
             <category>vcpkg</category>
-            <category>CMake</category>
-            <category>Build Tools</category>
+            <category>项目构建</category>
             <pubDate>Fri, 23 May 2025 14:18:21 +0800</pubDate>
             <description><![CDATA[ &lt;h2 id=&#34;导言&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#导言&#34;&gt;&lt;/a&gt; 导言&lt;/h2&gt;
 &lt;p&gt;近期刚刚结束&lt;a href=&#34;https://web.stanford.edu/class/cs106l/&#34;&gt;CS106L | Standard C++ features and syntax&lt;/a&gt;的学习，想借此机会完善一下对C++项目构建的学习，如&lt;code&gt;CMake&lt;/code&gt;等构建工具的使用，故立此项。&lt;/p&gt;
@@ -384,7 +460,7 @@
             <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</guid>
             <title>Arch Linux安装要点记录</title>
             <link>http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</link>
-            <category>Linux</category>
+            <category>linux</category>
             <pubDate>Mon, 19 May 2025 08:52:48 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;Arch Linux是一个支持高度定制化的Linux发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
 &lt;p&gt;这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。&lt;/p&gt;
@@ -426,7 +502,7 @@
             <title>docker-compose + nginx快速构建个人站点</title>
             <link>http://blog.virtualguard101.xyz/2025/04/26/web-build/</link>
             <category>web开发</category>
-            <category>docker</category>
+            <category>Docker</category>
             <pubDate>Sat, 26 Apr 2025 23:28:57 +0800</pubDate>
             <description><![CDATA[ &lt;h2 id=&#34;导言&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#导言&#34;&gt;&lt;/a&gt; 导言&lt;/h2&gt;
 &lt;p&gt;起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了&lt;a href=&#34;https://github.com/kasuie/remio-home&#34;&gt;remio-home | kasuie&lt;/a&gt;，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行&lt;code&gt;docker-compose up -d&lt;/code&gt;即可。结合大佬的一些建议和我自己的一些&lt;s&gt;偷懒&lt;/s&gt;自动化的想法，便有了下文。&lt;/p&gt;

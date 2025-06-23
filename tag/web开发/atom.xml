@@ -3,16 +3,93 @@
     <id>http://blog.virtualguard101.xyz</id>
     <title>virtualguard&#39;s Blog • Posts by &#34;web开发&#34; tag</title>
     <link href="http://blog.virtualguard101.xyz" />
-    <updated>2025-04-26T15:28:57.000Z</updated>
+    <updated>2025-06-23T04:38:07.000Z</updated>
     <category term="学年总结" />
-    <category term="Linux" />
-    <category term="C++" />
-    <category term="Python" />
+    <category term="c++" />
+    <category term="python" />
     <category term="vcpkg" />
-    <category term="CMake" />
-    <category term="Build Tools" />
+    <category term="项目构建" />
+    <category term="linux" />
     <category term="web开发" />
-    <category term="docker" />
+    <category term="Docker" />
+    <entry>
+        <id>http://blog.virtualguard101.xyz/2025/06/23/web/</id>
+        <title>个人站点构建要点(改良版) &amp;&amp; Web 开发简要实践</title>
+        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/06/23/web/"/>
+        <content type="html">&lt;p&gt;近期在&lt;a href=&#34;https://www.spaceship.com/zh/&#34;&gt;spaceship&lt;/a&gt;上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。&lt;/p&gt;
+&lt;p&gt;做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。&lt;/p&gt;
+&lt;h2 id=&#34;部署要点-杂项&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署要点-杂项&#34;&gt;&lt;/a&gt; 部署要点 &amp;amp; 杂项&lt;/h2&gt;
+&lt;h3 id=&#34;部署改良&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署改良&#34;&gt;&lt;/a&gt; 部署改良&lt;/h3&gt;
+&lt;h4 id=&#34;改良要点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#改良要点&#34;&gt;&lt;/a&gt; 改良要点&lt;/h4&gt;
+&lt;p&gt;在今年的四月份我曾发布了一篇&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/04/26/web-build/&#34;&gt;文章&lt;/a&gt;，里面主要提及了 &lt;strong&gt;Docker Compose + Nginx&lt;/strong&gt; “一键部署”的部署方式。如果所部署的服务模块基本高度稳定，基本不需要通过暂停服务来处理集成/交付问题，或者服务之间几乎不存在依赖关系或依赖关系十分简单，那么这这种部署方式就不会有什么太大的问题；然而，倘若需要灵活的开发场景，例如需要经常性为站点添加新的服务，或是存在需要通过停止服务来进行配置的服务，同时服务与服务之间的依赖关系错综复杂，使用这样&lt;strong&gt;一体化&lt;/strong&gt;的部署方式就需要将所有服务一并停止，这样就不利于高效开发且会降低站点的可访问性。&lt;/p&gt;
+&lt;p&gt;会降低可访问性很好理解——需要频繁地关闭服务在访问者眼里就是不稳定的表现。对于不利于高效开发的问题我们举一个例子：假设你想部署一个服务，但是这个服务需要调用另一个同样部署在该主机上的某个服务的API。为了添加这个服务，你首先需要把该主机上部署的所有服务先通过&lt;code&gt;docker compose down&lt;/code&gt;停止运行，然后添加这个服务的配置；在正式部署前，你想要测试一下这个服务的功能如何，结果发现依赖的API无法调用——因为它被停止了；然后你索性就不测试了，直接&lt;code&gt;docker compose up -d&lt;/code&gt;一键部署，结果配置出了问题——运气好点的话，只有新服务的容器无法运行；运气不好的话，新服务可能执行了一个未定义行为在，或者传入了一个未定义参数到API服务里，结果导致API服务也崩溃了，依赖这个API服务的其他服务也就跟着崩溃了，留下一大堆与看上去新服务毫无关联的报错信息和阅读着如💩山一般报错信息风中凌乱的你…原本只要看一个服务的报错，现在要看好几个，而且其中的依赖关系可能还很复杂！那样的报错信息懂的都懂，根本就不是给人看的。这种情况就会大大增加debug的压力，也就降低了开发效率。&lt;/p&gt;
+&lt;p&gt;解决这个问题，我们就需要通过把原来高度集中的微服务分散开来配置与部署来解决可能被“一锅端”的问题。针对普通的个人站点，实现的思路也很简单，现成服务的部署工具仍然是Docker + Nginx，但这次我们将二者独立开来。简单来说，旧版的部署方式是&lt;strong&gt;将Nginx的转发服务也一并运行于Docker&lt;/strong&gt;，各个由Nginx转发的子服务由Docker部署，&lt;strong&gt;所有的服务均配置于单个&lt;code&gt;docker-compose.yml&lt;/code&gt;中&lt;/strong&gt;，可参考下图理解：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
+
+  A: docker-compose.yml
+  state A {
+    [*] --&gt; service1
+    [*] --&gt; service2
+    [*] --&gt; ........
+    [*] --&gt; serviceN
+
+    B: Backend Services
+    state B {
+      service1 --&gt; Nginx: forward
+      service2 --&gt; Nginx: forward
+      ........ --&gt; Nginx: forward
+      serviceN --&gt; Nginx: forward
+    }
+
+    state Nginx {
+      Description: High-performance Web Server and Reverse Proxy Handle
+    }
+  }
+
+  Nginx --&gt; Front&lt;/pre&gt;
+&lt;p&gt;而我们现在的思路则是将不同服务的&lt;strong&gt;部署配置&lt;/strong&gt;(这里特指&lt;code&gt;docker-compose.yml&lt;/code&gt;)分散到各个服务独立的配置路径上进行配置并由Docker部署，最后由运行于全局环境的Nginx进行转发：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
+
+  A: Backend Services
+  state A {
+    B: docker-compose.yml
+    C: docker-compose.yml
+    D: docker-compose.ymls
+    E: docker-compose.yml
+
+    state B {
+      [*] --&gt; service1
+    }
+
+    state C {
+      [*] --&gt; service2
+    }
+
+    state D {
+      [*] --&gt; ........
+    }
+
+    state E {
+      [*] --&gt; serviceN
+    }
+  }
+
+  state Nginx {
+    Description: High-performance Web Server and Reverse Proxy Handle(Running Globally)
+  }
+
+  service1 --&gt; Nginx: forward
+  service2 --&gt; Nginx: forward
+  ........ --&gt; Nginx: forward
+  serviceN --&gt; Nginx: forward
+
+  Nginx --&gt; Front&lt;/pre&gt;
+&lt;p&gt;理论存在，接下来就是 &lt;s&gt;魔法时间&lt;/s&gt; 实际配置了。&lt;/p&gt;
+&lt;h4 id=&#34;部署流程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署流程&#34;&gt;&lt;/a&gt; 部署流程&lt;/h4&gt;
+</content>
+        <category term="web开发" />
+        <updated>2025-06-23T04:38:07.000Z</updated>
+    </entry>
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/04/26/web-build/</id>
         <title>docker-compose + nginx快速构建个人站点</title>
@@ -213,7 +290,7 @@ ssh私钥需在服务器上生成。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;END&lt;/strong&gt;&lt;/p&gt;
 </content>
         <category term="web开发" />
-        <category term="docker" />
+        <category term="Docker" />
         <updated>2025-04-26T15:28:57.000Z</updated>
     </entry>
 </feed>
