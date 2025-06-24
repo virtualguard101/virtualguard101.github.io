@@ -11,7 +11,7 @@
     <category term="项目构建" />
     <category term="linux" />
     <category term="web开发" />
-    <category term="Docker" />
+    <category term="docker" />
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/06/23/web/</id>
         <title>个人站点构建要点(改良版) &amp;&amp; Web 开发简要实践</title>
@@ -86,8 +86,82 @@
   Nginx --&gt; Front&lt;/pre&gt;
 &lt;p&gt;理论存在，接下来就是 &lt;s&gt;魔法时间&lt;/s&gt; 实际配置了。&lt;/p&gt;
 &lt;h4 id=&#34;部署流程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署流程&#34;&gt;&lt;/a&gt; 部署流程&lt;/h4&gt;
+&lt;h5 id=&#34;环境配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#环境配置&#34;&gt;&lt;/a&gt; 环境配置&lt;/h5&gt;
+&lt;p&gt;首先是配置环境依赖。对于服务器和域名的配置这里补充一个为服务器添加交换空间的&lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04#step-3-creating-a-swap-file&#34;&gt;教程&lt;/a&gt;（对于“什么是交换空间”、“交换空间有什么用”，这篇教程描述得足够详尽了），其余部分不再赘述，主要看看两个部署工具以及一些可能需要用到的工具的配置&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Docker&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -fsSL https://get.docker.com | bash -s docker&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install docker-compose&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;配置用户组&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; groupadd docker &lt;span class=&#34;comment&#34;&gt;# 若尚不存在 docker 组，则需先创建&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; usermod -aG docker &lt;span class=&#34;variable&#34;&gt;$USER&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+配置完用户组后需要重启使配置生效。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Nginx&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从前面的理论方案中我们知道，这次的Nginx不再运行于容器之中，而是运行在全局环境下的，因此我们需要在服务器上安装它：&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install nginx&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;将Nginx服务设置为开机自启&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; systemctl &lt;span class=&#34;built_in&#34;&gt;enable&lt;/span&gt; nginx&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;certbot（SSL证书申请工具）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install certbot&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;cron（定时任务）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install cron&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;目录结构&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#目录结构&#34;&gt;&lt;/a&gt; 目录结构&lt;/h5&gt;
+&lt;p&gt;配置完环境依赖，我们就可以开始为部署做准备了，首当其冲的自然是为不同的分别服务创建独立的配置与数据空间。&lt;/p&gt;
+&lt;p&gt;在改良理论方案中我们提到，要为每个微服务独立配置一个&lt;code&gt;docker-compose.yml&lt;/code&gt;以实现不同服务之间的相互独立与互不干扰——这是与旧方案最为本质的区别；但在目录创建与管理上，我们现在所介绍的新方案则与旧方案没有太大的区别。下面是一个针对新方案的web服务目录结构案例（其中包含了两个后端服务）：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;~/webservices&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── service1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── config&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   │   └── config.json&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── docker-compose.yml&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── fonts&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   └── icons&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── nginx -&amp;gt; /etc/nginx&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── scripts&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── servicesManager.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   └── sslrenew.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;└── service2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ├── docker-compose.yml&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    └── data&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        └── .....&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;对于我们需要部署的后端服务而言，每个微服务的配置仍然分属于各个目录中。与旧方案唯一的不同地方就是各个服务的目录下都多了一个属于它们自己的&lt;code&gt;docker-compose.yml&lt;/code&gt;，相当于把旧方案中存在与web服务集群根目录的&lt;code&gt;docker-compose.yml&lt;/code&gt;配置肢解到各个服务独立的目录中。&lt;/p&gt;
+&lt;p&gt;这里你可能会发现nginx的目录是一个&lt;strong&gt;软链接&lt;/strong&gt;，关于这个我们接下来在&lt;a href=&#34;#nginx%E7%9A%84%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE&#34;&gt;Nginx的配置&lt;/a&gt;中介绍。&lt;/p&gt;
+&lt;h5 id=&#34;nginx的全局配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#nginx的全局配置&#34;&gt;&lt;/a&gt; Nginx的全局配置&lt;/h5&gt;
+&lt;p&gt;对于各个服务&lt;code&gt;docker-compose.yml&lt;/code&gt;的配置这里基本没有新的东西可以介绍，其中一个比较明显的区别就是网路环境变成全局的了，所以不用在额外配置&lt;code&gt;networks&lt;/code&gt;参数。&lt;/p&gt;
+&lt;p&gt;最主要的区别还是在&lt;code&gt;nginx.conf&lt;/code&gt;的配置上，因此我们接下来详细介绍。&lt;/p&gt;
+&lt;p&gt;由于这次的Nginx运行在全局环境下，自然也需要通过编辑全局的配置文件来驱动其执行转发服务。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在Linux中，Nginx的全局配置&lt;code&gt;nginx.conf&lt;/code&gt;位于路径&lt;code&gt;/etc/nginx&lt;/code&gt;下，需要&lt;strong&gt;sudo提权&lt;/strong&gt;才可以保存配置，如果使用vscode的远程资源管理器连接的服务器，可能无法直接在窗口上直接使用vscode编辑&lt;code&gt;nginx.conf&lt;/code&gt;，比较方便且安全的解决方法有两个：一是直接在终端上提权使用vim对目标文件进行编辑 &lt;s&gt;那我还用vscode干什么&lt;/s&gt;；还有一个就是通过安装插件&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=yy0931.save-as-root&#34;&gt;Save as Root in Remote&lt;/a&gt;，通过插件提权保存。&lt;/p&gt;
+&lt;p&gt;同时，如果是使用vscode进行的远程连接，可以在通过在web服务集群的根目录下创建Nginx配置目录(&lt;code&gt;/etc/nginx&lt;/code&gt;)和日志目录(&lt;code&gt;/var/log/nginx&lt;/code&gt;)的&lt;strong&gt;软链接&lt;/strong&gt;来提高开发效率&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;事实上，新方案在配置内容上只需要修改几个参数，总体的配置可能比旧方案还更好理解，下面给出一个简单的例子：&lt;/p&gt;
+&lt;p&gt;假设有一个待转发的服务运行于主机的5000端口上，那么有以下配置模板可供参考：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	listen 80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	# listen [::]:80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	server_name  your_domain.here;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	server_tokens off;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	#配置http验证可访问&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	location /.well-known/acme-challenge/ &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		root /usr/share/certbot/www;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	#http跳转到https&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		return 301 https://$host$request_uri;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;#  server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   listen 80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;#   server_name  your_domain.here;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_pass http://127.0.0.1:5000;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_set_header Host $host;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   &amp;#125;       &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   # 强制HTTPS重定向&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   # return 301 https://$host$request_uri;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; # &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	listen 443 ssl http2;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	server_name  your_domain.here;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	ssl_certificate /etc/letsencrypt/live/your_domina.here/fullchain.pem;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	ssl_certificate_key /etc/letsencrypt/live/your_domain.here/privkey.pem;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_pass http://127.0.0.1:5000;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_set_header Host $host;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;配置上的原理也很简单，简单理解就是在用户访问运行于&lt;code&gt;80&lt;/code&gt;/&lt;code&gt;443&lt;/code&gt;的HTTP/HTTPS服务时，将运行于&lt;code&gt;5000&lt;/code&gt;端口上的后端服务作一次转发。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️注意在&lt;code&gt;docker-compose.yml&lt;/code&gt;中，&lt;code&gt;port&lt;/code&gt;参数&lt;code&gt;:&lt;/code&gt;前的端口号才是宿主机的端口号，也就是我们需要写入&lt;code&gt;nginx.conf&lt;/code&gt;的端口号&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;ssl证书申请&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#ssl证书申请&#34;&gt;&lt;/a&gt; SSL证书申请&lt;/h5&gt;
+&lt;p&gt;第一次申请的操作和定时任务的配置可以参考&lt;a href=&#34;https://kasuie.cc/article/22&#34;&gt;这篇文章&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;虽然已经运行了Nginx服务，但我们仍然可以通过&lt;code&gt;standalone&lt;/code&gt;模式获取证书，但这需要先将Nginx服务关闭以释放&lt;code&gt;80&lt;/code&gt;端口，否则会提示端口被占用而无法申请；申请完证书后再重新启动Nginx即可。当然，也可通过&lt;code&gt;webroot&lt;/code&gt;模式直接申请。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️由于使用certbot时需要提权运行，所以在配置定时任务时也需要进行sudo提权：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; crontab -e&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;否则可能会遇到定时任务无权限运行certbot的尴尬情况&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;服务管理脚本&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#服务管理脚本&#34;&gt;&lt;/a&gt; 服务管理脚本&lt;/h5&gt;
+&lt;p&gt;当服务数量越来越多，且依赖关系越来越复杂时，每次需要配置一个服务可能就需要频繁地切换目录以及输入一些冗长的命令，这时就可以通过编写自动化脚本来 &lt;s&gt;偷懒&lt;/s&gt; 提高效率。&lt;/p&gt;
+&lt;p&gt;对于逻辑比较简单（比如线性逻辑）且shell命令相对密集的系列操作，我们就可以通过编写shell脚本来解决；而对于逻辑相对复杂且需要高度定制化的系列操作，我们就可以交给python脚本来解决，这样不容易出错。&lt;/p&gt;
+&lt;p&gt;编写python脚本前，我们需要先安装python：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install python3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install pip&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;Ubuntu默认安装python3.10，如果对版本有特殊要求，可以安装一个虚拟环境管理器。这里以&lt;a href=&#34;https://docs.astral.sh/uv/&#34;&gt;uv&lt;/a&gt;为例：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -LsSf https://astral.sh/uv/install.sh | sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;!-- [ ] 脚本模板案例 --&gt;
 </content>
         <category term="web开发" />
+        <category term="docker" />
         <updated>2025-06-23T04:38:07.000Z</updated>
     </entry>
     <entry>
@@ -430,7 +504,7 @@ ssh私钥需在服务器上生成。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;END&lt;/strong&gt;&lt;/p&gt;
 </content>
         <category term="web开发" />
-        <category term="Docker" />
+        <category term="docker" />
         <updated>2025-04-26T15:28:57.000Z</updated>
     </entry>
 </feed>

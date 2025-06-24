@@ -11,7 +11,7 @@
     <category term="项目构建" />
     <category term="linux" />
     <category term="web开发" />
-    <category term="Docker" />
+    <category term="docker" />
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/</id>
         <title>3BodySimulator：Python &amp; C++ 项目标准化构建</title>
