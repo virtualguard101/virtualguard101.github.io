@@ -43,7 +43,7 @@
 <meta property="og:description" content="对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-23T04:38:07.000Z">
-<meta property="article:modified_time" content="2025-06-24T14:32:19.194Z">
+<meta property="article:modified_time" content="2025-06-24T14:37:38.962Z">
 <meta property="article:author" content="virtualguard">
 <meta property="article:tag" content="web开发">
 <meta property="article:tag" content="docker">
@@ -492,7 +492,7 @@
 <p>同时，如果是使用vscode进行的远程连接，可以在通过在web服务集群的根目录下创建Nginx配置目录(<code>/etc/nginx</code>)和日志目录(<code>/var/log/nginx</code>)的<strong>软链接</strong>来提高开发效率</p>
 </blockquote>
 <p>事实上，新方案在配置内容上只需要修改几个参数，总体的配置可能比旧方案还更好理解，下面给出一个简单的例子：</p>
-<p>假设有一个待转发的服务运行于主机的5000端口上，那么有以下配置模板可供参考（注意需要插入到合理的位置，<code>nginx.conf</code>在安装Nginx时通常会自带一些配置；在这里，“合理的位置”指至少要在<code>http</code>模块中）：</p>
+<p>假设有一个待转发的服务运行于主机的5000端口上，那么有以下配置模板可供参考（注意需要插入到合理的位置，<code>nginx.conf</code>在安装Nginx时通常会自带一些配置；在这里，“合理的位置”至少指的是要在<code>http</code>模块中）：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	# listen [::]:80;</span><br><span class="line"></span><br><span class="line">	server_name  your_domain.here;</span><br><span class="line">	server_tokens off;</span><br><span class="line"></span><br><span class="line">	#配置http验证可访问</span><br><span class="line">	location /.well-known/acme-challenge/ &#123;</span><br><span class="line">		root /usr/share/certbot/www;</span><br><span class="line">	&#125;</span><br><span class="line">	#http跳转到https</span><br><span class="line">	location / &#123;</span><br><span class="line">		return 301 https://$host$request_uri;</span><br><span class="line">	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">#  server &#123;</span><br><span class="line"> #   listen 80;</span><br><span class="line">#   server_name  your_domain.here;</span><br><span class="line"></span><br><span class="line"> #   location / &#123;</span><br><span class="line"> #     proxy_pass http://127.0.0.1:5000;</span><br><span class="line"> #     proxy_set_header Host $host;</span><br><span class="line"> #     proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line"> #     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line"> #     proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line"> #   &#125;       </span><br><span class="line"> #   # 强制HTTPS重定向</span><br><span class="line"> #   # return 301 https://$host$request_uri;</span><br><span class="line"> # &#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">	listen 443 ssl http2;</span><br><span class="line">	server_name  your_domain.here;</span><br><span class="line"></span><br><span class="line">	ssl_certificate /etc/letsencrypt/live/your_domina.here/fullchain.pem;</span><br><span class="line">	ssl_certificate_key /etc/letsencrypt/live/your_domain.here/privkey.pem;</span><br><span class="line"></span><br><span class="line">	location / &#123;</span><br><span class="line">		proxy_pass http://127.0.0.1:5000;</span><br><span class="line">		proxy_set_header Host $host;</span><br><span class="line">		proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">		proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">	&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>配置上的原理也很简单，简单理解就是在用户访问运行于<code>80</code>/<code>443</code>的HTTP/HTTPS服务时，将运行于<code>5000</code>端口上的后端服务作一次转发。</p>
 <blockquote>
@@ -524,7 +524,7 @@
     <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="http://blog.virtualguard101.xyz/2025/06/23/web/">http://blog.virtualguard101.xyz/2025/06/23/web/</a></p>
     <p><strong><span class="icon-pencil icon"></span>本文标题：</strong>「个人站点构建要点(改良版) && Web 开发简要实践」</p>
     <p><strong><span class="icon-calendar icon"></span>本文发布时间：</strong>2025-06-23 12:38:07</p>
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-06-24 22:32:19</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-06-24 22:37:38</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -890,7 +890,7 @@
           description: "",
           stripContent: "近期在spaceship上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。 做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。  部署要点 &amp;amp; 杂项  部署改良  改良要",
           date: "Mon Jun 23 2025 12:38:07 GMT+0800",
-          updated: "Tue Jun 24 2025 22:32:19 GMT+0800",
+          updated: "Tue Jun 24 2025 22:37:38 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
@@ -1136,7 +1136,7 @@
               envId: '',
               region: '',
               urls: [
-                '/friend/index.html'
+                '/about/index.html'
               ],
               includeReply: false
             }).then((res) => {
