@@ -139,7 +139,7 @@
 &lt;p&gt;最主要的区别还是在&lt;code&gt;nginx.conf&lt;/code&gt;的配置上，因此我们接下来详细介绍。&lt;/p&gt;
 &lt;p&gt;由于这次的Nginx运行在全局环境下，自然也需要通过编辑全局的配置文件来驱动其执行转发服务。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;在Linux中，Nginx的全局配置&lt;code&gt;nginx.conf&lt;/code&gt;位于路径&lt;code&gt;/etc/nginx&lt;/code&gt;下，需要&lt;strong&gt;sudo提权&lt;/strong&gt;才可以保存配置，如果使用vscode的远程资源管理器连接的服务器，可能无法直接在窗口上直接使用vscode编辑&lt;code&gt;nginx.conf&lt;/code&gt;，比较方便且安全的解决方法有两个：一是直接在终端上提权使用vim对目标文件进行编辑 &lt;s&gt;那我还用vscode干什么&lt;/s&gt;；还有一个就是通过安装插件&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=yy0931.save-as-root&#34;&gt;Save as Root in Remote&lt;/a&gt;，通过插件提权保存。&lt;/p&gt;
+&lt;p&gt;在Linux中，Nginx的全局配置&lt;code&gt;nginx.conf&lt;/code&gt;位于路径&lt;code&gt;/etc/nginx&lt;/code&gt;下，需要&lt;strong&gt;sudo提权&lt;/strong&gt;才可以保存配置，如果使用vscode的远程资源管理器连接的服务器，可能无法直接在窗口上直接使用vscode编辑&lt;code&gt;nginx.conf&lt;/code&gt;，比较方便且安全的解决方法有两个：一是直接在终端上提权使用vim对目标文件进行编辑 &lt;s&gt;那我还用vscode干什么&lt;/s&gt;；还有一个就是安装插件&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=yy0931.save-as-root&#34;&gt;Save as Root in Remote&lt;/a&gt;，通过插件提权保存。&lt;/p&gt;
 &lt;p&gt;同时，如果是使用vscode进行的远程连接，可以在通过在web服务集群的根目录下创建Nginx配置目录(&lt;code&gt;/etc/nginx&lt;/code&gt;)和日志目录(&lt;code&gt;/var/log/nginx&lt;/code&gt;)的&lt;strong&gt;软链接&lt;/strong&gt;来提高开发效率&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;事实上，新方案在配置内容上只需要修改几个参数，总体的配置可能比旧方案还更好理解，下面给出一个简单的例子：&lt;/p&gt;

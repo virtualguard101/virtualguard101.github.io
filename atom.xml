@@ -133,7 +133,7 @@
 &lt;p&gt;最主要的区别还是在&lt;code&gt;nginx.conf&lt;/code&gt;的配置上，因此我们接下来详细介绍。&lt;/p&gt;
 &lt;p&gt;由于这次的Nginx运行在全局环境下，自然也需要通过编辑全局的配置文件来驱动其执行转发服务。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;在Linux中，Nginx的全局配置&lt;code&gt;nginx.conf&lt;/code&gt;位于路径&lt;code&gt;/etc/nginx&lt;/code&gt;下，需要&lt;strong&gt;sudo提权&lt;/strong&gt;才可以保存配置，如果使用vscode的远程资源管理器连接的服务器，可能无法直接在窗口上直接使用vscode编辑&lt;code&gt;nginx.conf&lt;/code&gt;，比较方便且安全的解决方法有两个：一是直接在终端上提权使用vim对目标文件进行编辑 &lt;s&gt;那我还用vscode干什么&lt;/s&gt;；还有一个就是通过安装插件&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=yy0931.save-as-root&#34;&gt;Save as Root in Remote&lt;/a&gt;，通过插件提权保存。&lt;/p&gt;
+&lt;p&gt;在Linux中，Nginx的全局配置&lt;code&gt;nginx.conf&lt;/code&gt;位于路径&lt;code&gt;/etc/nginx&lt;/code&gt;下，需要&lt;strong&gt;sudo提权&lt;/strong&gt;才可以保存配置，如果使用vscode的远程资源管理器连接的服务器，可能无法直接在窗口上直接使用vscode编辑&lt;code&gt;nginx.conf&lt;/code&gt;，比较方便且安全的解决方法有两个：一是直接在终端上提权使用vim对目标文件进行编辑 &lt;s&gt;那我还用vscode干什么&lt;/s&gt;；还有一个就是安装插件&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=yy0931.save-as-root&#34;&gt;Save as Root in Remote&lt;/a&gt;，通过插件提权保存。&lt;/p&gt;
 &lt;p&gt;同时，如果是使用vscode进行的远程连接，可以在通过在web服务集群的根目录下创建Nginx配置目录(&lt;code&gt;/etc/nginx&lt;/code&gt;)和日志目录(&lt;code&gt;/var/log/nginx&lt;/code&gt;)的&lt;strong&gt;软链接&lt;/strong&gt;来提高开发效率&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;事实上，新方案在配置内容上只需要修改几个参数，总体的配置可能比旧方案还更好理解，下面给出一个简单的例子：&lt;/p&gt;
@@ -354,6 +354,7 @@
 &lt;h3 id=&#34;实践方面&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#实践方面&#34;&gt;&lt;/a&gt; 实践方面&lt;/h3&gt;
 &lt;h4 id=&#34;闭门造车&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#闭门造车&#34;&gt;&lt;/a&gt; “闭门造车”&lt;/h4&gt;
 &lt;p&gt;主要问题是在开发实践中脱离实际，过度“独立”，团队协作意识薄弱，团队协作开发技能（如Git分支相关操作、代码审计等）能力低下&lt;/p&gt;
+&lt;p&gt;一部分的原因大概就是因为我在转专业前不是计算机专业的学生，离我最近的那些人都没有技术意识吧。总而言之就是缺少那种氛围，周围几乎没有人能和我协同学习或搞开发。&lt;/p&gt;
 &lt;h4 id=&#34;未能清晰划分学与玩的界限&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#未能清晰划分学与玩的界限&#34;&gt;&lt;/a&gt; 未能清晰划分“学”与“玩”的界限&lt;/h4&gt;
 &lt;p&gt;这个虽然是前面分析&lt;a href=&#34;#%E4%B8%80%E7%B3%BB%E5%88%97%E5%B7%A6%E5%80%BE%E9%94%99%E8%AF%AF%E5%AF%BC%E8%87%B4%E7%9A%84%E8%BF%9E%E9%94%81%E5%8F%8D%E5%BA%94&#34;&gt;一系列“左倾”错误&lt;/a&gt;时那副关系图中提到的一个节点问题，但我认为有必要就学习规划的角度将其拿出来讲一讲。&lt;/p&gt;
 &lt;p&gt;“玩”与“学”的关系其实是很微妙的：在技术领域（其他领域我不知道），二者可以相得益彰，但也可以“相克相制”，取决于规划的方式与规划者的自制力。倘若&lt;strong&gt;玩的东西的实际意义不大&lt;/strong&gt;或是&lt;strong&gt;与“学”的关联性较低&lt;/strong&gt;，那么这种“玩”就与学无益——最多提供些情绪价值。&lt;/p&gt;
@@ -374,7 +375,7 @@
 &lt;h2 id=&#34;新的开始&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#新的开始&#34;&gt;&lt;/a&gt; 新的开始&lt;/h2&gt;
 &lt;p&gt;新的学年，不出意外的话，我就是网安专业的学生了。&lt;s&gt;芜湖～水课水课逃逃逃！😋&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;在大二，计算机的基础学习与竞赛或许会成为我的主旋律。在《葬送的芙莉莲》中，魔法使&lt;a href=&#34;https://zh.moegirl.org.cn/%E5%85%B0%E6%89%98&#34;&gt;兰托&lt;/a&gt;在一级魔法使选拔考试上曾对自己的对手说过这样一句话：&lt;strong&gt;大部分自学成才的人基础都不够扎实&lt;/strong&gt;——希望能够成为剩下的那小部分人。&lt;/p&gt;
-&lt;p&gt;对于基础学习，重点放在&lt;strong&gt;操作系统&lt;/strong&gt;与&lt;strong&gt;计算机网络&lt;/strong&gt;上，最好能手搓一个内核和TCP/IP协议栈。我总有一种感觉，就是我目前的实际开发能力极其低下的一个能重要的原因就是对操作系统的原理几乎完全不了解。&lt;/p&gt;
+&lt;p&gt;对于基础学习，重点放在&lt;strong&gt;操作系统&lt;/strong&gt;与&lt;strong&gt;计算机网络&lt;/strong&gt;及二者的延伸内容（如分布式系统、并发等）上，最好能手搓一个内核和TCP/IP协议栈。我总有一种感觉，就是我目前的实际开发能力极其低下的一个很重要的原因就是对操作系统的原理几乎完全不了解。&lt;/p&gt;
 &lt;p&gt;最好能把“程序员的三大浪漫”（操作系统、编译原理、计算机图形学）也过一遍。&lt;/p&gt;
 &lt;p&gt;另外，在新的学年快要结束之际——明年的这个时候，需要根据基础学习的进度与状态决定&lt;a href=&#34;#%E4%B8%80%E4%B8%AA%E5%9C%A8%E6%98%8E%E7%A1%AE%E8%87%AA%E5%B7%B1%E5%8A%AA%E5%8A%9B%E6%96%B9%E5%90%91%E6%97%B6%E7%9A%84%E5%8F%91%E7%8E%B0&#34;&gt;是否需要备战考研&lt;/a&gt;，但要尽量避开这个方向——我是真的不太擅长考试且极度厌恶死记硬背。&lt;/p&gt;
 &lt;p&gt;当然，工程/业务能力也要尽可能不落下，特别是这学期分外重视的&lt;strong&gt;项目标准化&lt;/strong&gt;——当然，我这里想表达的东西或许还有一个更专业的术语——&lt;strong&gt;软件工程&lt;/strong&gt;。&lt;/p&gt;
