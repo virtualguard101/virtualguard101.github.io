@@ -1,4 +1,4 @@
-const VERSION = "1750832873631";const preCache = ["/images/taichi.png","https://c.wallhere.com/photos/7d/f6/Sousou_No_Frieren_Frieren_manga-2291136.jpg!d","/css/loader.css","/css/style.css","/js/script.js"];const cacheDomain = [
+const VERSION = "1750835631419";const preCache = ["/images/taichi.png","https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg","/css/loader.css","/css/style.css","/js/script.js"];const cacheDomain = [
   "fonts.googleapis.com",
   "npm.webcache.cn",
   "unpkg.com",
