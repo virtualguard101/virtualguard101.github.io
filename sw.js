@@ -1,4 +1,4 @@
-const VERSION = "1750828523094";const preCache = ["/images/taichi.png","/images/banner.webp","/css/loader.css","/css/style.css","/js/script.js"];const cacheDomain = [
+const VERSION = "1750832351841";const preCache = ["/images/taichi.png","https://c.wallhere.com/photos/7d/f6/Sousou_No_Frieren_Frieren_manga-2291136.jpg!d","/css/loader.css","/css/style.css","/js/script.js"];const cacheDomain = [
   "fonts.googleapis.com",
   "npm.webcache.cn",
   "unpkg.com",
