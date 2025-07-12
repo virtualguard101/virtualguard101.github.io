@@ -4,20 +4,18 @@
     <title>virtualguard&#39;s Blog • Posts by &#34;web开发&#34; tag</title>
     <link href="http://blog.virtualguard101.xyz" />
     <updated>2025-06-23T04:38:07.000Z</updated>
-    <category term="linux" />
     <category term="学年总结" />
-    <category term="c++" />
-    <category term="python" />
-    <category term="vcpkg" />
-    <category term="项目构建" />
+    <category term="linux" />
     <category term="web开发" />
     <category term="docker" />
     <entry>
         <id>http://blog.virtualguard101.xyz/2025/06/23/web/</id>
         <title>个人站点构建要点(改良版) &amp;&amp; Web 开发简要实践</title>
         <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/06/23/web/"/>
-        <content type="html">&lt;p&gt;近期在&lt;a href=&#34;https://www.spaceship.com/zh/&#34;&gt;spaceship&lt;/a&gt;上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。&lt;/p&gt;
+        <content type="html">&lt;p&gt;&lt;strong&gt;对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;近期在&lt;a href=&#34;https://www.spaceship.com/zh/&#34;&gt;spaceship&lt;/a&gt;上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。&lt;/p&gt;
 &lt;p&gt;做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。&lt;/p&gt;
+&lt;!-- more --&gt;
 &lt;h2 id=&#34;部署要点-杂项&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署要点-杂项&#34;&gt;&lt;/a&gt; 部署要点 &amp;amp; 杂项&lt;/h2&gt;
 &lt;h3 id=&#34;部署改良&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署改良&#34;&gt;&lt;/a&gt; 部署改良&lt;/h3&gt;
 &lt;h4 id=&#34;改良要点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#改良要点&#34;&gt;&lt;/a&gt; 改良要点&lt;/h4&gt;
@@ -127,7 +125,7 @@
 &lt;p&gt;在改良理论方案中我们提到，要为每个微服务独立配置一个&lt;code&gt;docker-compose.yml&lt;/code&gt;以实现不同服务之间的相互独立与互不干扰——这是与旧方案最为本质的区别；但在目录创建与管理上，我们现在所介绍的新方案则与旧方案没有太大的区别。下面是一个针对新方案的web服务目录结构案例（其中包含了两个后端服务）：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;~/webservices&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── service1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── config&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   │   └── config.json&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── docker-compose.yml&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── fonts&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   └── icons&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── nginx -&amp;gt; /etc/nginx&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── scripts&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── servicesManager.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   └── sslrenew.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;└── service2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ├── docker-compose.yml&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    └── data&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        └── .....&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;对于我们需要部署的后端服务而言，每个微服务的配置仍然分属于各个目录中。与旧方案唯一的不同地方就是各个服务的目录下都多了一个属于它们自己的&lt;code&gt;docker-compose.yml&lt;/code&gt;，相当于把旧方案中存在与web服务集群根目录的&lt;code&gt;docker-compose.yml&lt;/code&gt;配置肢解到各个服务独立的目录中。&lt;/p&gt;
-&lt;p&gt;这里你可能会发现nginx的目录是一个&lt;strong&gt;软链接&lt;/strong&gt;，关于这个我们接下来在&lt;a href=&#34;#nginx%E7%9A%84%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE&#34;&gt;Nginx的配置&lt;/a&gt;中介绍。&lt;/p&gt;
+&lt;p&gt;这里你可能会发现nginx的目录是一个&lt;strong&gt;软链接&lt;/strong&gt;，关于这个我们接下来在&lt;a href=&#34;#Nginx%E7%9A%84%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE&#34;&gt;Nginx的配置&lt;/a&gt;中介绍。&lt;/p&gt;
 &lt;h5 id=&#34;nginx的全局配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#nginx的全局配置&#34;&gt;&lt;/a&gt; Nginx的全局配置&lt;/h5&gt;
 &lt;p&gt;对于各个服务&lt;code&gt;docker-compose.yml&lt;/code&gt;的配置这里基本没有新的东西可以介绍，其中一个比较明显的区别就是网路环境变成全局的了，所以不用在额外配置&lt;code&gt;networks&lt;/code&gt;参数。&lt;/p&gt;
 &lt;p&gt;最主要的区别还是在&lt;code&gt;nginx.conf&lt;/code&gt;的配置上，因此我们接下来详细介绍。&lt;/p&gt;
@@ -168,9 +166,10 @@
         <id>http://blog.virtualguard101.xyz/2025/04/26/web-build/</id>
         <title>docker-compose + nginx快速构建个人站点</title>
         <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/04/26/web-build/"/>
-        <content type="html">&lt;h2 id=&#34;导言&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#导言&#34;&gt;&lt;/a&gt; 导言&lt;/h2&gt;
-&lt;p&gt;起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了&lt;a href=&#34;https://github.com/kasuie/remio-home&#34;&gt;remio-home | kasuie&lt;/a&gt;，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行&lt;code&gt;docker-compose up -d&lt;/code&gt;即可。结合大佬的一些建议和我自己的一些&lt;s&gt;偷懒&lt;/s&gt;自动化的想法，便有了下文。&lt;/p&gt;
+        <content type="html">&lt;p&gt;&lt;strong&gt;本文主要讲解如何从零开始利用docker-compose + nginx快速构建一个个人站点；并利用Github Action实现文章部署自动化；最后是如何使用certbot为站点自动化申请ssl证书。整套配置流程做下来用时基本上不会超过3天&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了&lt;a href=&#34;https://github.com/kasuie/remio-home&#34;&gt;remio-home | kasuie&lt;/a&gt;，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行&lt;code&gt;docker-compose up -d&lt;/code&gt;即可。结合大佬的一些建议和我自己的一些 &lt;s&gt;偷懒&lt;/s&gt; 自动化的想法，便有了下文。&lt;/p&gt;
 &lt;p&gt;如题，本文主要讲解如何从零开始在一台云服务器上利用docker-compose + nginx快速构建一个个人站点。得益于强大的现代化工具链以及开源社区的支持，我们完成这个简易项目所需的计算机理论基础并不多，甚至可以说是几乎为零，只需要知道文档应该怎么读，如何正确打开开发中的“cv大法”来为自己的自动化工具链编写配置文件。当然，最好有一点web开发的基础，这样在遇到意料之外的问题时不至于束手无策。&lt;/p&gt;
+&lt;!-- more --&gt;
 &lt;p&gt;通过该项目你会了解到以下内容：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;1. 远程服务器的基础使用&lt;/strong&gt;&lt;/li&gt;

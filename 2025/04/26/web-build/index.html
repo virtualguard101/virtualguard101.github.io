@@ -43,7 +43,7 @@
 <meta property="og:description" content="本文主要讲解如何从零开始利用docker-compose + nginx快速构建一个个人站点；并利用Github Action实现文章部署自动化；最后是如何使用certbot为站点自动化申请ssl证书。整套配置流程做下来用时基本上不会超过3天。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-26T15:28:57.000Z">
-<meta property="article:modified_time" content="2025-06-24T11:26:41.038Z">
+<meta property="article:modified_time" content="2025-07-12T12:32:37.241Z">
 <meta property="article:author" content="virtualguard">
 <meta property="article:tag" content="web开发">
 <meta property="article:tag" content="docker">
@@ -237,7 +237,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text"> 导言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text"> 准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83"><span class="toc-number">2.1.</span> <span class="toc-text"> 部署环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A1%B5%E6%B5%8B%E8%AF%95%E9%83%A8%E7%BD%B2"><span class="toc-number">2.2.</span> <span class="toc-text"> 主页测试部署</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E7%BD%91%E9%A1%B5%E8%B5%84%E6%BA%90%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text"> 静态网页资源测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="toc-number">3.1.</span> <span class="toc-text"> hexo基础使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="toc-number">4.</span> <span class="toc-text"> 部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#github-page-%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="toc-number">4.1.</span> <span class="toc-text"> Github Page + 用户自定义域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose-nginx"><span class="toc-number">4.2.</span> <span class="toc-text"> docker-compose + nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.1.</span> <span class="toc-text"> docker配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.2.</span> <span class="toc-text"> nginx配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-action%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="toc-number">5.</span> <span class="toc-text"> Github Action自动化部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssl%E8%AE%A4%E8%AF%81%E4%B8%8Ehttps%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%8F%AF%E9%80%89"><span class="toc-number">6.</span> <span class="toc-text"> ssl认证与https模块配置（可选）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E6%AC%A1%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6"><span class="toc-number">6.1.</span> <span class="toc-text"> 首次申请ssl证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BB%AD%E7%AD%BE"><span class="toc-number">6.2.</span> <span class="toc-text"> ssl证书自动化续签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E6%B7%BB%E6%9C%8D%E5%8A%A1"><span class="toc-number">7.</span> <span class="toc-text"> 增添服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%8C%96%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B"><span class="toc-number">7.1.</span> <span class="toc-text"> 标准化部署流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80-%E5%B7%A5%E5%85%B7%E9%93%BE%E9%80%89%E5%8F%96%E5%8F%8A%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E5%B7%A5%E4%BD%9C"><span class="toc-number">7.1.1.</span> <span class="toc-text"> 一、工具链选取及基础配置工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-docker-composeyml%E9%85%8D%E7%BD%AE"><span class="toc-number">7.1.2.</span> <span class="toc-text"> 二、docker-compose.yml配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89-nginx-https%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE"><span class="toc-number">7.1.3.</span> <span class="toc-text"> 三、nginx-https模块配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text"> 常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E9%94%99%E8%AF%AF-%E6%9C%8D%E5%8A%A1%E8%AE%BF%E9%97%AE%E9%94%99%E8%AF%AF"><span class="toc-number">8.1.</span> <span class="toc-text"> nginx错误、服务访问错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6%E7%94%B3%E8%AF%B7certbot%E9%94%99%E8%AF%AF"><span class="toc-number">8.2.</span> <span class="toc-text"> ssl证书申请（certbot）错误</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text"> 准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83"><span class="toc-number">1.1.</span> <span class="toc-text"> 部署环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A1%B5%E6%B5%8B%E8%AF%95%E9%83%A8%E7%BD%B2"><span class="toc-number">1.2.</span> <span class="toc-text"> 主页测试部署</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E7%BD%91%E9%A1%B5%E8%B5%84%E6%BA%90%E6%B5%8B%E8%AF%95"><span class="toc-number">2.</span> <span class="toc-text"> 静态网页资源测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text"> hexo基础使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="toc-number">3.</span> <span class="toc-text"> 部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#github-page-%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="toc-number">3.1.</span> <span class="toc-text"> Github Page + 用户自定义域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose-nginx"><span class="toc-number">3.2.</span> <span class="toc-text"> docker-compose + nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.1.</span> <span class="toc-text"> docker配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.2.</span> <span class="toc-text"> nginx配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-action%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="toc-number">4.</span> <span class="toc-text"> Github Action自动化部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssl%E8%AE%A4%E8%AF%81%E4%B8%8Ehttps%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%8F%AF%E9%80%89"><span class="toc-number">5.</span> <span class="toc-text"> ssl认证与https模块配置（可选）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E6%AC%A1%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6"><span class="toc-number">5.1.</span> <span class="toc-text"> 首次申请ssl证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BB%AD%E7%AD%BE"><span class="toc-number">5.2.</span> <span class="toc-text"> ssl证书自动化续签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E6%B7%BB%E6%9C%8D%E5%8A%A1"><span class="toc-number">6.</span> <span class="toc-text"> 增添服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%8C%96%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B"><span class="toc-number">6.1.</span> <span class="toc-text"> 标准化部署流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80-%E5%B7%A5%E5%85%B7%E9%93%BE%E9%80%89%E5%8F%96%E5%8F%8A%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E5%B7%A5%E4%BD%9C"><span class="toc-number">6.1.1.</span> <span class="toc-text"> 一、工具链选取及基础配置工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-docker-composeyml%E9%85%8D%E7%BD%AE"><span class="toc-number">6.1.2.</span> <span class="toc-text"> 二、docker-compose.yml配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89-nginx-https%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE"><span class="toc-number">6.1.3.</span> <span class="toc-text"> 三、nginx-https模块配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text"> 常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E9%94%99%E8%AF%AF-%E6%9C%8D%E5%8A%A1%E8%AE%BF%E9%97%AE%E9%94%99%E8%AF%AF"><span class="toc-number">7.1.</span> <span class="toc-text"> nginx错误、服务访问错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6%E7%94%B3%E8%AF%B7certbot%E9%94%99%E8%AF%AF"><span class="toc-number">7.2.</span> <span class="toc-text"> ssl证书申请（certbot）错误</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -250,7 +250,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">6</div>
+    <div class="sidebar-state-number">5</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -258,7 +258,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">8</div>
+    <div class="sidebar-state-number">4</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -269,6 +269,14 @@
   
     <div class="icon-github sidebar-social-icon">
       <a href=https://github.com/virtualguard101 itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-telegram sidebar-social-icon">
+      <a href=https://t.me/virtualguard101 itemprop="url" target="_blank" aria-label="telegram" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-steam sidebar-social-icon">
+      <a href=https://steamcommunity.com/id/virtualguard101 itemprop="url" target="_blank" aria-label="steam" rel="noopener external nofollow noreferrer"></a>
     </div>
   
 </div>
@@ -343,7 +351,7 @@
       <div class="article-date">
   <span class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-04-26T15:28:57.000Z" itemprop="datePublished">2025-04-26</time>
-    <time style="display: none;" id="post-update-time">2025-06-24</time>
+    <time style="display: none;" id="post-update-time">2025-07-12</time>
   </span>
 </div>
 
@@ -362,9 +370,10 @@
         <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
       
       
-        <h2 id="导言"><a class="markdownIt-Anchor" href="#导言"></a> 导言</h2>
-<p>起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了<a target="_blank" rel="noopener" href="https://github.com/kasuie/remio-home">remio-home | kasuie</a>，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行<code>docker-compose up -d</code>即可。结合大佬的一些建议和我自己的一些<s>偷懒</s>自动化的想法，便有了下文。</p>
+        <p><strong>本文主要讲解如何从零开始利用docker-compose + nginx快速构建一个个人站点；并利用Github Action实现文章部署自动化；最后是如何使用certbot为站点自动化申请ssl证书。整套配置流程做下来用时基本上不会超过3天</strong></p>
+<p>起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了<a target="_blank" rel="noopener" href="https://github.com/kasuie/remio-home">remio-home | kasuie</a>，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行<code>docker-compose up -d</code>即可。结合大佬的一些建议和我自己的一些 <s>偷懒</s> 自动化的想法，便有了下文。</p>
 <p>如题，本文主要讲解如何从零开始在一台云服务器上利用docker-compose + nginx快速构建一个个人站点。得益于强大的现代化工具链以及开源社区的支持，我们完成这个简易项目所需的计算机理论基础并不多，甚至可以说是几乎为零，只需要知道文档应该怎么读，如何正确打开开发中的“cv大法”来为自己的自动化工具链编写配置文件。当然，最好有一点web开发的基础，这样在遇到意料之外的问题时不至于束手无策。</p>
+<!-- more -->
 <p>通过该项目你会了解到以下内容：</p>
 <ul>
 <li><strong>1. 远程服务器的基础使用</strong></li>
@@ -566,7 +575,7 @@ ssh私钥需在服务器上生成。</p>
     <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="http://blog.virtualguard101.xyz/2025/04/26/web-build/">http://blog.virtualguard101.xyz/2025/04/26/web-build/</a></p>
     <p><strong><span class="icon-pencil icon"></span>本文标题：</strong>「docker-compose + nginx快速构建个人站点」</p>
     <p><strong><span class="icon-calendar icon"></span>本文发布时间：</strong>2025-04-26 23:28:57</p>
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-06-24 19:26:41</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-07-12 20:32:37</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -626,7 +635,7 @@ ssh私钥需在服务器上生成。</p>
         
           
           
-            <img data-src="https://i.imgur.com/w4XI6Zx.jpeg" data-sizes="auto" alt="Arch Linux安装要点记录" class="lazyload">
+            <img data-src="https://blog.sakugabooru.com/wp-content/uploads/2023/11/frieren-prod-5-9.jpg" data-sizes="auto" alt="Arch Linux安装要点记录" class="lazyload">
           
         
         <a href="/2025/05/19/arch-linux/"></a>
@@ -718,10 +727,10 @@ ssh私钥需在服务器上生成。</p>
     
       <div>
         <span class="icon-brush"></span>
-        19.5k
+        17.2k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:10
+        01:02
       </div>
     
     
@@ -754,7 +763,7 @@ ssh私钥需在服务器上生成。</p>
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text"> 导言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text"> 准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83"><span class="toc-number">2.1.</span> <span class="toc-text"> 部署环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A1%B5%E6%B5%8B%E8%AF%95%E9%83%A8%E7%BD%B2"><span class="toc-number">2.2.</span> <span class="toc-text"> 主页测试部署</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E7%BD%91%E9%A1%B5%E8%B5%84%E6%BA%90%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text"> 静态网页资源测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="toc-number">3.1.</span> <span class="toc-text"> hexo基础使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="toc-number">4.</span> <span class="toc-text"> 部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#github-page-%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="toc-number">4.1.</span> <span class="toc-text"> Github Page + 用户自定义域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose-nginx"><span class="toc-number">4.2.</span> <span class="toc-text"> docker-compose + nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.1.</span> <span class="toc-text"> docker配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.2.</span> <span class="toc-text"> nginx配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-action%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="toc-number">5.</span> <span class="toc-text"> Github Action自动化部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssl%E8%AE%A4%E8%AF%81%E4%B8%8Ehttps%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%8F%AF%E9%80%89"><span class="toc-number">6.</span> <span class="toc-text"> ssl认证与https模块配置（可选）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E6%AC%A1%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6"><span class="toc-number">6.1.</span> <span class="toc-text"> 首次申请ssl证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BB%AD%E7%AD%BE"><span class="toc-number">6.2.</span> <span class="toc-text"> ssl证书自动化续签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E6%B7%BB%E6%9C%8D%E5%8A%A1"><span class="toc-number">7.</span> <span class="toc-text"> 增添服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%8C%96%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B"><span class="toc-number">7.1.</span> <span class="toc-text"> 标准化部署流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80-%E5%B7%A5%E5%85%B7%E9%93%BE%E9%80%89%E5%8F%96%E5%8F%8A%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E5%B7%A5%E4%BD%9C"><span class="toc-number">7.1.1.</span> <span class="toc-text"> 一、工具链选取及基础配置工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-docker-composeyml%E9%85%8D%E7%BD%AE"><span class="toc-number">7.1.2.</span> <span class="toc-text"> 二、docker-compose.yml配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89-nginx-https%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE"><span class="toc-number">7.1.3.</span> <span class="toc-text"> 三、nginx-https模块配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text"> 常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E9%94%99%E8%AF%AF-%E6%9C%8D%E5%8A%A1%E8%AE%BF%E9%97%AE%E9%94%99%E8%AF%AF"><span class="toc-number">8.1.</span> <span class="toc-text"> nginx错误、服务访问错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6%E7%94%B3%E8%AF%B7certbot%E9%94%99%E8%AF%AF"><span class="toc-number">8.2.</span> <span class="toc-text"> ssl证书申请（certbot）错误</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text"> 准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83"><span class="toc-number">1.1.</span> <span class="toc-text"> 部署环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A1%B5%E6%B5%8B%E8%AF%95%E9%83%A8%E7%BD%B2"><span class="toc-number">1.2.</span> <span class="toc-text"> 主页测试部署</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E7%BD%91%E9%A1%B5%E8%B5%84%E6%BA%90%E6%B5%8B%E8%AF%95"><span class="toc-number">2.</span> <span class="toc-text"> 静态网页资源测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text"> hexo基础使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="toc-number">3.</span> <span class="toc-text"> 部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#github-page-%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="toc-number">3.1.</span> <span class="toc-text"> Github Page + 用户自定义域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose-nginx"><span class="toc-number">3.2.</span> <span class="toc-text"> docker-compose + nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.1.</span> <span class="toc-text"> docker配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.2.</span> <span class="toc-text"> nginx配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-action%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="toc-number">4.</span> <span class="toc-text"> Github Action自动化部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssl%E8%AE%A4%E8%AF%81%E4%B8%8Ehttps%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%8F%AF%E9%80%89"><span class="toc-number">5.</span> <span class="toc-text"> ssl认证与https模块配置（可选）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E6%AC%A1%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6"><span class="toc-number">5.1.</span> <span class="toc-text"> 首次申请ssl证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BB%AD%E7%AD%BE"><span class="toc-number">5.2.</span> <span class="toc-text"> ssl证书自动化续签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E6%B7%BB%E6%9C%8D%E5%8A%A1"><span class="toc-number">6.</span> <span class="toc-text"> 增添服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%8C%96%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B"><span class="toc-number">6.1.</span> <span class="toc-text"> 标准化部署流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80-%E5%B7%A5%E5%85%B7%E9%93%BE%E9%80%89%E5%8F%96%E5%8F%8A%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E5%B7%A5%E4%BD%9C"><span class="toc-number">6.1.1.</span> <span class="toc-text"> 一、工具链选取及基础配置工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-docker-composeyml%E9%85%8D%E7%BD%AE"><span class="toc-number">6.1.2.</span> <span class="toc-text"> 二、docker-compose.yml配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89-nginx-https%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE"><span class="toc-number">6.1.3.</span> <span class="toc-text"> 三、nginx-https模块配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text"> 常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E9%94%99%E8%AF%AF-%E6%9C%8D%E5%8A%A1%E8%AE%BF%E9%97%AE%E9%94%99%E8%AF%AF"><span class="toc-number">7.1.</span> <span class="toc-text"> nginx错误、服务访问错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssl%E8%AF%81%E4%B9%A6%E7%94%B3%E8%AF%B7certbot%E9%94%99%E8%AF%AF"><span class="toc-number">7.2.</span> <span class="toc-text"> ssl证书申请（certbot）错误</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -767,7 +776,7 @@ ssh私钥需在服务器上生成。</p>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">6</div>
+    <div class="sidebar-state-number">5</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -775,7 +784,7 @@ ssh私钥需在服务器上生成。</p>
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">8</div>
+    <div class="sidebar-state-number">4</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -786,6 +795,14 @@ ssh私钥需在服务器上生成。</p>
   
     <div class="icon-github sidebar-social-icon">
       <a href=https://github.com/virtualguard101 itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-telegram sidebar-social-icon">
+      <a href=https://t.me/virtualguard101 itemprop="url" target="_blank" aria-label="telegram" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-steam sidebar-social-icon">
+      <a href=https://steamcommunity.com/id/virtualguard101 itemprop="url" target="_blank" aria-label="steam" rel="noopener external nofollow noreferrer"></a>
     </div>
   
 </div>
@@ -947,9 +964,9 @@ ssh私钥需在服务器上生成。</p>
           url: "http://blog.virtualguard101.xyz/2025/04/26/web-build/",
           excerpt: "本文主要讲解如何从零开始利用docker-compose + nginx快速构建一个个人站点；并利用Github Action实现文章部署自动化；最后是如何使用certbot为站点自动化申请ssl证书。整套配置流程做下来用时基本上不会超过3天。",
           description: "",
-          stripContent: " 导言 起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了remio-home | kasuie，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行docker-compose up -d即可。结合大佬的一些建议和我自己的一些偷懒自动化的想法，便有了下文。 如题，本文主要讲解如何从零开始在一台云服务器上利用docker-compose + nginx快速构建一个个人站点。得益于强大的现代化工具链以及开源社区的支持，我们完成这个简易",
+          stripContent: "本文主要讲解如何从零开始利用docker-compose + nginx快速构建一个个人站点；并利用Github Action实现文章部署自动化；最后是如何使用certbot为站点自动化申请ssl证书。整套配置流程做下来用时基本上不会超过3天 起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了remio-home | kasuie，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行docker-compose up -d即可。结合",
           date: "Sat Apr 26 2025 23:28:57 GMT+0800",
-          updated: "Tue Jun 24 2025 19:26:41 GMT+0800",
+          updated: "Sat Jul 12 2025 20:32:37 GMT+0800",
           cover: "https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg",
         };
       </script>

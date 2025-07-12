@@ -43,7 +43,7 @@
 <meta property="og:description" content="对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-23T04:38:07.000Z">
-<meta property="article:modified_time" content="2025-06-25T06:18:46.662Z">
+<meta property="article:modified_time" content="2025-07-12T12:32:37.241Z">
 <meta property="article:author" content="virtualguard">
 <meta property="article:tag" content="web开发">
 <meta property="article:tag" content="docker">
@@ -250,7 +250,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">6</div>
+    <div class="sidebar-state-number">5</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -258,7 +258,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">8</div>
+    <div class="sidebar-state-number">4</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -269,6 +269,14 @@
   
     <div class="icon-github sidebar-social-icon">
       <a href=https://github.com/virtualguard101 itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-telegram sidebar-social-icon">
+      <a href=https://t.me/virtualguard101 itemprop="url" target="_blank" aria-label="telegram" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-steam sidebar-social-icon">
+      <a href=https://steamcommunity.com/id/virtualguard101 itemprop="url" target="_blank" aria-label="steam" rel="noopener external nofollow noreferrer"></a>
     </div>
   
 </div>
@@ -343,7 +351,7 @@
       <div class="article-date">
   <span class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-06-23T04:38:07.000Z" itemprop="datePublished">2025-06-23</time>
-    <time style="display: none;" id="post-update-time">2025-06-25</time>
+    <time style="display: none;" id="post-update-time">2025-07-12</time>
   </span>
 </div>
 
@@ -362,8 +370,10 @@
         <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
       
       
-        <p>近期在<a target="_blank" rel="noopener" href="https://www.spaceship.com/zh/">spaceship</a>上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。</p>
+        <p><strong>对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新</strong></p>
+<p>近期在<a target="_blank" rel="noopener" href="https://www.spaceship.com/zh/">spaceship</a>上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。</p>
 <p>做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。</p>
+<!-- more -->
 <h2 id="部署要点-杂项"><a class="markdownIt-Anchor" href="#部署要点-杂项"></a> 部署要点 &amp; 杂项</h2>
 <h3 id="部署改良"><a class="markdownIt-Anchor" href="#部署改良"></a> 部署改良</h3>
 <h4 id="改良要点"><a class="markdownIt-Anchor" href="#改良要点"></a> 改良要点</h4>
@@ -473,7 +483,7 @@
 <p>在改良理论方案中我们提到，要为每个微服务独立配置一个<code>docker-compose.yml</code>以实现不同服务之间的相互独立与互不干扰——这是与旧方案最为本质的区别；但在目录创建与管理上，我们现在所介绍的新方案则与旧方案没有太大的区别。下面是一个针对新方案的web服务目录结构案例（其中包含了两个后端服务）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">~/webservices</span><br><span class="line">├── service1</span><br><span class="line">│   ├── config</span><br><span class="line">│   │   └── config.json</span><br><span class="line">│   ├── docker-compose.yml</span><br><span class="line">│   ├── fonts</span><br><span class="line">│   └── icons</span><br><span class="line">├── nginx -&gt; /etc/nginx</span><br><span class="line">├── scripts</span><br><span class="line">│   ├── servicesManager.sh</span><br><span class="line">│   └── sslrenew.sh</span><br><span class="line">└── service2</span><br><span class="line">    ├── docker-compose.yml</span><br><span class="line">    └── data</span><br><span class="line">        └── .....</span><br></pre></td></tr></table></figure>
 <p>对于我们需要部署的后端服务而言，每个微服务的配置仍然分属于各个目录中。与旧方案唯一的不同地方就是各个服务的目录下都多了一个属于它们自己的<code>docker-compose.yml</code>，相当于把旧方案中存在与web服务集群根目录的<code>docker-compose.yml</code>配置肢解到各个服务独立的目录中。</p>
-<p>这里你可能会发现nginx的目录是一个<strong>软链接</strong>，关于这个我们接下来在<a href="#nginx%E7%9A%84%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE">Nginx的配置</a>中介绍。</p>
+<p>这里你可能会发现nginx的目录是一个<strong>软链接</strong>，关于这个我们接下来在<a href="#Nginx%E7%9A%84%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE">Nginx的配置</a>中介绍。</p>
 <h5 id="nginx的全局配置"><a class="markdownIt-Anchor" href="#nginx的全局配置"></a> Nginx的全局配置</h5>
 <p>对于各个服务<code>docker-compose.yml</code>的配置这里基本没有新的东西可以介绍，其中一个比较明显的区别就是网路环境变成全局的了，所以不用在额外配置<code>networks</code>参数。</p>
 <p>最主要的区别还是在<code>nginx.conf</code>的配置上，因此我们接下来详细介绍。</p>
@@ -515,7 +525,7 @@
     <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="http://blog.virtualguard101.xyz/2025/06/23/web/">http://blog.virtualguard101.xyz/2025/06/23/web/</a></p>
     <p><strong><span class="icon-pencil icon"></span>本文标题：</strong>「个人站点构建要点(改良版) && Web 开发简要实践」</p>
     <p><strong><span class="icon-calendar icon"></span>本文发布时间：</strong>2025-06-23 12:38:07</p>
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-06-25 14:18:46</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-07-12 20:32:37</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -650,10 +660,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        19.5k
+        17.2k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:10
+        01:02
       </div>
     
     
@@ -699,7 +709,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">6</div>
+    <div class="sidebar-state-number">5</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -707,7 +717,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">8</div>
+    <div class="sidebar-state-number">4</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -718,6 +728,14 @@
   
     <div class="icon-github sidebar-social-icon">
       <a href=https://github.com/virtualguard101 itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-telegram sidebar-social-icon">
+      <a href=https://t.me/virtualguard101 itemprop="url" target="_blank" aria-label="telegram" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-steam sidebar-social-icon">
+      <a href=https://steamcommunity.com/id/virtualguard101 itemprop="url" target="_blank" aria-label="steam" rel="noopener external nofollow noreferrer"></a>
     </div>
   
 </div>
@@ -879,9 +897,9 @@
           url: "http://blog.virtualguard101.xyz/2025/06/23/web/",
           excerpt: "对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新",
           description: "",
-          stripContent: "近期在spaceship上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。 做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。  部署要点 &amp;amp; 杂项  部署改良  改良要",
+          stripContent: "对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新 近期在spaceship上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。 做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新",
           date: "Mon Jun 23 2025 12:38:07 GMT+0800",
-          updated: "Wed Jun 25 2025 14:18:46 GMT+0800",
+          updated: "Sat Jul 12 2025 20:32:37 GMT+0800",
           cover: "https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg",
         };
       </script>

@@ -488,6 +488,12 @@ body [data-aos='zoom-in'] {
 .icon-github:before {
   content: "\e619";
 }
+.icon-telegram:before {
+  content: "\e623";
+}
+.icon-steam:before {
+  content: "\e624";
+}
 .icon-email:before {
   content: "\e63c";
 }
@@ -3282,6 +3288,12 @@ pre .javascript .function {
 }
 [data-theme="dark"] .icon-github {
   color: #bc88ff;
+}
+.icon-telegram {
+  color: #08c;
+}
+.icon-steam {
+  color: #171a21;
 }
 .sidebar-menu-icon,
 .sidebar-menu-link {

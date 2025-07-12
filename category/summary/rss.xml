@@ -7,12 +7,8 @@
         <language>zh-CN</language>
         <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
         <lastBuildDate>Fri, 20 Jun 2025 21:10:33 +0800</lastBuildDate>
-        <category>linux</category>
         <category>学年总结</category>
-        <category>c++</category>
-        <category>python</category>
-        <category>vcpkg</category>
-        <category>项目构建</category>
+        <category>linux</category>
         <category>web开发</category>
         <category>docker</category>
         <item>
@@ -21,8 +17,10 @@
             <link>http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</link>
             <category>学年总结</category>
             <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
-            <description><![CDATA[ &lt;p&gt;在大学的第一年——也是正式开始CS自学旅途的第一年（周年）随着暑假的临近也就快要结束了，是时候乘着 &lt;s&gt;期末复习&lt;/s&gt; 休闲的时间写一下这个学年的学年总结与复盘了。&lt;/p&gt;
+            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;对CS自学之路的第一年，也是大学生活的第一年的一个简单复盘&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在大学的第一年——也是正式开始CS自学旅途的第一年（周年）随着暑假的临近也就快要结束了，是时候乘着 &lt;s&gt;期末复习&lt;/s&gt; 休闲的时间写一下这个学年的学年总结与复盘了。&lt;/p&gt;
 &lt;p&gt;事实上，对于这个学年的成果我个人并不满意，但也正因如此，才需要通过客观、辨证的总结来修正错误的方法与方向。&lt;/p&gt;
+&lt;!-- more --&gt;
 &lt;h2 id=&#34;做了什么&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#做了什么&#34;&gt;&lt;/a&gt; 做了什么&lt;/h2&gt;
 &lt;p&gt;似乎做了很多，又似乎什么都没做…🙃至于为什么，后面再分析。&lt;/p&gt;
 &lt;h3 id=&#34;暑假&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#暑假&#34;&gt;&lt;/a&gt; 暑假&lt;/h3&gt;

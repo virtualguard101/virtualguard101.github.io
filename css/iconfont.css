@@ -126,6 +126,12 @@
 .icon-github:before {
   content: "\e619";
 }
+.icon-telegram:before {
+  content: "\e623";
+}
+.icon-steam:before {
+  content: "\e624";
+}
 .icon-email:before {
   content: "\e63c";
 }
