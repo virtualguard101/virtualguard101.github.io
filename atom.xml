@@ -1,0 +1,648 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>http://blog.virtualguard101.xyz</id>
+    <title>virtualguard&#39;s Blog</title>
+    <link href="http://blog.virtualguard101.xyz" />
+    <updated>2025-06-23T04:38:07.000Z</updated>
+    <category term="学年总结" />
+    <category term="web开发" />
+    <category term="docker" />
+    <category term="linux" />
+    <entry>
+        <id>http://blog.virtualguard101.xyz/2025/06/23/web/</id>
+        <title>个人站点构建要点(改良版) &amp;&amp; Web 开发简要实践</title>
+        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/06/23/web/"/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;近期在&lt;a href=&#34;https://www.spaceship.com/zh/&#34;&gt;spaceship&lt;/a&gt;上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。&lt;/p&gt;
+&lt;p&gt;做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;部署要点-杂项&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署要点-杂项&#34;&gt;&lt;/a&gt; 部署要点 &amp;amp; 杂项&lt;/h2&gt;
+&lt;h3 id=&#34;部署改良&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署改良&#34;&gt;&lt;/a&gt; 部署改良&lt;/h3&gt;
+&lt;h4 id=&#34;改良要点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#改良要点&#34;&gt;&lt;/a&gt; 改良要点&lt;/h4&gt;
+&lt;p&gt;在今年的四月份我曾发布了一篇&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/04/26/web-build/&#34;&gt;文章&lt;/a&gt;，里面主要提及了 &lt;strong&gt;Docker Compose + Nginx&lt;/strong&gt; “一键部署”的部署方式。如果所部署的服务模块基本高度稳定，基本不需要通过暂停服务来处理集成/交付问题，或者服务之间几乎不存在依赖关系或依赖关系十分简单，那么这这种部署方式就不会有什么太大的问题；然而，倘若需要灵活的开发场景，例如需要经常性为站点添加新的服务，或是存在需要通过停止服务来进行配置的服务，同时服务与服务之间的依赖关系错综复杂，使用这样&lt;strong&gt;一体化&lt;/strong&gt;的部署方式就需要将所有服务一并停止，这样就不利于高效开发且会降低站点的可访问性。&lt;/p&gt;
+&lt;p&gt;会降低可访问性很好理解——需要频繁地关闭服务在访问者眼里就是不稳定的表现。对于不利于高效开发的问题我们举一个例子：假设你想部署一个服务，但是这个服务需要调用另一个同样部署在该主机上的某个服务的API。为了添加这个服务，你首先需要把该主机上部署的所有服务先通过&lt;code&gt;docker compose down&lt;/code&gt;停止运行，然后添加这个服务的配置；在正式部署前，你想要测试一下这个服务的功能如何，结果发现依赖的API无法调用——因为它被停止了；然后你索性就不测试了，直接&lt;code&gt;docker compose up -d&lt;/code&gt;一键部署，结果配置出了问题——运气好点的话，只有新服务的容器无法运行；运气不好的话，新服务可能执行了一个未定义行为在，或者传入了一个未定义参数到API服务里，结果导致API服务也崩溃了，依赖这个API服务的其他服务也就跟着崩溃了，留下一大堆与看上去新服务毫无关联的报错信息和阅读着如💩山一般报错信息风中凌乱的你…原本只要看一个服务的报错，现在要看好几个，而且其中的依赖关系可能还很复杂！那样的报错信息懂的都懂，根本就不是给人看的。这种情况就会大大增加debug的压力，也就降低了开发效率。&lt;/p&gt;
+&lt;p&gt;解决这个问题，我们就需要通过把原来高度集中的微服务分散开来配置与部署来解决可能被“一锅端”的问题。针对普通的个人站点，实现的思路也很简单，现成服务的部署工具仍然是Docker + Nginx，但这次我们将二者独立开来。简单来说，旧版的部署方式是&lt;strong&gt;将Nginx的转发服务也一并运行于Docker&lt;/strong&gt;，各个由Nginx转发的子服务由Docker部署，&lt;strong&gt;所有的服务均配置于单个&lt;code&gt;docker-compose.yml&lt;/code&gt;中&lt;/strong&gt;，可参考下图理解：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
+
+  A: docker-compose.yml
+  state A {
+    [*] --&gt; service1
+    [*] --&gt; service2
+    [*] --&gt; ........
+    [*] --&gt; serviceN
+
+    B: Backend Services
+    state B {
+      service1 --&gt; Nginx: forward
+      service2 --&gt; Nginx: forward
+      ........ --&gt; Nginx: forward
+      serviceN --&gt; Nginx: forward
+    }
+
+    state Nginx {
+      Description: High-performance Web Server and Reverse Proxy Handle
+    }
+  }
+
+  Nginx --&gt; Front&lt;/pre&gt;
+&lt;p&gt;而我们现在的思路则是将不同服务的&lt;strong&gt;部署配置&lt;/strong&gt;(这里特指&lt;code&gt;docker-compose.yml&lt;/code&gt;)分散到各个服务独立的配置路径上进行配置并由Docker部署，最后由运行于全局环境的Nginx进行转发：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
+
+  A: Backend Services
+  state A {
+    B: docker-compose.yml
+    C: docker-compose.yml
+    D: docker-compose.ymls
+    E: docker-compose.yml
+
+    state B {
+      [*] --&gt; service1
+    }
+
+    state C {
+      [*] --&gt; service2
+    }
+
+    state D {
+      [*] --&gt; ........
+    }
+
+    state E {
+      [*] --&gt; serviceN
+    }
+  }
+
+  state Nginx {
+    Description: High-performance Web Server and Reverse Proxy Handle(Running Globally)
+  }
+
+  service1 --&gt; Nginx: forward
+  service2 --&gt; Nginx: forward
+  ........ --&gt; Nginx: forward
+  serviceN --&gt; Nginx: forward
+
+  Nginx --&gt; Front&lt;/pre&gt;
+&lt;p&gt;理论存在，接下来就是 &lt;s&gt;魔法时间&lt;/s&gt; 实际配置了。&lt;/p&gt;
+&lt;h4 id=&#34;部署流程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署流程&#34;&gt;&lt;/a&gt; 部署流程&lt;/h4&gt;
+&lt;h5 id=&#34;环境配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#环境配置&#34;&gt;&lt;/a&gt; 环境配置&lt;/h5&gt;
+&lt;p&gt;首先是配置环境依赖。对于服务器和域名的配置这里补充一个为服务器添加交换空间的&lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04#step-3-creating-a-swap-file&#34;&gt;教程&lt;/a&gt;（对于“什么是交换空间”、“交换空间有什么用”，这篇教程描述得足够详尽了），其余部分不再赘述，主要看看两个部署工具以及一些可能需要用到的工具的配置&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Docker&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -fsSL https://get.docker.com | bash -s docker&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install docker-compose&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;配置用户组&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; groupadd docker &lt;span class=&#34;comment&#34;&gt;# 若尚不存在 docker 组，则需先创建&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; usermod -aG docker &lt;span class=&#34;variable&#34;&gt;$USER&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+配置完用户组后需要重启使配置生效。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Nginx&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从前面的理论方案中我们知道，这次的Nginx不再运行于容器之中，而是运行在全局环境下的，因此我们需要在服务器上安装它：&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install nginx&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;将Nginx服务设置为开机自启&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; systemctl &lt;span class=&#34;built_in&#34;&gt;enable&lt;/span&gt; nginx&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;certbot（SSL证书申请工具）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install certbot&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;cron（定时任务）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install cron&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;目录结构&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#目录结构&#34;&gt;&lt;/a&gt; 目录结构&lt;/h5&gt;
+&lt;p&gt;配置完环境依赖，我们就可以开始为部署做准备了，首当其冲的自然是为不同的分别服务创建独立的配置与数据空间。&lt;/p&gt;
+&lt;p&gt;在改良理论方案中我们提到，要为每个微服务独立配置一个&lt;code&gt;docker-compose.yml&lt;/code&gt;以实现不同服务之间的相互独立与互不干扰——这是与旧方案最为本质的区别；但在目录创建与管理上，我们现在所介绍的新方案则与旧方案没有太大的区别。下面是一个针对新方案的web服务目录结构案例（其中包含了两个后端服务）：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;~/webservices&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── service1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── config&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   │   └── config.json&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── docker-compose.yml&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── fonts&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   └── icons&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── nginx -&amp;gt; /etc/nginx&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;├── scripts&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   ├── servicesManager.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;│   └── sslrenew.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;└── service2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ├── docker-compose.yml&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    └── data&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        └── .....&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;对于我们需要部署的后端服务而言，每个微服务的配置仍然分属于各个目录中。与旧方案唯一的不同地方就是各个服务的目录下都多了一个属于它们自己的&lt;code&gt;docker-compose.yml&lt;/code&gt;，相当于把旧方案中存在与web服务集群根目录的&lt;code&gt;docker-compose.yml&lt;/code&gt;配置肢解到各个服务独立的目录中。&lt;/p&gt;
+&lt;p&gt;这里你可能会发现nginx的目录是一个&lt;strong&gt;软链接&lt;/strong&gt;，关于这个我们接下来在&lt;a href=&#34;#Nginx%E7%9A%84%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE&#34;&gt;Nginx的配置&lt;/a&gt;中介绍。&lt;/p&gt;
+&lt;h5 id=&#34;nginx的全局配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#nginx的全局配置&#34;&gt;&lt;/a&gt; Nginx的全局配置&lt;/h5&gt;
+&lt;p&gt;对于各个服务&lt;code&gt;docker-compose.yml&lt;/code&gt;的配置这里基本没有新的东西可以介绍，其中一个比较明显的区别就是网路环境变成全局的了，所以不用在额外配置&lt;code&gt;networks&lt;/code&gt;参数。&lt;/p&gt;
+&lt;p&gt;最主要的区别还是在&lt;code&gt;nginx.conf&lt;/code&gt;的配置上，因此我们接下来详细介绍。&lt;/p&gt;
+&lt;p&gt;由于这次的Nginx运行在全局环境下，自然也需要通过编辑全局的配置文件来驱动其执行转发服务。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在Linux中，Nginx的全局配置&lt;code&gt;nginx.conf&lt;/code&gt;位于路径&lt;code&gt;/etc/nginx&lt;/code&gt;下，需要&lt;strong&gt;sudo提权&lt;/strong&gt;才可以保存配置，如果使用vscode的远程资源管理器连接的服务器，可能无法直接在窗口上直接使用vscode编辑&lt;code&gt;nginx.conf&lt;/code&gt;，比较方便且安全的解决方法有两个：一是直接在终端上提权使用vim对目标文件进行编辑 &lt;s&gt;那我还用vscode干什么&lt;/s&gt;；还有一个就是安装插件&lt;a href=&#34;https://marketplace.visualstudio.com/items?itemName=yy0931.save-as-root&#34;&gt;Save as Root in Remote&lt;/a&gt;，通过插件提权保存。&lt;/p&gt;
+&lt;p&gt;同时，如果是使用vscode进行的远程连接，可以在通过在web服务集群的根目录下创建Nginx配置目录(&lt;code&gt;/etc/nginx&lt;/code&gt;)和日志目录(&lt;code&gt;/var/log/nginx&lt;/code&gt;)的&lt;strong&gt;软链接&lt;/strong&gt;来提高开发效率&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;事实上，新方案在配置内容上只需要修改几个参数，总体的配置可能比旧方案还更好理解，下面给出一个简单的例子：&lt;/p&gt;
+&lt;p&gt;假设有一个待转发的服务运行于主机的5000端口上，那么有以下配置模板可供参考（注意需要插入到合理的位置，&lt;code&gt;nginx.conf&lt;/code&gt;在安装Nginx时通常会自带一些配置；在这里，“合理的位置”&lt;strong&gt;至少&lt;/strong&gt;指的是要在&lt;code&gt;http&lt;/code&gt;模块中）：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	listen 80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	# listen [::]:80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	server_name  your_domain.here;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	server_tokens off;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	#配置http验证可访问&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	location /.well-known/acme-challenge/ &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		root /usr/share/certbot/www;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	#http跳转到https&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		return 301 https://$host$request_uri;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;#  server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   listen 80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;#   server_name  your_domain.here;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_pass http://127.0.0.1:5000;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_set_header Host $host;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #     proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   &amp;#125;       &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   # 强制HTTPS重定向&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; #   # return 301 https://$host$request_uri;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; # &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	listen 443 ssl http2;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	server_name  your_domain.here;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	ssl_certificate /etc/letsencrypt/live/your_domina.here/fullchain.pem;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	ssl_certificate_key /etc/letsencrypt/live/your_domain.here/privkey.pem;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_pass http://127.0.0.1:5000;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_set_header Host $host;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;配置上的原理也很简单，简单理解就是在用户访问运行于&lt;code&gt;80&lt;/code&gt;/&lt;code&gt;443&lt;/code&gt;的HTTP/HTTPS服务时，将运行于&lt;code&gt;5000&lt;/code&gt;端口上的后端服务作一次转发。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️注意在&lt;code&gt;docker-compose.yml&lt;/code&gt;中，&lt;code&gt;port&lt;/code&gt;参数&lt;code&gt;:&lt;/code&gt;前的端口号才是宿主机的端口号，也就是我们需要写入&lt;code&gt;nginx.conf&lt;/code&gt;的端口号&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;ssl证书申请&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#ssl证书申请&#34;&gt;&lt;/a&gt; SSL证书申请&lt;/h5&gt;
+&lt;p&gt;第一次申请的操作和定时任务的配置可以参考&lt;a href=&#34;https://kasuie.cc/article/22&#34;&gt;这篇文章&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;虽然已经运行了Nginx服务，但我们仍然可以通过&lt;code&gt;standalone&lt;/code&gt;模式获取证书，但这需要先将Nginx服务关闭以释放&lt;code&gt;80&lt;/code&gt;端口，否则会提示端口被占用而无法申请；申请完证书后再重新启动Nginx即可。当然，也可通过&lt;code&gt;webroot&lt;/code&gt;模式直接申请。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️由于使用certbot时需要提权运行，所以在配置定时任务时也需要进行sudo提权：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; crontab -e&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;否则可能会遇到定时任务无权限运行certbot的尴尬情况&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;服务管理脚本&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#服务管理脚本&#34;&gt;&lt;/a&gt; 服务管理脚本&lt;/h5&gt;
+&lt;p&gt;当服务数量越来越多，且依赖关系越来越复杂时，每次需要配置一个服务可能就需要频繁地切换目录以及输入一些冗长的命令，这时就可以通过编写自动化脚本来 &lt;s&gt;偷懒&lt;/s&gt; 提高效率。&lt;/p&gt;
+&lt;p&gt;对于逻辑比较简单（比如线性逻辑）且shell命令相对密集的系列操作，我们就可以通过编写shell脚本来解决；而对于逻辑相对复杂且需要高度定制化的系列操作，我们就可以交给python脚本来解决，这样不容易出错。&lt;/p&gt;
+&lt;p&gt;编写python脚本前，我们需要先安装python：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install python3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install pip&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;Ubuntu默认安装python3.10，如果对版本有特殊要求，可以安装一个虚拟环境管理器。这里以&lt;a href=&#34;https://docs.astral.sh/uv/&#34;&gt;uv&lt;/a&gt;为例：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -LsSf https://astral.sh/uv/install.sh | sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;!-- [ ] 脚本模板案例 --&gt;
+</content>
+        <category term="web开发" />
+        <category term="docker" />
+        <updated>2025-06-23T04:38:07.000Z</updated>
+    </entry>
+    <entry>
+        <id>http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</id>
+        <title>2024-2025：艰难的起步</title>
+        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/"/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;对CS自学之路的第一年，也是大学生活的第一年的一个简单复盘&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在大学的第一年——也是正式开始CS自学旅途的第一年（周年）随着暑假的临近也就快要结束了，是时候乘着 &lt;s&gt;期末复习&lt;/s&gt; 休闲的时间写一下这个学年的学年总结与复盘了。&lt;/p&gt;
+&lt;p&gt;事实上，对于这个学年的成果我个人并不满意，但也正因如此，才需要通过客观、辨证的总结来修正错误的方法与方向。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;做了什么&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#做了什么&#34;&gt;&lt;/a&gt; 做了什么&lt;/h2&gt;
+&lt;p&gt;似乎做了很多，又似乎什么都没做…🙃至于为什么，后面再分析。&lt;/p&gt;
+&lt;h3 id=&#34;暑假&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#暑假&#34;&gt;&lt;/a&gt; 暑假&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;第一台个人计算机💻&lt;/p&gt;
+&lt;p&gt;拿到第一台个人💻（家里的电脑基本不让我动，而且其本身基本也成为&lt;strong&gt;赛博养蛊&lt;/strong&gt;的载体了）的第一件事就是下 &lt;s&gt;steam&lt;/s&gt; &lt;strong&gt;vscode&lt;/strong&gt;，之前在高中的时候在班级的多媒体设备上不知道为什么“下不了”，好不容易下好了发现不会配环境😅；&lt;/p&gt;
+&lt;p&gt;同时因为某些不明原因，班级里有些人似乎对我使用“公共设施”学习抱有意见——明明特地挑了不会影响他们的时间与方式，而且我个人也是管理多媒体设备的班干部。也不知道是不是他们觉得我在装X…&lt;s&gt;现在想想，当时的脸皮还是太薄了&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;不小心说了点废话，总的来说，我在拿到这台电脑前几乎是没有任何渠道可以自学CS的，因此当时的心情是十分激动的，这台电脑几乎就是我最初的学习CS的工具。至于“为什么不看书”、“不会手写代码吗”这类言辞相信应该不会从能看到这篇文章的人嘴里说出；而且我真的去看了，举一个最典型的例子：我永远也不会忘记当时作为一个毫无CS基础的白痴，翻开&lt;a href=&#34;https://csappbook.blogspot.com/&#34;&gt;这本书&lt;/a&gt;后我的反应😅。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自学了C语言的基础&lt;/p&gt;
+&lt;p&gt;这几乎占据了我暑假里80%的个人时间，所以我暑假期间直到8月底快要入学了都没有离开我从小生活的县城。&lt;/p&gt;
+&lt;p&gt;虽然但是，我是&lt;strong&gt;花钱&lt;/strong&gt;看的网上所谓的培训班学的，这里就不展开了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在一位福大信息安全的朋友的帮助下初步了解了科学上网🪜的方法&lt;/p&gt;
+&lt;p&gt;这个虽然不起眼，但是十分重要，可以说是改变我获取资源的途径的基础，只不过当时没意识到&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;上学期&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#上学期&#34;&gt;&lt;/a&gt; 上学期&lt;/h3&gt;
+&lt;p&gt;这是在大学的第一个学期，主要以信息收集为主，同时兼顾学业以争取转专业名额。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;了解在大学中计算机“破局”主要的三个方向：&lt;strong&gt;项目&lt;/strong&gt;、&lt;strong&gt;竞赛&lt;/strong&gt;、&lt;strong&gt;科研&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;结识了许多校内计算机方向的大佬与老师，主要是技术/安全协会的学长学姐与安全方向的同届同学&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在大佬与老师的引导与帮助下彻底放弃了“跟班”式的学习方式&lt;/p&gt;
+&lt;p&gt;说起来也有点意思，暑假报的那个培训班我在入学后不久就退款了，原因有二：一是与我当时感兴趣的方向（安全）不太一致；二是我发现里面所谓的指导老师似乎对于计算机行业的认知还不如我，负责技术指导的老师更是 &lt;s&gt;人机&lt;/s&gt; 连工具都不会用。举个最难绷的例子，我用vscode（众所周知，vscode本身是文本编辑器而不是IED）时碰到了一个最简单的配置问题，甚至都不需要修改配置文件，他上来就让我把编辑器换成他们教学指定的IDE，而我在搜索了资料后发现就是环境变量的问题…更搞笑的是我是在他们课程的宣传广告或着叫&lt;strong&gt;公开课&lt;/strong&gt;上的某个视频还是评论找到解决方案的🤣。不过好在人家最起码不是诈骗，退款还是可以退的，但还是赔了亿点点（因为看了一点课）。&lt;/p&gt;
+&lt;p&gt;后面我在参与学校与某个企业联合举办的竞赛时又双叒叕被推送了他们自己的培训方案，这一次我是差点就交了近3万的培训费去学所谓的“网络工程”，当初对网络安全很感兴趣，头脑发热就去问了，好在最后被某个大佬和老师拦下了。这次也不是没有收获，除了彻底抛弃了“跟班”思维，决定自己独立定制我个人的&lt;strong&gt;培养方案&lt;/strong&gt;，也认识了 &lt;code&gt;Cyber Security&lt;/code&gt; 与 &lt;code&gt;Network Security&lt;/code&gt;的区别（虽然不敢讲全部，但他在所谓的竞赛培训上讲的内容，除了&lt;strong&gt;思科模拟器&lt;/strong&gt;的使用，其他内容我基本有一定的了解）&lt;/p&gt;
+&lt;p&gt;总而言之，从这里开始，我的&lt;strong&gt;CS自学之路&lt;/strong&gt;或许才真正意义上称得上是&lt;strong&gt;入门与起步&lt;/strong&gt;。乐观的讲，至少没有中道崩殂吧…🙃&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;与网安同届的同学组队打了几次CTF线上赛&lt;/p&gt;
+&lt;p&gt;虽然都是一些小比赛，外加压根就没什么水平，所以挺水的，不过也结识了网安的朋友，同时由于我们学校对这方面不太重视，CTF鲜为人知（甚至连前面提到的安全协会都是基本只有网安专业的同学知道），为后续转专业提升了个人竞争力。&lt;/p&gt;
+&lt;p&gt;社会工程学魅力时刻了属于是😁&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;翻出了在网页收藏夹中积灰已久的&lt;a href=&#34;https://csdiy.wiki/&#34;&gt;csdiy&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在整理网站资源的时候发现了早在高中时朋友就推荐的&lt;a href=&#34;https://csdiy.wiki/&#34;&gt;CS自学指南&lt;/a&gt;，当时因为&lt;strong&gt;没有科学上网工具&lt;/strong&gt;打不开，但多少知道这是个宝藏，然而这时已经临近上学期期末了（你猜我前面为什么说我没意识到&lt;em&gt;科学上网是改变我获取资源的途径的基础&lt;/em&gt;），也就是说我“浪费”了近一个学期的时间走了CS自学的“第一条弯路”，是的，这只是第一条🙃。&lt;/p&gt;
+&lt;p&gt;还有一点忘了说，在再次发掘出这个宝藏前、放弃“跟班”式学习后，我的自学几乎依靠形如&lt;a href=&#34;https://www.runoob.com/&#34;&gt;菜鸟教程&lt;/a&gt;的&lt;strong&gt;文档式教程&lt;/strong&gt;。至于我对文档式教程的看法，我个人认为其更适合用于&lt;strong&gt;快速参考&lt;/strong&gt;或某些技术栈的&lt;strong&gt;入门速通&lt;/strong&gt;，不建议在深入学习时依赖——&lt;strong&gt;文档之所以被称之文档就是因为其“仅供参考”&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;使用积蓄购买了第二台💻&lt;/p&gt;
+&lt;p&gt;这是一个艰难但在我看来正确的一个决定。冒着被扣上“乱花钱”帽子的风险，主要还是为了一劳永逸地解决我一直以来头痛的续航问题，但出乎意料的，这台轻薄本（我给其编号为&lt;code&gt;PC1&lt;/code&gt;，第一台自然就是&lt;code&gt;PC0&lt;/code&gt;）对于生产环境的兼容性似乎远超&lt;code&gt;PC0&lt;/code&gt;，这解决了另一个使我头痛的问题——&lt;code&gt;PC0&lt;/code&gt;上一些困扰了我很久的兼容性问题；日常的使用体验也是如此，也不知道是不是因为&lt;code&gt;PC0&lt;/code&gt;是我的第一台个人电脑，我没正确维护导致的兼容性问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;寒假&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#寒假&#34;&gt;&lt;/a&gt; 寒假&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;速通&lt;a href=&#34;https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/MIT-Missing-Semester/&#34;&gt;MIT Missing Semester&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;对于里面大部分内容的&lt;strong&gt;基础操作&lt;/strong&gt;在上学期的“弯路”中多少有点了解，如Git、Shell等。可惜的是我并没有静下心来完善进阶部分，这个问题实际贯穿了整个学年的学习，后面会做分析。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开始使用Linux操作系统&lt;/p&gt;
+&lt;p&gt;这也可以算得上是一个重要的节点。起因是我在学习&lt;a href=&#34;https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/MIT-Missing-Semester/&#34;&gt;MIT Missing Semester&lt;/a&gt;时，本意是使用VM来学习Shell，然后就碰到了该死的 “没有正确卸载VM” 导致的一系列问题（历史遗留问题.jpg）。在给&lt;code&gt;PC0&lt;/code&gt;几次重置重装系统无果后，一怒之下，我就看着网上的教程和资料给&lt;code&gt;PC1&lt;/code&gt;（&lt;code&gt;PC1&lt;/code&gt;的Win11对VM的兼容性也不好）装了双系统（Ubuntu22.04 + Win11）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自学&lt;a href=&#34;https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Python/CS61A/&#34;&gt;CS61A&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这可以称得上是“斯大林格勒”了（好吧其实没那么夸张），看这门课时我和&lt;a href=&#34;https://csdiy.wiki/#cs61a&#34;&gt;csdiy第一贡献者的感想&lt;/a&gt;是一致的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;下学期&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#下学期&#34;&gt;&lt;/a&gt; 下学期&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;创建了自己的第一个独立项目——基于&lt;a href=&#34;https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/3Python/CS61A/&#34;&gt;CS61A&lt;/a&gt;的学习用py手搓了一个简陋的&lt;a href=&#34;https://github.com/virtualguard101/space-calculator&#34;&gt;立体几何计算器&lt;/a&gt;（简陋到甚至都不支持曲线与曲面）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在导师的邀请下开始试图参考网上&lt;a href=&#34;https://zhuanlan.zhihu.com/p/714400366?utm_psn=1883987006549374851&#34;&gt;大佬的项目&lt;/a&gt;使用FPGA来&lt;a href=&#34;https://projects.virtualguard101.xyz/posts/gpu-researching-log/&#34;&gt;“手搓GPU”&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;可惜我对硬件方面确实没有太大的兴趣，加上缺少这方面的基础与我对自身学习进度的认知偏差，导致我在一些不必要的地方“浪费”了很多时间。因此这个项目在现阶段而言对我的帮助我个人认为十分有限。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;5月份&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#5月份&#34;&gt;&lt;/a&gt; 5月份&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;构建了自己的&lt;a href=&#34;https://virtualguard101.xyz/&#34;&gt;第一个个人站点&lt;/a&gt;（这个才是真正的“斯大林格勒”）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/euiV0r7.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;站点背景图片来源：&lt;a href=&#34;https://b23.tv/7vno0Mx&#34;&gt;为生而战，向死而生 | 何春秋-宙道分身&lt;/a&gt;（图片作了分辨率处理），已获得作者授权：&lt;img src=&#34;https://i.imgur.com/CMNtFos.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在正式踏上自学之路后不久，我一直在探索能够高效整合信息/资源（人话：记笔记）的方式，特别是在五月份受导师邀请开始“手搓GPU”后，单位时间里需要接收的信息量越来越多，脑子里能留住的有效信息却越来越少。最后思来想去还是发现&lt;strong&gt;使用&lt;code&gt;CI/CD&lt;/code&gt;工具链构建的个人站点&lt;/strong&gt;最合适。&lt;/p&gt;
+&lt;p&gt;这里要特别感谢学校技术协会的大佬，对站点建设提供了一系列相对现代化的构建建议。&lt;/p&gt;
+&lt;p&gt;建站后在协调大量信息的存储与分类时我也遇到了不少麻烦，包括但不限于如何选取合适的主题/文档构建工具来使博客更加美观且实用；哪些构建工具/框架适合用于笔记以使其能够被高效地回顾、查阅等，这些我们&lt;a href=&#34;#%E7%AB%99%E7%82%B9%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B8%8E%E4%B8%BB%E9%A2%98%E7%9A%84%E9%80%89%E6%8B%A9&#34;&gt;后面&lt;/a&gt;再谈&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;自学&lt;a href=&#34;https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/cpp/CS106L/&#34;&gt;CS106L&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这是建设了个人站点后的第一个具有&lt;a href=&#34;https://note.virtualguard101.xyz/notes/Programming%20Language/c%2B%2B/C%2B%2B%20Fundamental/00-type-structure/&#34;&gt;相对完善笔记&lt;/a&gt;的自学课程，我快速过了一下，其中大部分的&lt;a href=&#34;https://github.com/virtualguard101/cs106l-assignments&#34;&gt;Assignments&lt;/a&gt;还没来得及做。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开始使用Arch Linux作为主操作系统&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/oVkMHug.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;因为我是南梁&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;使用了近半年的Ubuntu，终于还是对Arch动心了。&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/05/19/arch-linux/&#34;&gt;这篇文章&lt;/a&gt;记录了一些我在安装过程遇到的一些要点与问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建项目&lt;a href=&#34;https://github.com/virtualguard101/3BodySimulator&#34;&gt;3BodySimulator&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这是我个人为学习C++项目构建与管理而创建的&lt;strong&gt;案例式项目&lt;/strong&gt;，学习的知识主要聚焦于cpp项目的构建流程与&lt;a href=&#34;https://note.virtualguard101.xyz/notes/tools/Build%20Tools/cmake/&#34;&gt;CMake等工具的使用&lt;/a&gt;，代码逻辑的所有内容以及项目架构的部分内容由AI代为完成。&lt;/p&gt;
+&lt;p&gt;按照惯例（自从有个人站点后，我有随手为自己的项目写文档的习惯，特别是用于学习的项目），我也为此写了一篇&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/&#34;&gt;解构文档&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;转专业拟接收名单公示，不出意外的话就是成功转入网络空间安全了&lt;/p&gt;
+&lt;p&gt;转入网安主要还是因为我们学校这个专业后期课程量相对较少，算是为未来的自己争取到了一点时间吧&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;6月份&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#6月份&#34;&gt;&lt;/a&gt; 6月份&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;进一步完善了&lt;a href=&#34;https://note.virtualguard101.xyz/notes/tools/git/&#34;&gt;Git的学习&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;说的难听一点，对于Git在此之前我可能只会“三板斧（&lt;code&gt;add&lt;/code&gt;、&lt;code&gt;commit&lt;/code&gt;、&lt;code&gt;push&lt;/code&gt;）”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;基本明确自己的努力方向——围绕自动化与云原生；目标岗位基本明确为后端开发、服务器开发、自动化类岗位（构建开发、测试开发等）三者或类似岗位&lt;/p&gt;
+&lt;p&gt;这也是一个看起来并不起眼但却十分重要的一个节点，它标志着我一年以来“内耗式”学习的终结，其中问题与经验我们后面再谈&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;问题所在&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#问题所在&#34;&gt;&lt;/a&gt; 问题所在&lt;/h2&gt;
+&lt;p&gt;是时候进入最为重要的&lt;strong&gt;问题总结&lt;/strong&gt;与&lt;strong&gt;纠错&lt;/strong&gt;环节了，错误本身并不可怕——可怕的是缺乏面对错误的勇气与意识&lt;/p&gt;
+&lt;h3 id=&#34;学习方面&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#学习方面&#34;&gt;&lt;/a&gt; 学习方面&lt;/h3&gt;
+&lt;h4 id=&#34;一系列左倾错误导致的连锁反应&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#一系列左倾错误导致的连锁反应&#34;&gt;&lt;/a&gt; 一系列“左倾”错误导致的连锁反应&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这是一个&lt;strong&gt;系列问题&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;由于是系列问题导致的连锁反应，以一种&lt;strong&gt;自顶向下&lt;/strong&gt;的方式来分析问题就会稍微方便且清晰。下面的流程图将问题之间以及问题与其导致的后果以&lt;strong&gt;图&lt;/strong&gt;的形式从实际问题中&lt;strong&gt;抽象&lt;/strong&gt;出来，以便后续的分析与解决（本来想用&lt;a href=&#34;https://mermaid.js.org/intro/&#34;&gt;mermaid&lt;/a&gt;的，但写了半天发现渲染不出来，最后用的文档扫描转图片）：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/xbuGDDR.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;图中的分析虽然不尽完美，但已经把一年以来最为主要与急需解决的问题以一种抽象的方式总结出来了（毕竟这是我第一次采用这种分析法分析问题）&lt;/p&gt;
+&lt;p&gt;外因的情况较为特殊，同时其对自学的影响已经不再是实质上的影响了，这里简要说明&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;外因（环境因素）&lt;/p&gt;
+&lt;p&gt;在暑假和上学期，我的&lt;strong&gt;独立自主&lt;/strong&gt;学习意识十分薄弱——这里的“独立自主”不单指&lt;strong&gt;学习积极性&lt;/strong&gt;，还包括对&lt;strong&gt;信息收集能力&lt;/strong&gt;、&lt;strong&gt;自主规划能力&lt;/strong&gt;、&lt;strong&gt;信息整合分析能力&lt;/strong&gt;的重视度。如果单单只有满腔热血，在当今互联网信息良莠不齐的时代这一点反倒更有可能成为自学时致命的缺点，在网络广告的诱导下差点陷入“跟班”式学习（那就不叫自学了）的陷阱就是一个再好不过的例子。然而这种能力似乎真的看个人——或者说需要时间沉淀；同时，国内的计算机教育与网络环境懂的都懂，下面两张截图的对比（前后分别是同一搜索对象，&lt;strong&gt;未使用科学上网工具、国内版edge的搜索结果&lt;/strong&gt;与&lt;strong&gt;开启了科学上网工具、chrome的搜索结果&lt;/strong&gt;）就是一个例子：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/EMEvQ2c.jpeg&#34; alt=&#34;未使用科学上网工具、国内版edge的搜索结果&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/m4yxp37.jpeg&#34; alt=&#34;开启了科学上网工具、chrome的搜索结果&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;或许是因为在高考结束前压根就没有自学计算机的环境，导致我刚开始时一直在&lt;strong&gt;试错&lt;/strong&gt;与&lt;strong&gt;走弯路&lt;/strong&gt;；虽说在高考前我在朋友的帮助下对计算机的行业信息与国内的本科教育现状（特别是计算机方向）已经有了初步的了解，但说实话，真的只是&lt;strong&gt;冰山一角&lt;/strong&gt;，一方面缺少&lt;strong&gt;科学上网&lt;/strong&gt;工具，另一方面没有那种明确目标的意识，二者在CS的学习中都是十分致命的问题，特别是自学。&lt;/p&gt;
+&lt;p&gt;将问题归结到环境上并不是推卸责任，计算机这个行业本身就是一种高度依赖环境且需要持续浸淫的的东西，没有日积月累的沉淀与深耕是不可能有真正意义上技术成果的（实际上大部分领域都是这个道理，但是计算机领域介于其学习资源获取方式的特殊性，相较其他领域或许两极分化更加明显），这是基于我一年以来对身边技术朋友的观察得出的结论。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;针对外因，只要学习积极性不变且有一台（可联网的）计算机可以操作，其影响会随着经验的积累而逐渐减弱。自高考结束后，“中式教育”的高压约束不复存在——相反，这时我的父母反而会十分支持我，哪怕我没有成为他们希望的模样。已经流逝的时间无法挽回，与成为真正大佬的差距现在只能靠在日常多花数倍的时间沉淀来弥补&lt;/p&gt;
+&lt;p&gt;简单来说，&lt;strong&gt;高考结束后，外因也就转化为内因了&lt;/strong&gt;，即条件/环境与学习需求的矛盾转化为了自身学习能力与期望效率之间的矛盾，但前提是校内学业压力的可控，否则学业问题会消耗很多时间。&lt;/p&gt;
+&lt;p&gt;事实上，这幅图主要还是聚焦于“内因”的分析，同时还有一个类似&lt;strong&gt;递归&lt;/strong&gt;的节点关系——这点我没有处理好，导致其有点难以理解：&lt;/p&gt;
+&lt;p&gt;注意图中有一个名为“内因”的节点&lt;code&gt;G&lt;/code&gt;，与我们所言的内因实际上是一个东西，可以简单将其视为&lt;strong&gt;除外因（&lt;code&gt;F&lt;/code&gt;）节点外，对图中其他所有节点的封装&lt;/strong&gt;——它的位置与关系或许不恰当，但它想要说明的问题是：&lt;strong&gt;内因综合在一起本身就会加剧学习/信息整合能力低下的问题，而且由于学习积极性高涨，学习需求强烈，后者又会加剧前者中“内耗式学习”与“急于求成”的问题，从而陷入一个巨大的恶性循环&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;现在注意力来到这幅图抽象出的“最本质”的问题，即分属于两个核心问题的四大矛盾：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;学习规划上具体方向不明确&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;学习需求与个人认知之间的矛盾（因果）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;信息过载与有效筛选之间的矛盾（因果）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;学习进程上急于求成&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;个人实际能力与期望能力之间的矛盾（因果）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;学习行为与学习规律之间的矛盾（原理）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;现在就不难发现，所谓的“左倾”，指的是&lt;strong&gt;在学习进程上急于求成&lt;/strong&gt;，而忽略了个人的实际能力；另外，缺少高效的信息整合方法也是这一年以来学习方法问题上巨大的痛点，但这也需要在漫长的学习过程中总结转化，与“急于求成”的学习行为也是矛盾的。&lt;/p&gt;
+&lt;p&gt;至于学习规划上的问题，两个矛盾甚至是问题本身的指向就已经十分明确了，一是缺乏认知；二是未能高效、合理地筛选信息——这就回到刚刚说的个人能力的问题了，也需要时间进行学习转化。&lt;/p&gt;
+&lt;p&gt;值得庆幸的是，经过一年以来的摸爬滚打，对于学习规划上的问题，我已经积累了足够的经验，以至于我在写这篇复盘前的一周便彻底明确了自己的努力方向，这在&lt;a href=&#34;#6%E6%9C%88%E4%BB%BD&#34;&gt;做了什么&lt;/a&gt;中也有所提及。&lt;/p&gt;
+&lt;p&gt;至于“急于求成”的问题，抛弃不切实际的幻想，脚踏实地走好每一步是最核心的解决方式，同时还需要与后面的提到的几个问题相结合——&lt;a href=&#34;#%E5%AD%A6%E4%B9%A0%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%9A%BE%E4%BB%A5%E9%9D%99%E5%BF%83&#34;&gt;静心学习&lt;/a&gt;、&lt;a href=&#34;#%E6%9C%AA%E8%83%BD%E6%B8%85%E6%99%B0%E5%88%92%E5%88%86%E5%AD%A6%E4%B8%8E%E7%8E%A9%E7%9A%84%E7%95%8C%E9%99%90&#34;&gt;“玩”与“学”的边界&lt;/a&gt;。&lt;/p&gt;
+&lt;h4 id=&#34;时间实际利用率低&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#时间实际利用率低&#34;&gt;&lt;/a&gt; 时间实际利用率低&lt;/h4&gt;
+&lt;p&gt;这个问题除了上面所说的“效率问题”，还有一部分是作息安排上的问题&lt;/p&gt;
+&lt;p&gt;作息不规律导致的时间浪费也是一年以来学习规划上的痛点，同时我的身体健康也因此受到了不小的影响&lt;/p&gt;
+&lt;h4 id=&#34;学习过程中难以静心&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#学习过程中难以静心&#34;&gt;&lt;/a&gt; 学习过程中难以静心&lt;/h4&gt;
+&lt;p&gt;这个问题除了上面图中所说的“急于求成”以外，还有一个原因就是我玩心本来就挺重的（“玩心”这种东西懂的都懂😋），对于自己感兴趣的领域，我总是喜欢“超前”地了解些新东西。&lt;/p&gt;
+&lt;p&gt;对于这个问题，辨证地看待它不难发现，它在我刚开始自学的那段时间客观上促进了我摆脱“跟班式”学习的陷阱；然而随着学习进程的推进与日益增长的信息量，这个问题对我的影响开始由利转弊了——它开始成为我高效学习与整合信息的障碍（&lt;a href=&#34;https://www.bilibili.com/video/BV1sFLMzJEgU/&#34;&gt;黄金替罪羊.jpg&lt;/a&gt;）。有意思的是，这个问题在我高考前的应试教育学习阶段也是一个十分突出的问题，只不过当年的我还是太年轻，没有及时系统分析自己在学习方法上存在的问题。&lt;/p&gt;
+&lt;p&gt;对于现阶段如何解决这个阻碍，除了下文提到的&lt;a href=&#34;#%E6%9C%AA%E8%83%BD%E6%B8%85%E6%99%B0%E5%88%92%E5%88%86%E5%AD%A6%E4%B8%8E%E7%8E%A9%E7%9A%84%E7%95%8C%E9%99%90&#34;&gt;学与玩的边界&lt;/a&gt;外，还可以专门腾出一部分时间“顺其自然”，把它当作是一种“预习”——将这个行为利用起来，而不是尝试去克制、抹杀它。对于源于本性的问题，想要在短期内快速解决，“大禹治水”式的方式是最合适的。但仍需注意时间安排的问题，或是说是一种“划分”问题——这就与&lt;a href=&#34;#%E6%9C%AA%E8%83%BD%E6%B8%85%E6%99%B0%E5%88%92%E5%88%86%E5%AD%A6%E4%B8%8E%E7%8E%A9%E7%9A%84%E7%95%8C%E9%99%90&#34;&gt;下文&lt;/a&gt;联系起来了。&lt;/p&gt;
+&lt;h3 id=&#34;实践方面&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#实践方面&#34;&gt;&lt;/a&gt; 实践方面&lt;/h3&gt;
+&lt;h4 id=&#34;闭门造车&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#闭门造车&#34;&gt;&lt;/a&gt; “闭门造车”&lt;/h4&gt;
+&lt;p&gt;主要问题是在开发实践中脱离实际，过度“独立”，团队协作意识薄弱，团队协作开发技能（如Git分支相关操作、代码审计等）能力低下&lt;/p&gt;
+&lt;p&gt;一部分的原因大概就是因为我在转专业前不是计算机专业的学生，离我最近的那些人都没有技术意识吧。总而言之就是缺少那种氛围，周围几乎没有人能和我协同学习或搞开发。&lt;/p&gt;
+&lt;h4 id=&#34;未能清晰划分学与玩的界限&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#未能清晰划分学与玩的界限&#34;&gt;&lt;/a&gt; 未能清晰划分“学”与“玩”的界限&lt;/h4&gt;
+&lt;p&gt;这个虽然是前面分析&lt;a href=&#34;#%E4%B8%80%E7%B3%BB%E5%88%97%E5%B7%A6%E5%80%BE%E9%94%99%E8%AF%AF%E5%AF%BC%E8%87%B4%E7%9A%84%E8%BF%9E%E9%94%81%E5%8F%8D%E5%BA%94&#34;&gt;一系列“左倾”错误&lt;/a&gt;时那副关系图中提到的一个节点问题，但我认为有必要就学习规划的角度将其拿出来讲一讲。&lt;/p&gt;
+&lt;p&gt;“玩”与“学”的关系其实是很微妙的：在技术领域（其他领域我不知道），二者可以相得益彰，但也可以“相克相制”，取决于规划的方式与规划者的自制力。倘若&lt;strong&gt;玩的东西的实际意义不大&lt;/strong&gt;或是&lt;strong&gt;与“学”的关联性较低&lt;/strong&gt;，那么这种“玩”就与学无益——最多提供些情绪价值。&lt;/p&gt;
+&lt;p&gt;对于我过去一年以来的经历，前者的占比似乎不大，这是效率上的问题；而后者就有“好高骛远”的嫌疑，这也和前面的分析一致。&lt;/p&gt;
+&lt;p&gt;解决方法有两个：一是在学某个模块的内容时专注于“玩”这个模块的内容；二是彻底分割二者的关系。两种方法各有利弊，前者专注而略显枯燥、后者灵活而略显低效。对于后者，还有一个“改良版”——结合两者的特征，同时存在两个“玩”的内容。因为仍需划分“学”与“玩”，故本质上还是后者，且对规划能力与自制力的要求高。&lt;/p&gt;
+&lt;h2 id=&#34;经验总结&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#经验总结&#34;&gt;&lt;/a&gt; 经验总结&lt;/h2&gt;
+&lt;p&gt;其实前文都总结得差不多了，不过这里还有两个经验需要补充：&lt;/p&gt;
+&lt;h3 id=&#34;一个在明确自己努力方向时的发现&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#一个在明确自己努力方向时的发现&#34;&gt;&lt;/a&gt; 一个在&lt;em&gt;明确自己努力方向时&lt;/em&gt;的发现&lt;/h3&gt;
+&lt;p&gt;在分析部分互联网大厂的JD时，我发现校招的任职要求更多指向&lt;strong&gt;计算机基础知识&lt;/strong&gt;，而社招才更加注重&lt;strong&gt;工程或业务能力&lt;/strong&gt;。那么我们不妨大胆推测——对于像我这样高考结束后才开始接触技术而缺乏技术沉淀的人，扎实的计算机基础或许才是更加稳妥的大厂敲门砖。&lt;/p&gt;
+&lt;p&gt;同时，二者的侧重点的差异在学习规划（对症下药）上也是一个互补的参考：对于同类岗位，校招JD天然地适合用于基础学习的参考；而社招JD就适合工程/业务能力的学习规划以及相关项目的参考。&lt;/p&gt;
+&lt;p&gt;另外，校招过程中HR似乎对学历的重视程度较高，对于我们这种 &lt;s&gt;建专&lt;/s&gt; 水平较为一般的院校，在初筛就被投入“人（la）才（ji）库（tong）”的风险显然要比双一流与92高；又因为缺少技术沉淀的时间，想靠优秀项目破局的希望也很渺茫。这时就需要考虑是通过考研提升自己在学历上的竞争力、同时 &lt;s&gt;多走三五年的弯路&lt;/s&gt; 为自己争取到多那么三五年的沉淀时间；还是通过竞赛奖项来破局。但想要在竞赛上获得比较明显的优势，往往需要花费大量的时间备战。这是一个值得思考与权衡的问题。&lt;/p&gt;
+&lt;h3 id=&#34;站点构建工具与主题的选择&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#站点构建工具与主题的选择&#34;&gt;&lt;/a&gt; 站点构建工具与主题的选择&lt;/h3&gt;
+&lt;p&gt;这是在通过搭建个人站点来整合信息时总结得出的经验，对于我这样的初学者也是一个容易走弯路的地方，我在这个地方至少“浪费”了近一个月的时间。&lt;/p&gt;
+&lt;p&gt;长话短说，首先来看一些工具——我目前调研过的构建工具有四个：&lt;a href=&#34;https://hugo.opendocs.io/&#34;&gt;Hugo&lt;/a&gt;、&lt;a href=&#34;https://hexo.io/zh-cn/&#34;&gt;Hexo&lt;/a&gt;、&lt;a href=&#34;https://squidfunk.github.io/mkdocs-material/&#34;&gt;Material for MkDocs&lt;/a&gt;和&lt;a href=&#34;https://vuepress.vuejs.org/zh/&#34;&gt;VuePress&lt;/a&gt;，其中前面三个我都用过，第四个简单看了一下。&lt;/p&gt;
+&lt;p&gt;我个人的建议是，针对&lt;strong&gt;博客&lt;/strong&gt;等&lt;strong&gt;非信息密集型&lt;/strong&gt;且&lt;strong&gt;注重美观&lt;/strong&gt;的文档或站点，可以使用前两个构建；同时，Hexo会比Hugo更加成熟一些，大部分第三方主题对前者的支持会更好，但是容易出现依赖问题，且可能需要手动解决。因此建议小白用Hugo，有一定经验了再迁移到Hexo。&lt;/p&gt;
+&lt;p&gt;而对于类似&lt;strong&gt;学习笔记&lt;/strong&gt;这样&lt;strong&gt;结构复杂&lt;/strong&gt;的&lt;strong&gt;信息密集型&lt;/strong&gt;文档，建议使用Material for Mkdocs（一个基于&lt;a href=&#34;https://www.mkdocs.org/&#34;&gt;Mkdocs&lt;/a&gt;的&lt;strong&gt;主题&lt;/strong&gt;，后面所提到的&lt;a href=&#34;https://www.mkdocs.org/dev-guide/plugins/#developing-plugins&#34;&gt;支持PyPI集成&lt;/a&gt;是指可利用其进行插件开发）。其社区支持十分完善，且支持&lt;a href=&#34;https://pypi.org/project/mkdocs-material/&#34;&gt;PyPI集成&lt;/a&gt;，可通过自行编写Python插件自定义样式。&lt;a href=&#34;https://csdiy.wiki/&#34;&gt;csdiy&lt;/a&gt;就是使用其构建的一个站点。&lt;/p&gt;
+&lt;p&gt;VuePress我倒是没使用过，不过通过观察使用其构建的文档，我个人认为它适合用于构建结构相对没那么复杂的&lt;strong&gt;单主题&lt;/strong&gt;的&lt;strong&gt;信息密集型&lt;/strong&gt;文档，如某个中大型项目的使用文档。&lt;/p&gt;
+&lt;h2 id=&#34;新的开始&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#新的开始&#34;&gt;&lt;/a&gt; 新的开始&lt;/h2&gt;
+&lt;p&gt;新的学年，不出意外的话，我就是网安专业的学生了。&lt;s&gt;芜湖～水课水课逃逃逃！😋&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;在大二，计算机的基础学习与竞赛或许会成为我的主旋律。在《葬送的芙莉莲》中，魔法使&lt;a href=&#34;https://zh.moegirl.org.cn/%E5%85%B0%E6%89%98&#34;&gt;兰托&lt;/a&gt;在一级魔法使选拔考试上曾对自己的对手说过这样一句话：&lt;strong&gt;大部分自学成才的人基础都不够扎实&lt;/strong&gt;——希望能够成为剩下的那小部分人。&lt;/p&gt;
+&lt;p&gt;对于基础学习，重点放在&lt;strong&gt;操作系统&lt;/strong&gt;与&lt;strong&gt;计算机网络&lt;/strong&gt;及二者的延伸内容（如分布式系统、并发等）上，最好能手搓一个内核和TCP/IP协议栈。我总有一种感觉，就是我目前的实际开发能力极其低下的一个很重要的原因就是对操作系统的原理几乎完全不了解。&lt;/p&gt;
+&lt;p&gt;最好能把“程序员的三大浪漫”（操作系统、编译原理、计算机图形学）也过一遍。&lt;/p&gt;
+&lt;p&gt;另外，在新的学年快要结束之际——明年的这个时候，需要根据基础学习的进度与状态决定&lt;a href=&#34;#%E4%B8%80%E4%B8%AA%E5%9C%A8%E6%98%8E%E7%A1%AE%E8%87%AA%E5%B7%B1%E5%8A%AA%E5%8A%9B%E6%96%B9%E5%90%91%E6%97%B6%E7%9A%84%E5%8F%91%E7%8E%B0&#34;&gt;是否需要备战考研&lt;/a&gt;，但要尽量避开这个方向——我是真的不太擅长考试且极度厌恶死记硬背。&lt;/p&gt;
+&lt;p&gt;当然，工程/业务能力也要尽可能不落下，特别是这学期分外重视的&lt;strong&gt;项目标准化&lt;/strong&gt;——当然，我这里想表达的东西或许还有一个更专业的术语——&lt;strong&gt;软件工程&lt;/strong&gt;。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;em&gt;END&lt;/em&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align: right;&#34;&gt;
+  -- virtualguard101，2025.6.23凌晨于福建理工大学
+&lt;/div&gt;
+</content>
+        <category term="学年总结" />
+        <updated>2025-06-20T13:10:33.000Z</updated>
+    </entry>
+    <entry>
+        <id>http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</id>
+        <title>Arch Linux安装要点记录</title>
+        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/05/19/arch-linux/"/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;记录一下在可移动设备/真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Arch Linux是一个支持高度定制化的Linux发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
+&lt;p&gt;这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;基本安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#基本安装&#34;&gt;&lt;/a&gt; 基本安装&lt;/h2&gt;
+&lt;p&gt;针对这部分内容，教程&lt;a href=&#34;https://arch.icekylin.online/guide/&#34;&gt;Arch Guide | Nakano Miku&lt;/a&gt;有详尽的阐述，包括从安装准备到系统美化的所有内容。&lt;/p&gt;
+&lt;p&gt;这里记录几个我在真机安装过程中遇到的问题。&lt;/p&gt;
+&lt;h3 id=&#34;格式化efi分区前未备份原有系统启动引导双系统&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#格式化efi分区前未备份原有系统启动引导双系统&#34;&gt;&lt;/a&gt; 格式化EFI分区前未备份原有系统启动引导（双系统）&lt;/h3&gt;
+&lt;p&gt;我在安装过程中由于急于求成，在为EFI分区扩容时未备份原有系统（这里是Win11）的启动引导程序就直接将其格式化了，结果安装完Arch的基本系统才发现Win11进不去了…&lt;/p&gt;
+&lt;p&gt;虽说安装前有备份Win11的系统映像，但为了一个EFI分区动用这个实属大材小用，因为基本数据的分区并没有任何问题。在这个问题上，我选择使用WinPE镜像系统对Win11的启动引导进行还原。只需准备一个装有WinPE镜像的U盘，启动进入WinPE，按照下图的提示，选择修&lt;code&gt;UEFI&lt;/code&gt;引导进行修复即可：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/8fTXOCP.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;输入法异常&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#输入法异常&#34;&gt;&lt;/a&gt; 输入法异常&lt;/h3&gt;
+&lt;p&gt;这在教程&lt;a href=&#34;https://arch.icekylin.online/guide/&#34;&gt;Arch Guide | Nakano Miku&lt;/a&gt;有提示，（如果是按照此教程进行的安装）执行命令&lt;code&gt;fcitx5-diagnose&lt;/code&gt;进行问题诊断并按照输出提示修复即可。&lt;/p&gt;
+&lt;h3 id=&#34;杂项&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#杂项&#34;&gt;&lt;/a&gt; 杂项&lt;/h3&gt;
+&lt;p&gt;关于桌面环境的选择，可以参考这篇文章：&lt;a href=&#34;https://linuxiac.com/xorg-x11-wayland-linux-display-servers-and-protocols-explained/&#34;&gt;Xorg, X11, Wayland? Linux Display Servers And Protocols Explained&lt;br /&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;在可移动设备安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#在可移动设备安装&#34;&gt;&lt;/a&gt; 在可移动设备安装&lt;/h2&gt;
+&lt;p&gt;该部分可参考&lt;a href=&#34;https://b2og.com/archives/23&#34;&gt;将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;第一次安装中，我就将Arch装在了一个256G、使用USB3.1的U盘上，同时由于使用&lt;a href=&#34;https://arch.icekylin.online/guide/rookie/pre-virt.html&#34;&gt;虚拟机&lt;/a&gt;运行安装镜像，所以并没有碰到什么大问题。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;[参考文献]：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://wiki.archlinuxcn.org/zh-sg/%E5%9C%A8%E5%8F%AF%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E4%B8%8A%E5%AE%89%E8%A3%85_Arch_Linux&#34;&gt;在可移动设备上安装 Arch Linux | Arch Wiki&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://b2og.com/archives/23&#34;&gt;将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://arch.icekylin.online/guide/&#34;&gt;Arch Guide | Nakano Miku&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://archlinuxstudio.github.io/ArchLinuxTutorial/#/&#34;&gt;ArchLinuxTutorial | Arch Linux Studio&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="linux" />
+        <updated>2025-05-19T00:52:48.000Z</updated>
+    </entry>
+    <entry>
+        <id>http://blog.virtualguard101.xyz/2025/04/26/web-build/</id>
+        <title>docker-compose + nginx快速构建个人站点</title>
+        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/04/26/web-build/"/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;本文主要讲解如何从零开始利用docker-compose + nginx快速构建一个个人站点；并利用Github Action实现文章部署自动化；最后是如何使用certbot为站点自动化申请ssl证书。整套配置流程做下来用时基本上不会超过3天&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了&lt;a href=&#34;https://github.com/kasuie/remio-home&#34;&gt;remio-home | kasuie&lt;/a&gt;，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行&lt;code&gt;docker-compose up -d&lt;/code&gt;即可。结合大佬的一些建议和我自己的一些 &lt;s&gt;偷懒&lt;/s&gt; 自动化的想法，便有了下文。&lt;/p&gt;
+&lt;p&gt;如题，本文主要讲解如何从零开始在一台云服务器上利用docker-compose + nginx快速构建一个个人站点。得益于强大的现代化工具链以及开源社区的支持，我们完成这个简易项目所需的计算机理论基础并不多，甚至可以说是几乎为零，只需要知道文档应该怎么读，如何正确打开开发中的“cv大法”来为自己的自动化工具链编写配置文件。当然，最好有一点web开发的基础，这样在遇到意料之外的问题时不至于束手无策。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;通过该项目你会了解到以下内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;1. 远程服务器的基础使用&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;2. docker、docker-compose部署服务的基础操作&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;3. web开发实现原理基础——静态资源部署&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;4. hexo静态网页生成工具的使用&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;5. Github Action配置自动化部署&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;6. nginx基础配置（反向代理、二级域名）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;7. 在容器内使用certbot申请ssl证书，并通过定时任务自动化续签&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面是完成该项目所需的基础条件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一台服务器&lt;/li&gt;
+&lt;li&gt;一个有效域名&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;服务器&lt;/strong&gt;可在云服务器运营商处租用。国内比较可靠的运营商有阿里云、腾讯云等。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;域名&lt;/strong&gt;同样需要在运营商购买，也可通过特殊手段申请免费域名（不过免费申请的域名如有人出钱购买就会被回收）。获得域名后根据DNS云解析平台的文档进行解析配置即可。&lt;/p&gt;
+&lt;h2 id=&#34;准备工作&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#准备工作&#34;&gt;&lt;/a&gt; 准备工作&lt;/h2&gt;
+&lt;h3 id=&#34;部署环境&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署环境&#34;&gt;&lt;/a&gt; 部署环境&lt;/h3&gt;
+&lt;p&gt;服务器的初始配置可参考这篇文章&lt;a href=&#34;https://note.virtualguard101.xyz/notes/%E5%B7%A5%E5%85%B7/ssh/&#34;&gt;远程服务器的基础使用&lt;/a&gt;，这里不再赘述。由于需要使用&lt;code&gt;docker&lt;/code&gt;进行部署，我们需要先在服务器上安装一下docker。通过以下命令安装：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -fsSL https://get.docker.com | bash -s docker&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install docker-compose&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;将当前用户添加到docker用户组：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; groupadd docker &lt;span class=&#34;comment&#34;&gt;# 若尚不存在 docker 组，则需先创建&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; usermod -aG docker &lt;span class=&#34;variable&#34;&gt;$USER&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;由于是通过容器部署服务，环境处于“隔离”状态，&lt;code&gt;nginx&lt;/code&gt;无需下载安装，可通过镜像运行于容器中。&lt;/p&gt;
+&lt;h3 id=&#34;主页测试部署&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#主页测试部署&#34;&gt;&lt;/a&gt; 主页测试部署&lt;/h3&gt;
+&lt;p&gt;首先挑选一个能够使用docker部署的web主页，这里我们以&lt;a href=&#34;https://github.com/kasuie/remio-home&#34;&gt;remio-home | kasuie&lt;/a&gt;为例。根据文档进行配置与部署，部署完成后访问对应端口，观察配置是否生效。&lt;/p&gt;
+&lt;p&gt;按照主题文档配置完&lt;code&gt;docker-compose.yml&lt;/code&gt;后，将宿主机的端口改为80（http默认端口），&lt;code&gt;docker-compose down &amp;amp;&amp;amp; docker-compose up -d&lt;/code&gt; 或 &lt;code&gt;docker-compose restart&lt;/code&gt; 重启服务，通过外网设备进行访问，正常情况下和本地访问结果无异。也可通过端口转发在本地主机进行测试访问，具体这里不展开。&lt;/p&gt;
+&lt;p&gt;在通过外网设备进行访问时，若先前配置了DNS云解析，可通过域名进行访问。&lt;/p&gt;
+&lt;h2 id=&#34;静态网页资源测试&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#静态网页资源测试&#34;&gt;&lt;/a&gt; 静态网页资源测试&lt;/h2&gt;
+&lt;h3 id=&#34;hexo基础使用&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#hexo基础使用&#34;&gt;&lt;/a&gt; hexo基础使用&lt;/h3&gt;
+&lt;p&gt;互联网中有着数不胜数的静态网页生成工具，这里我们使用&lt;a href=&#34;https://hexo.io/zh-cn/&#34;&gt;hexo&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;首先进入&lt;a href=&#34;https://hexo.io/themes/&#34;&gt;主题选择页&lt;/a&gt;选择几个心仪的主题，随后根据主题文档和官方文档构建静态站点目录和安装依赖。然后还是各个配置文件的修改与测试，这个过程相对枯燥且繁琐。&lt;/p&gt;
+&lt;p&gt;需要注意的是，有些主题在后面的部署过程中可能会出现各种各样的兼容性问题，遇到无法暂时解决的，可以更换主题。&lt;/p&gt;
+&lt;p&gt;配置完主题后，通过&lt;code&gt;hexo s&lt;/code&gt;命令测试生成静态网页，通过浏览器访问&lt;code&gt;localhost:4000&lt;/code&gt;生成网页，查看是否符合预期。确认无误后，即可进入部署阶段。&lt;/p&gt;
+&lt;h2 id=&#34;部署&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署&#34;&gt;&lt;/a&gt; 部署&lt;/h2&gt;
+&lt;h3 id=&#34;github-page-用户自定义域名&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#github-page-用户自定义域名&#34;&gt;&lt;/a&gt; Github Page + 用户自定义域名&lt;/h3&gt;
+&lt;p&gt;有Github Page静态网页部署经验的同志对此应该不陌生，配合hexo的&lt;a href=&#34;https://hexo.io/zh-cn/docs/one-command-deployment&#34;&gt;一键部署&lt;/a&gt;使用起来方便到不能再方便了，详情这里不再展开。针对此部署方法，就算不想看官方文档，网络上也有数不胜数的教程。&lt;/p&gt;
+&lt;p&gt;这种部署方法固然方便，但只能部署（.github.io）或绑定到一个域名下（custom domain），若想要通过多个二级域名来分隔部署web资源，或是将来可能需要部署其他无法通过Github Page来部署的服务（如用户登陆服务、数据库服务等），这样的方法就会极大地限制web服务的可扩展性。简单来说，是否选择该部署方法取决于部署需求，确认只有存放静态资源的需求则该方法操作便捷且功能绰绰有余。&lt;/p&gt;
+&lt;h3 id=&#34;docker-compose-nginx&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#docker-compose-nginx&#34;&gt;&lt;/a&gt; docker-compose + nginx&lt;/h3&gt;
+&lt;p&gt;废话说了这么多，接下来正片开始。&lt;/p&gt;
+&lt;p&gt;在现代 web 开发中，使用 Nginx 代理不同的子域名到相应的 web 项目是一个常见的需求。同时，为了使我们的web服务能够与使用docker容器部署的主页处于同一个服务端口上，我们就需要把处于不同容器的web服务通过docker-compose合成为一个，并映射到宿主机的80端口上以供外界访问。&lt;/p&gt;
+&lt;p&gt;看上去很复杂，但事实上，由于我们并不需要了解容器内的服务具体在做些什么，理论上，我们只需要简单了解docker的工作原理以及&lt;code&gt;docker-compose.yml&lt;/code&gt;和&lt;code&gt;nginx.conf&lt;/code&gt;的配置规则即可实现前文提到的&lt;strong&gt;一键部署&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;当然，缺点也很明显：根域名（主页）和各二级域名（web服务）均需要通过nginx进行转发，且“处于一条绳上”，一旦nginx的配置或是其本身出现问题，所有写在配置里的服务就直接给一锅端了。&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;当然这也契合部分人开（摸）发（鱼）习惯，很喜欢容器化开发者中流传的一句话：“我就喜欢配一天环境啥也不干的感觉☝🤓”&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;两个配置文件的编写上，如果是单纯的多个二级域名的配置，网络上的教程一抓一大把，但我们的这个项目的难点就在于此，因为我们还要把先前就已成功部署的主页服务也融合进来，如何正确将它们配置到同一个端口上对于不熟悉docker和第一次接触nginx的人算的上是个挑战（比如我）。&lt;/p&gt;
+&lt;p&gt;然而经过一段时间的尝试（AI+），我们就能发现这并非什么难事：&lt;/p&gt;
+&lt;h4 id=&#34;docker配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#docker配置&#34;&gt;&lt;/a&gt; docker配置&lt;/h4&gt;
+&lt;p&gt;以下配置模板仅供参考&lt;/p&gt;
+&lt;figure class=&#34;highlight yml&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;74&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;version:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;3.8&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;services:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;remio-home:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;image:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;kasuie/remio-home&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;container_name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;remio-home&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;ports:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;8080:3000&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;environment:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;GTMID=.....&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;PASSWORD=.....&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;AMAP_KEY=.....&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;volumes:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;./remio-home/config:/remio-home/config&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;./remio-home/icons:/remio-home/public/icons&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;./remio-home/fonts:/remio-home/public/fonts&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;networks:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;web_network&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;restart:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;unless-stopped&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;nginx:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;image:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;nginx:latest&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;container_name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;nginx&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;ports:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;80:80&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;# - &amp;quot;443:443&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;volumes:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;./nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf:ro&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;./nginx/log:/var/log/nginx&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;# - ./certbot/www:/usr/share/certbot/www:ro&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;# - ./certbot/ssl:/etc/letsencrypt:ro&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;depends_on:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;subsite1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;subsite2&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;subsite3&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;networks:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;web_network&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;command:&lt;/span&gt;  &lt;span class=&#34;string&#34;&gt;nginx&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;-g&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;#x27;daemon off;&amp;#x27;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;comment&#34;&gt;# certbot:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;comment&#34;&gt;#   container_name: certbot&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;comment&#34;&gt;#   image: certbot/certbot&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;comment&#34;&gt;#   volumes:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;comment&#34;&gt;#     - ./certbot/www:/usr/share/certbot/www:rw #http验证目录，可设置rw可写，与nginx容器对应的宿主机目录时一致的&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;comment&#34;&gt;#     - ./certbot/ssl:/etc/letsencrypt:rw #证书位置，同上，注意不要只映射到live，而是它的上一级&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;subsite1:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;image:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;nginx:latest&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;container_name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;subsite1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;volumes:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;./sub-sites/subsite1/public:/usr/share/nginx/html&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;networks:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;web_network&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;subsite2:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;image:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;nginx:latest&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;container_name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;subsite2&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;volumes:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;./sub-sites/subsite2/public:/usr/share/nginx/html&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;networks:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;web_network&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;subsite3:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;image:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;nginx:latest&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;container_name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;subsite3&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;volumes:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;./sub-sites/subsite3/public:/usr/share/nginx/html&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;networks:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;web_network&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;networks:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;web_network:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;driver:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;bridge&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;docker配置的关键在于&lt;code&gt;volumes&lt;/code&gt;，即&lt;strong&gt;挂载卷&lt;/strong&gt;的路径配置。&lt;/p&gt;
+&lt;p&gt;在nginx附属服务（二级域名）的配置中，挂载卷参数的&lt;code&gt;:&lt;/code&gt;前填入的是需要挂载的宿主机路径，&lt;code&gt;:&lt;/code&gt;后是容器内的映射路径。这里我们需要挂载的路径是各个二级域名下需要“展示”的&lt;strong&gt;前端文件&lt;/strong&gt;，即前文中提到的由静态网页生成工具生成的&lt;strong&gt;静态资源&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;在hexo中，我们通常使用命令&lt;code&gt;hexo cl &amp;amp;&amp;amp; hexo g&lt;/code&gt;清理旧版本的静态文件并生成新版，生成的静态文件默认处于各项目根目录的&lt;code&gt;public&lt;/code&gt;路径下。&lt;/p&gt;
+&lt;p&gt;静态资源的整理可在任意主机上进行，部署时只需确保由静态网页生成的静态资源处于服务器上并挂载到容器的正确路径下即可。通常情况下，为确保隐私安全，静态文件的整理工作我们一般在本地主机上进行。在后续的章节中我们会介绍如何通过配置Github Action实现使静态文件从本地自动化部署至服务器上。&lt;/p&gt;
+&lt;h4 id=&#34;nginx配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#nginx配置&#34;&gt;&lt;/a&gt; nginx配置&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;nginx.conf&lt;/code&gt;的配置是该项目的核心，若出现错误导致部署无法进行，70%的问题出在nginx上，而nginx的问题有80%出在配置上（数据是瞎编的😋，但问题是真的）。&lt;/p&gt;
+&lt;p&gt;以下是&lt;code&gt;nginx.conf&lt;/code&gt;的参考配置，受限于篇幅，只列举主页及其中的一个二级域名的配置：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;83&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;84&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;85&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;86&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;87&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;88&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;89&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;90&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;91&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;92&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;93&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;94&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;95&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;96&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;97&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;98&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;99&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;100&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;101&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;102&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;103&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;events &amp;#123;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;http &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ; server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     listen 80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     # listen [::]:80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     server_name  virtualguard101.xyz;#域名&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     server_tokens off;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     #配置http验证可访问&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     location /.well-known/acme-challenge/ &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         #此目录都是nginx容器内的目录，对应宿主机volumes中的http验证目录，而宿主机的又与certbot容器中命令--webroot-path指定目录一致，从而就整个串起来了，解决了http验证问题&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         root /usr/share/certbot/www;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     #http跳转到https&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         return 301 https://$host$request_uri;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        listen 80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        server_name virtualguard101.xyz;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_pass http://remio-home:3000;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_set_header Host $host;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;       &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        # 强制HTTPS重定向&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        # return 301 https://$host$request_uri;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ; server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     listen 443 ssl http2;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     server_name virtualguard101.xyz;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     ssl_certificate /etc/letsencrypt/live/virtualguard101.xyz/fullchain.pem;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     ssl_certificate_key /etc/letsencrypt/live/virtualguard101.xyz/privkey.pem;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         proxy_pass http://remio-home:3000;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         proxy_set_header Host $host;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ; server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     listen 80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     # listen [::]:80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     server_name  projects.virtualguard101.xyz;#域名&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     server_tokens off;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     #配置http验证可访问&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     location /.well-known/acme-challenge/ &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         #此目录都是nginx容器内的目录，对应宿主机volumes中的http验证目录，而宿主机的又与certbot容器中命令--webroot-path指定目录一致，从而就整个串起来了，解决了http验证问题&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         root /usr/share/certbot/www;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     #http跳转到https&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;         return 301 https://$host$request_uri;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ;     &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        listen 80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        server_name projects.virtualguard101.xyz;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_pass http://projects:80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_set_header Host $host;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        # return 301 https://$host$request_uri;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;   server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;       listen 443 ssl http2;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;       server_name projects.virtualguard101.xyz;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;       ssl_certificate /etc/letsencrypt/live/projects.virtualguard101.xyz/fullchain.pem;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;       ssl_certificate_key /etc/letsencrypt/live/projects.virtualguard101.xyz/privkey.pem;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;       location / &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;           proxy_pass http://projects:80;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;           proxy_set_header Host $host;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;           proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;           proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;       &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  ;   &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;nginx配置的关键在于反向代理转发的配置，这是nginx一个十分重要的特性，利用它能够实现nginx中许多核心功能，如负载均衡、websocket代理等。对于我们目前的项目需求，暂时无需使用到这些较为复杂的功能，我们现在只需弄明白参数&lt;code&gt;proxy_pass&lt;/code&gt;具体是做什么的，以及其最为基础的配置规则，剩下的交给cv大法即可。&lt;/p&gt;
+&lt;p&gt;在nginx配置中，&lt;code&gt;proxy_pass&lt;/code&gt;用于将客户端的请求代理到指定的后段服务器，简单理解就是把请求作了一次转发。其基础语法如下：&lt;/p&gt;
+&lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;location /path/ &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    proxy_pass http://backend_server:port;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;该配置会将客户端上的请求转发至运行在&lt;code&gt;port&lt;/code&gt;端口上名为&lt;code&gt;backend_server&lt;/code&gt;的服务。结合上面的配置模板进行理解，我们可以发现主页服务在前面的docker配置中我们“恰好”将其配置在了容器的&lt;code&gt;3000&lt;/code&gt;端口上，而其他的二级域名（nginx服务）我们均将其配置在了容器的&lt;code&gt;80&lt;/code&gt;端口上，那么在外网设备（客户端）通过域名访问对应服务时，nginx就会将访问请求转发到对应的端口上。&lt;/p&gt;
+&lt;p&gt;那么nginx怎么知道客户发送了访问请求？这就是&lt;strong&gt;监听&lt;/strong&gt;要做的事。http服务默认通过&lt;code&gt;80&lt;/code&gt;端口访问，通过配置&lt;code&gt;listen&lt;/code&gt;参数我们可以使nginx服务监听&lt;code&gt;80&lt;/code&gt;端口，就像饭点食堂阿姨站在特定窗口等着你去打饭一样。&lt;/p&gt;
+&lt;p&gt;配置模板中注释掉的模块是https的配置，由于我们还未申请ssl证书，现在只能先使用http。关于ssl证书的申请我们也会在后续的章节介绍。&lt;/p&gt;
+&lt;p&gt;docker 与 nginx的配置完成后，我们便可通过&lt;code&gt;docker-compose up -d&lt;/code&gt;命令进行服务部署，此时正常情况下网页已经可以通过外网设备访问。若出现问题，一般情况下会反映在各个服务容器上，可通过&lt;code&gt;docker-compose logs&lt;/code&gt;命令查看日志信息。&lt;/p&gt;
+&lt;h2 id=&#34;github-action自动化部署&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#github-action自动化部署&#34;&gt;&lt;/a&gt; Github Action自动化部署&lt;/h2&gt;
+&lt;p&gt;&lt;s&gt;作为一个懒人&lt;/s&gt;为了提高效率，写个自动化配置把部署的工作交给计算机来做自然是个不错的方法。Github Action为我们提供了一个简单的自动化构建平台，通过模块化的配置和与git远程仓库结合的管理方式极大简化了配置难度，同时集成了版本控制。&lt;/p&gt;
+&lt;p&gt;Github Action自动化的配置通常位于子站点项目根目录的&lt;code&gt;.github/workflows&lt;/code&gt;下。由于自动化部署的方式多种多样，配置自然也同理，故以下配置模板仅供参考。&lt;/p&gt;
+&lt;figure class=&#34;highlight yml&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Deploy&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Subsite&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;on:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;push:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;branches:&lt;/span&gt; [&lt;span class=&#34;string&#34;&gt;main&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;jobs:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;hexo-build:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;runs-on:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;ubuntu-latest&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;steps:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Checkout&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;uses:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;actions/checkout@v4&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Setup&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Node&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;uses:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;actions/setup-node@v3&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;with:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;node-version:&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;18&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Install&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Dependencies&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;run:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;|&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;string&#34;&gt;          npm install -g hexo-cli&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;string&#34;&gt;          npm install&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;string&#34;&gt;&lt;/span&gt;        &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Build&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Site&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;run:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;hexo&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;clean&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;hexo&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;generate&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Deploy&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;Server&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;uses:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;appleboy/scp-action@v0.1.7&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;with:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;host:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;$&amp;#123;&amp;#123;&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;secrets.SERVER_IP&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;username:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;$&amp;#123;&amp;#123;&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;secrets.SERVER_USER&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;key:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;$&amp;#123;&amp;#123;&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;secrets.SSH_KEY&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;source:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;public/*&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;target:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;/home/&amp;lt;user&amp;gt;/sub-sites/&amp;lt;subsites_dir&amp;gt;/&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;# - name: Refresh Nginx&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;#   uses: appleboy/ssh-action@v1.0.0&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;#   with:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;#     host: $&amp;#123;&amp;#123; secrets.SERVER_IP &amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;#     username: $&amp;#123;&amp;#123; secrets.SERVER_USER &amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;#     key: $&amp;#123;&amp;#123; secrets.SSH_KEY &amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;#     script: |&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;comment&#34;&gt;#       docker exec nginx_main nginx -s reload&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;配置模板中，&lt;code&gt;Deploy to Server&lt;/code&gt;模块是配置中较为核心的模块。该模块利用&lt;strong&gt;scp&lt;/strong&gt;工具将生成的静态文件传送至站点服务器的指定路径下，其中的以&lt;code&gt;secrets&lt;/code&gt;开头的三个变量分别是服务器的ip地址、用户与ssh私钥，通过仓库的&lt;code&gt;settings&lt;/code&gt; &amp;gt;&amp;gt; &lt;code&gt;secrets and variables&lt;/code&gt; &amp;gt;&amp;gt; &lt;code&gt;actions&lt;/code&gt; 配置。&lt;br /&gt;
+ssh私钥需在服务器上生成。&lt;/p&gt;
+&lt;p&gt;通过上述自动化配置，在每次我们将本地仓库的更改推送至远程仓库时，github会自动在后台使用hexo生成静态文件，并通过scp将其发送至服务器的指定路径下。&lt;/p&gt;
+&lt;p&gt;至此，我们仅需在本地的各个站点项目路径下修改配置或撰写文章，并将更改推送至github远程仓库，即可实现站点资源的自动化部署。&lt;/p&gt;
+&lt;h2 id=&#34;ssl认证与https模块配置可选&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#ssl认证与https模块配置可选&#34;&gt;&lt;/a&gt; ssl认证与https模块配置（可选）&lt;/h2&gt;
+&lt;p&gt;经过上面五节的配置工作，我们的站点的雏形已经完成，接下来就是最后的收尾工作。关于ssl证书与https，尽管我们并不认为它是一个网页的必要组成部分，但我们还是强烈建议为自己的站点配置ssl证书与https模块以增强安全性与可扩展性。得益于&lt;a href=&#34;https://certbot.eff.org/&#34;&gt;certbot&lt;/a&gt;的ssl证书免费申请功能，我们已经能够较为容易地完成这项工作。&lt;/p&gt;
+&lt;h3 id=&#34;首次申请ssl证书&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#首次申请ssl证书&#34;&gt;&lt;/a&gt; 首次申请ssl证书&lt;/h3&gt;
+&lt;p&gt;由于在该项目中，我们所有的服务均配置于docker容器中，因此我们同样需要将certbot的服务功能配置进docker-compose.yml中以实现后续的ssl证书自动化续签。事实上，certbot官方是不建议使用docker作为certbot的服务载体的，详情可参考&lt;a href=&#34;https://eff-certbot.readthedocs.io/en/stable/install.html#alternative-1-docker&#34;&gt;Get Certbot with Docker&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;在配置前，首先需要拉取certbot的docker镜像：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;docker pull certbot/certbot&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;随后将前文中&lt;code&gt;docker-compose.yml&lt;/code&gt;中&lt;code&gt;certbot&lt;/code&gt;模块的注释去掉，并将nginx挂载卷中有关certbot的路径的注释去掉。启动服务，并通过以下命令进行测试申请：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;# --dry-run是只测试不实际生成; --webroot-path对应着certbot内的http验证目录;-d后面是域名;--rm是运行后接着删除，certbot容器不需要一直开启，只是启动下生成证书即可&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;docker compose run --&lt;span class=&#34;built_in&#34;&gt;rm&lt;/span&gt;  certbot certonly --webroot --webroot-path /usr/share/certbot/www/ --dry-run -d [your_domain]&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;按照提示输入邮箱信息，若返回结果&lt;code&gt;The dry run was successful&lt;/code&gt;，则说明测试成功，即可将&lt;code&gt;--dry-run&lt;/code&gt;去掉以进行实际的证书获取：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;docker compose run --&lt;span class=&#34;built_in&#34;&gt;rm&lt;/span&gt;  certbot certonly --webroot --webroot-path /usr/share/certbot/www/ -d [your_domain]&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;申请成功后，可通过以下命令查看所有已申请的证书：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;docker compose run --&lt;span class=&#34;built_in&#34;&gt;rm&lt;/span&gt; certbot certificats&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;确认证书信息无误后即可开始nginx&lt;code&gt;https&lt;/code&gt;模块的配置。与&lt;code&gt;docker-compose.yml&lt;/code&gt;类似，将&lt;code&gt;nginx.conf&lt;/code&gt;配置模板中https模块的注释去掉，同时将原来未注释的http模块注释掉，&lt;code&gt;docker-compose down &amp;amp;&amp;amp; docker-compose up -d&lt;/code&gt;重启服务。完成后通过外网设备访问网页，正常情况下，网址栏会显示该网页是安全的。&lt;/p&gt;
+&lt;h3 id=&#34;ssl证书自动化续签&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#ssl证书自动化续签&#34;&gt;&lt;/a&gt; ssl证书自动化续签&lt;/h3&gt;
+&lt;p&gt;使用certbot一个很大的原因就是因为其可通过配置&lt;strong&gt;定时任务&lt;/strong&gt;进行ssl证书的自动化续签。具体配置十分简单，一个bash的问题：&lt;/p&gt;
+&lt;p&gt;创建bash脚本，并写入定时申请命令：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;vim sslrenew.sh   &lt;span class=&#34;comment&#34;&gt;# 创建脚本文件&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;# 写入命令&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;docker compose run certbot renew&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;code&gt;crontab -e&lt;/code&gt;添加定时任务，每个月第一天凌晨四点执行，也可根据自己情况进行配置：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;0 4 1 * * ~/sslrenew.sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;配置完成后，可通过&lt;code&gt;crontab -l&lt;/code&gt;命令查看配置的定时命令，确认配置是否写入。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;BASE END&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;到此为止，所有的基础配置也就完成了。此时我们的个人站点已经可以被世界上所有接入互联网的设备访问了，同时我们也可根据个人需求为站点添加各种各样的功能与服务。&lt;/p&gt;
+&lt;p&gt;主要参考文献：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://cloud.tsyidc.com/web/822.html&#34;&gt;docker部署nginx多级子域名 | 蓝易云&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cnblogs.com/vishun/p/15746849.html&#34;&gt;docker部署certbot与nginx来获取ssl证书添加https及自动更新 | vishun&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kasuie.cc/article/22&#34;&gt;使用Certbot自签SSL证书 | kasuie&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2 id=&#34;增添服务&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#增添服务&#34;&gt;&lt;/a&gt; 增添服务&lt;/h2&gt;
+&lt;p&gt;既然我们都选择了使用云服务器来构建我们的个人站点，那么仅使用它来存放静态页面显然是大材小用。对于站点功能的丰富，还是那句话，在成熟工具链丰富的现代开发环境下，并不是什么很难的事情。很多时候，我们只需要正确打开别人写好的文档即可。&lt;/p&gt;
+&lt;p&gt;对于功能扩展这部分的内容，更多的还是将目光放在部署工具供应者的使用文档上，这里只基于该文介绍的站点部署方法简单介绍一下我个人摸索出的&lt;strong&gt;标准化部署流程&lt;/strong&gt;以及部署过程中可能碰到的&lt;strong&gt;问题&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;标准化部署流程&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#标准化部署流程&#34;&gt;&lt;/a&gt; 标准化部署流程&lt;/h3&gt;
+&lt;p&gt;以下流程为个人在实际部署过程中摸索出的不同服务部署过程的共通点，仅供参考。&lt;/p&gt;
+&lt;p&gt;现在，假设我们想要在服务器上部署一个AI对话服务，那么我们便可遵循以下流程进行服务的配置及部署：&lt;/p&gt;
+&lt;h4 id=&#34;一-工具链选取及基础配置工作&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#一-工具链选取及基础配置工作&#34;&gt;&lt;/a&gt; 一、工具链选取及基础配置工作&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;0. 选取对应的服务部署工具链，查阅官方文档并结合当前环境分析部署可行性。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们想要在服务器上部署一个AI对话服务，那么结合当前部署环境，我们就应该在网络上查找对应的&lt;code&gt;docker&lt;/code&gt;镜像（image）。这里我们使用&lt;a href=&#34;https://github.com/SillyTavern/SillyTavern&#34;&gt;LLM Frontend | SillyTavern&lt;/a&gt;进行部署。&lt;/p&gt;
+&lt;p&gt;该框架具有docker镜像，且支持使用docker-compose部署，符合当前的环境要求，且部署难度和成本相对较低。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;1. 拉取docker镜像（可跳过）&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;执行以下命令以获取待部署的docker镜像：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;docker pull ghcr.io/sillytavern/sillytavern:latest&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在使用docker-compose进行部署时，若&lt;code&gt;docker-compose.yml&lt;/code&gt;配置无误，镜像会自动拉取。执行这一步主要是为了提前判定镜像是否处于可获取的状态。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;2. 根据工具文档及个人需求进行配置文件的配置或修改&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;项目主页：&lt;a href=&#34;https://sillytavern.app/&#34;&gt;SillyTavern - LLM Frontend for Power User&lt;/a&gt;&lt;br /&gt;
+项目仓库：&lt;a href=&#34;https://github.com/SillyTavern/SillyTavern&#34;&gt;SillyTavern&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;二-docker-composeyml配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#二-docker-composeyml配置&#34;&gt;&lt;/a&gt; 二、docker-compose.yml配置&lt;/h4&gt;
+&lt;p&gt;由于docker的容器环境是我们站点的部署基础，这部分的配置便显得尤为重要。可参考以下步骤进行配置：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;1. 依照文档给出的配置框架结合部署环境进行基础配置&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;官方给出的&lt;code&gt;docker-compose.yml&lt;/code&gt;如下：&lt;/p&gt;
+&lt;figure class=&#34;highlight yml&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;services:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;sillytavern:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;build:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;..&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;container_name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;sillytavern&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;hostname:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;sillytavern&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;image:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;ghcr.io/sillytavern/sillytavern:latest&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;environment:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;NODE_ENV=production&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;FORCE_COLOR=1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;ports:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;8000:8000&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;volumes:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;./config:/home/node/app/config&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;./data:/home/node/app/data&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;./plugins:/home/node/app/plugins&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;&amp;quot;./extensions:/home/node/app/public/scripts/extensions/third-party&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;restart:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;unless-stopped&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;我们可结合部署环境与部署需求对&lt;code&gt;environment&lt;/code&gt;、&lt;code&gt;volumes&lt;/code&gt;、&lt;code&gt;port&lt;/code&gt;中的值进行修改，同时还需注意&lt;code&gt;docker-compose.yml&lt;/code&gt;与服务自身配置（&lt;code&gt;config.yaml&lt;/code&gt;）的对应关系。比如，针对&lt;code&gt;port&lt;/code&gt;参数，&lt;code&gt;config.yaml&lt;/code&gt;中默认将服务映射在&lt;code&gt;8000&lt;/code&gt;端口上，若两个配置不对应，在访问时就会遇到&lt;code&gt;502(Bad Gateway)&lt;/code&gt;错误。&lt;/p&gt;
+&lt;p&gt;还有一点需要注意：由于nginx服务也运行于容器中，故在此项目的实际配置与部署过程中，真正有效的端口参数是&lt;code&gt;port&lt;/code&gt;参数的&lt;strong&gt;容器服务端口&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;2. 网络关系配置&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;容器化技术的一大亮点在于不同服务容器环境相互独立的情况下也可通过形形色色的配置建立起各个容器间的联系。配置这些东西过程被厌恶容器技术的人所诟病，这些人认为该过程徒增工作复杂度，殊不知这是被他们所忽略的本职工作。&lt;/p&gt;
+&lt;p&gt;服务间网络关系的配置也是上述关系配置中的一环，通过前文的配置我们知道，各个服务的网络配置通过&lt;code&gt;networks&lt;/code&gt;参数控制，而在该项目中我们统一使用&lt;code&gt;web_network&lt;/code&gt;作为各个服务的网络配置参数。故在官方文档原有框架的基础上，我们需要为模块追加如下配置：&lt;/p&gt;
+&lt;figure class=&#34;highlight yml&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;networks:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;web_network&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;!-- 否则会导致sillytavern容器未连接到web_network网络，出现容器错误 --&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;3. 服务依赖关系&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;和网络关系相比，不同服务的依赖关系在体现各个服务容器之间的联系上更加直接。&lt;/p&gt;
+&lt;p&gt;在本项目中，由于需要使用nginx对各个服务进行转发，依赖关系便体现在各个部署在二级域名上的服务与nginx服务上。完成&lt;code&gt;sillytavern&lt;/code&gt;服务的配置后，我们需要在nginx模块的&lt;code&gt;depend_on&lt;/code&gt;参数追加如下配置：&lt;/p&gt;
+&lt;figure class=&#34;highlight yml&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;depend_on:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;.....&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;sillytavern&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;!--显式声明容器依赖关系，确保sillytavern先于nginx启动，否则会出现nginx容器错误 --&gt;
+&lt;h4 id=&#34;三-nginx-https模块配置&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#三-nginx-https模块配置&#34;&gt;&lt;/a&gt; 三、nginx-https模块配置&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;1. 反向代理基础配置（http模块）&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;依照前文基础配置的&lt;code&gt;nginx.conf&lt;/code&gt;模板进行修改即可。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;2. ssl证书申请及https模块配置&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;遵循&lt;code&gt;复制模板&lt;/code&gt;-&lt;code&gt;注释&lt;/code&gt;-&lt;code&gt;解除注释&lt;/code&gt;-&lt;code&gt;申请&lt;/code&gt;-&lt;code&gt;解除注释&lt;/code&gt;的“五步原则”。注释及解除注释操作的对应模块如下：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注释&lt;/strong&gt;：注释&lt;strong&gt;http反向代理模块&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;第一次解除注释&lt;/strong&gt;：解除&lt;strong&gt;http ACME验证挑战模块&lt;/strong&gt;注释&lt;br /&gt;
+&lt;strong&gt;第二次解除注释&lt;/strong&gt;：解除&lt;strong&gt;https反向代理模块&lt;/strong&gt;注释&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;完成以上三大步，8小步的配置与部署操作，部署工作基本也就完成了。&lt;/p&gt;
+&lt;h2 id=&#34;常见问题&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#常见问题&#34;&gt;&lt;/a&gt; 常见问题&lt;/h2&gt;
+&lt;p&gt;部署过程中经常会碰到一些奇奇怪怪的问题，特别是不熟悉docker、nginx配置规则的初学者。下面是我在部署过程中遇到的问题的汇总。&lt;/p&gt;
+&lt;h3 id=&#34;nginx错误-服务访问错误&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#nginx错误-服务访问错误&#34;&gt;&lt;/a&gt; nginx错误、服务访问错误&lt;/h3&gt;
+&lt;p&gt;通常表现为nginx容器无法正常运行，网页访问&lt;code&gt;500&lt;/code&gt;、网页访问&lt;code&gt;502&lt;/code&gt;等，具体原因可能有如下几种：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;nginx.conf&lt;/code&gt;配置错误&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通常是反向代理模块中&lt;code&gt;proxy_pass&lt;/code&gt;参数的配置有误，比如后端服务的&lt;strong&gt;端口&lt;/strong&gt;或&lt;strong&gt;服务名称&lt;/strong&gt;与&lt;code&gt;docker-compose.yml&lt;/code&gt;中配置的不对应。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;docker-compose.yml&lt;/code&gt;配置错误&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通常是前文提到的不同容器间关系的配置有误或者缺失，特别是nginx服务与其他需要通过nginx服务进行转发的服务之间的关系。如&lt;code&gt;networks&lt;/code&gt;配置、容器依赖关系配置；以及前文提到的服务配置与docker-compose配置的对应关系问题，如服务端口的对应问题。&lt;/p&gt;
+&lt;h3 id=&#34;ssl证书申请certbot错误&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#ssl证书申请certbot错误&#34;&gt;&lt;/a&gt; ssl证书申请（certbot）错误&lt;/h3&gt;
+&lt;p&gt;通常表现为无法申请ssl证书、申请证书后访问显示“&lt;s&gt;https&lt;/s&gt;网页不安全”等，具体原因可能有如下几种：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;无法申请ssl证书（certbot无法正常运行）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;1. 同一域名在短时间内申请次数过多&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. &lt;code&gt;nginx.conf&lt;/code&gt;中http ACME验证挑战模块配置有误&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. 在特殊环境（如需要进行用户验证）下未注释http反向代理模块导致无法访问服务的问题（如&lt;code&gt;401&lt;/code&gt;）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4. 域名本身无法正常访问（&lt;code&gt;5xx&lt;/code&gt;、&lt;code&gt;4xx&lt;/code&gt;）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;访问问题（提示网站不安全）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;1. 申请ssl证书时信息有误，如二级域名名称错误&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. &lt;code&gt;nginx.conf&lt;/code&gt;中https模块二级域名（server_name）配置有误&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. &lt;code&gt;nginx.conf&lt;/code&gt;中https模块证书路径有误&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;关键在与证书与域名的对应关系是否有误。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;END&lt;/strong&gt;&lt;/p&gt;
+</content>
+        <category term="web开发" />
+        <category term="docker" />
+        <updated>2025-04-26T15:28:57.000Z</updated>
+    </entry>
+    <entry>
+        <id>http://blog.virtualguard101.xyz/2025/03/10/Hello/</id>
+        <title>Hello :)</title>
+        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/03/10/Hello/"/>
+        <content type="html">&lt;p&gt;This is the first content for my blog 😃 &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://butterblock233.github.io/posts/images/Hello.gif&#34; alt=&#34;Hello&#34; /&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;GIF source: &lt;a href=&#34;https://dribbble.com/shots/17347386-Hello-Apple&#34;&gt;Hello Apple by Meritt Thomas&lt;/a&gt; &lt;br&gt;&lt;/p&gt;
+</content>
+        <updated>2025-03-09T18:09:15.000Z</updated>
+    </entry>
+</feed>
