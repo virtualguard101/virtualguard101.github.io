@@ -488,6 +488,9 @@ body [data-aos='zoom-in'] {
 .icon-github:before {
   content: "\e619";
 }
+.icon-twitter:before {
+  content: "\e62a";
+}
 .icon-telegram:before {
   content: "\e623";
 }
@@ -3288,6 +3291,9 @@ pre .javascript .function {
 }
 [data-theme="dark"] .icon-github {
   color: #bc88ff;
+}
+.icon-twitter {
+  color: #191717;
 }
 .icon-telegram {
   color: #08c;

@@ -124,6 +124,9 @@
 .icon-github:before {
   content: "\f09b";
 }
+.icon-twitter:before {
+  content: "\e61b";
+}
 .icon-telegram:before {
   content: "\f2c6";
 }
