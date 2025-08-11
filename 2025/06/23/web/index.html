@@ -43,7 +43,7 @@
 <meta property="og:description" content="对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-23T04:38:07.000Z">
-<meta property="article:modified_time" content="2025-07-12T16:36:39.042Z">
+<meta property="article:modified_time" content="2025-08-11T06:36:25.578Z">
 <meta property="article:author" content="virtualguard">
 <meta property="article:tag" content="web开发">
 <meta property="article:tag" content="docker">
@@ -355,7 +355,7 @@
       <div class="article-date">
   <span class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-06-23T04:38:07.000Z" itemprop="datePublished">2025-06-23</time>
-    <time style="display: none;" id="post-update-time">2025-07-13</time>
+    <time style="display: none;" id="post-update-time">2025-08-11</time>
   </span>
 </div>
 
@@ -402,7 +402,7 @@
     }
 
     state Nginx {
-      Description: High-performance Web Server and Reverse Proxy Handle
+      Description: Running In Container
     }
   }
 
@@ -435,7 +435,7 @@
   }
 
   state Nginx {
-    Description: High-performance Web Server and Reverse Proxy Handle(Running Globally)
+    Description: Running Globally
   }
 
   service1 --> Nginx: forward
@@ -513,12 +513,12 @@
 </blockquote>
 <h5 id="服务管理脚本"><a class="markdownIt-Anchor" href="#服务管理脚本"></a> 服务管理脚本</h5>
 <p>当服务数量越来越多，且依赖关系越来越复杂时，每次需要配置一个服务可能就需要频繁地切换目录以及输入一些冗长的命令，这时就可以通过编写自动化脚本来 <s>偷懒</s> 提高效率。</p>
-<p>对于逻辑比较简单（比如线性逻辑）且shell命令相对密集的系列操作，我们就可以通过编写shell脚本来解决；而对于逻辑相对复杂且需要高度定制化的系列操作，我们就可以交给python脚本来解决，这样不容易出错。</p>
+<p>对于逻辑比较简单（比如线性逻辑）且shell命令相对密集的系列操作，我们就可以通过编写shell脚本来解决；而对于逻辑相对复杂或对可扩展性要求较高的系列操作与功能，我们就可以交给python脚本来解决，这样不容易出错。</p>
 <p>编写python脚本前，我们需要先安装python：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install python3</span><br><span class="line"><span class="built_in">sudo</span> apt install pip</span><br></pre></td></tr></table></figure>
 <p>Ubuntu默认安装python3.10，如果对版本有特殊要求，可以安装一个虚拟环境管理器。这里以<a target="_blank" rel="noopener" href="https://docs.astral.sh/uv/">uv</a>为例：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -LsSf https://astral.sh/uv/install.sh | sh</span><br></pre></td></tr></table></figure>
-<!-- [ ] 脚本模板案例 -->
+<p>针对我的个人站点，我为其写了一个集成了<strong>服务注册</strong>、<strong>服务管理</strong>以及<strong>服务删除</strong>三个主要操作的脚本集合，并将其作为一个用户自定义包使用。项目地址可见<a target="_blank" rel="noopener" href="https://github.com/virtualguard101/WebServicesManager">GitHub</a>或我的<a target="_blank" rel="noopener" href="https://gitea.virtualguard101.com/virtualguard101/webscripts">个人远程仓库</a>。</p>
 
       
     </div>
@@ -529,7 +529,7 @@
     <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="http://blog.virtualguard101.xyz/2025/06/23/web/">http://blog.virtualguard101.xyz/2025/06/23/web/</a></p>
     <p><strong><span class="icon-pencil icon"></span>本文标题：</strong>「个人站点构建要点(改良版) && Web 开发简要实践」</p>
     <p><strong><span class="icon-calendar icon"></span>本文发布时间：</strong>2025-06-23 12:38:07</p>
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-07-13 00:36:39</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-08-11 14:36:25</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -907,7 +907,7 @@
           description: "",
           stripContent: "对今年四月份写的“docker-compose + nginx快速构建个人站点”中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新 近期在spaceship上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。 做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新",
           date: "Mon Jun 23 2025 12:38:07 GMT+0800",
-          updated: "Sun Jul 13 2025 00:36:39 GMT+0800",
+          updated: "Mon Aug 11 2025 14:36:25 GMT+0800",
           cover: "https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg",
         };
       </script>
@@ -1153,7 +1153,7 @@
               envId: '',
               region: '',
               urls: [
-                '/about/index.html'
+                '/friend/index.html'
               ],
               includeReply: false
             }).then((res) => {
