@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>virtualguard&#39;s Blog • Posts by &#34;ai+&#34; tag</title>
+        <link>http://blog.virtualguard101.xyz</link>
+        <description>&lt;/&gt;</description>
+        <language>zh-CN</language>
+        <pubDate>Sat, 16 Aug 2025 14:00:00 +0800</pubDate>
+        <lastBuildDate>Sat, 16 Aug 2025 14:00:00 +0800</lastBuildDate>
+        <category>linux</category>
+        <category>学年总结</category>
+        <category>AI+</category>
+        <category>Meetup</category>
+        <category>web开发</category>
+        <category>docker</category>
+        <item>
+            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/08/16/cursor-meetup-shanghai/</guid>
+            <title>Cursor Meetup ShangHai 要点记录</title>
+            <link>http://blog.virtualguard101.xyz/2025/08/16/cursor-meetup-shanghai/</link>
+            <category>AI+</category>
+            <category>Meetup</category>
+            <pubDate>Sat, 16 Aug 2025 14:00:00 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;在朋友的邀请下参加了8月16号在上海浦东软件园举行的 Cursor Meetup，对朋友现场记录的内容以及我的个人提问做一个整理，同时站在计算机专业在校大学生视角简单记录一下当前的看法&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;整个 Meetup 的流程持续了一整个下午，分上下两场，个人感觉上半场更倾向于实际应用场景的“踩坑”分享，而下半场则更倾向于方法论的解析。&lt;/p&gt;
+&lt;p&gt;站在学生视角，前半场的实际应用场景我个人基本无法很好消化，毕竟还没有参与工作，没有这样的环境与条件去感受这一方面的内容；但方法论模块的分享对于当前的我们来说还是很有参考价值的，无论是我的朋友（医学生）还是我（CSer），特别是针对未来大概率要进入这个行业的我而言。&lt;/p&gt;
+&lt;p&gt;现场绝大多数的与会者都已经参与工作，其中也不乏各单位中的技术领头羊，这也给了迷茫的我提问的机会。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;活动议程如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/Y9YnmBu.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;kiro-ide简介及新一代ai编程方案&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#kiro-ide简介及新一代ai编程方案&#34;&gt;&lt;/a&gt; Kiro IDE简介及新一代AI编程方案&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Calvin | AWS Startup&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;纯AI有不编程少问题，解决方案&lt;br /&gt;
+规范驱动的开发 : Spec Mode&lt;/p&gt;
+&lt;p&gt;示例：Kiro IDE&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Spec Mode ： 先写规范再编码&lt;/li&gt;
+&lt;li&gt;Agent Hook： 比如保存文件的时候调用AI检查代码&lt;/li&gt;
+&lt;li&gt;Vibe： 互动问答为核心&lt;/li&gt;
+&lt;li&gt;Spec：严格按照软件工程的需求&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;v0-cursor-实战开发&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#v0-cursor-实战开发&#34;&gt;&lt;/a&gt; v0 + cursor 实战开发&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;陆彦达 | 飞书深诺研发总监&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;借助V0快速完成原型开发，对其需求即可&lt;/p&gt;
+&lt;p&gt;把原型丢给前端和Cursor，让cursor补全&lt;/p&gt;
+&lt;p&gt;再让cursor生成配套后端（比如swagger）&lt;/p&gt;
+&lt;p&gt;Cursor不是很适合超大项目和上古项目，但很适合简单项目/中小型项目从零开始开发&lt;/p&gt;
+&lt;p&gt;架构的设计以及rule很重要&lt;/p&gt;
+&lt;!-- 
+!!! question
+    我不是专业开发者，之前用Cursor等AI工具做过一些玩具，但是我让Cursor写了一个原型之后，想要重构的时候发现代码经常会相当混乱，让Cursor自己改，可能也会出现前改后忘这类的情况（比如我要重构一个函数，Cursor写了一个新的函数，调用老函数再做一些额外处理），此类情况有什么对策
+
+    我不是专业开发者，之前用Cursor等AI工具做过一些玩具，我让Cursor做一个原型，一路点点点确实做出了要的效果，但是这时候代码就变得复杂的超出了我的理解能力，就让我的重构比较难受
+ --&gt;
+&lt;p&gt;Cursor的开发 轻逻辑轻算法，重顶层和架构设计&lt;/p&gt;
+&lt;p&gt;效果 Python, Typescript &amp;gt; Java&lt;/p&gt;
+&lt;h2 id=&#34;cursor-memories&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#cursor-memories&#34;&gt;&lt;/a&gt; Cursor Memories&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;好记星 | 前得物增长前端负责人&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;记忆本身就是一种规则&lt;/p&gt;
+&lt;p&gt;索引的记忆数量有限制(最新100条)&lt;/p&gt;
+&lt;p&gt;未来的策略：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;增加一个找回策略&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;团队协作&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;记忆其实就是用户对于项目/仓库的认知&lt;/p&gt;
+&lt;p&gt;最佳实践：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;可保存的记忆：记住我是医学生/开源爱好者/见习开发者&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;用户洞察：根据聊天记录提取记忆&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;聊天记录会议：我们之前聊过这个事情&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有意思的Cursor插件：Spec Story&lt;/p&gt;
+&lt;h2 id=&#34;mcp&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#mcp&#34;&gt;&lt;/a&gt; MCP&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;孟健 | AI 畅销书作者&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;感觉就是通用的Function Call协议，主要价值是标准化&lt;/p&gt;
+&lt;p&gt;MCP暂时还在早期阶段，未来是Agent to Agent(A2A)协议&lt;/p&gt;
+&lt;p&gt;国内MCP的生态发展一般，正在努力发展的生态 ：&lt;a href=&#34;https://www.mcp-cn.com/&#34;&gt;MCP Hub&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Claude Code 团队：AI Coding将来会覆盖90%+的编码场景&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Agent编程，提示词要精准，方便AI理解的，所以说AI无法抢走你的工作🤓&lt;/p&gt;
+&lt;p&gt;什么服务可以MCP化：AI本来是缺少这个能力的，要接入外部工具提升能力。有缺口就可以用MCP补全&lt;/p&gt;
+&lt;h2 id=&#34;如何用ai开发出-github-43k的产品&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#如何用ai开发出-github-43k的产品&#34;&gt;&lt;/a&gt; 🤩如何用AI开发出 Github 4.3k的产品&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/zqTVwll.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/pftom&#34;&gt;黄巍/Tom Huang&lt;/a&gt; | &lt;a href=&#34;https://github.com/refly-ai/refly&#34;&gt;Refly&lt;/a&gt; AI Founder &amp;amp; CEO&lt;/p&gt;
+&lt;p&gt;针对一个在校大学生兼 &lt;s&gt;开源社区混子&lt;/s&gt; 开源爱好者的&lt;strong&gt;我们&lt;/strong&gt;来说，这很有用！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;方法论分享&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#方法论分享&#34;&gt;&lt;/a&gt; 方法论分享&lt;/h3&gt;
+&lt;p&gt;Refly AI :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;两周完成上线&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;生产级别可用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;4.3k star&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;早于Notebook LM 约 3-5个月&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一些阶段：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;洪荒时代&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;忽然有一天发现所有代码都可以用AI来写了（产品经理活的最滋润的一集）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Coding Agent加速 (Codeium -&amp;gt; Windsurf)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Coding Agent像水电一样平常后，会发生什么&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;做产品不能闭门造车&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;AI+ Dev&lt;/strong&gt;对Starup和大厂差距的影响：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;信息差&lt;/strong&gt;：AI 搜索 -&amp;gt; 抹平信息差&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;开发速度&lt;/strong&gt;：AI Coding -&amp;gt; 代码补全时代&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;极致的生产力使得初创公司也能具有挑战百度自由画布的底气，可以&lt;strong&gt;说干就干&lt;/strong&gt;&lt;/p&gt;
+&lt;!-- &gt; 吐槽百度：出了名的想法超前，执行力拉胯 --&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;技术实现边际成本为 0 后，如何做选择，或者说『品味』就变得尤为重要&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;AI产品的价值：不仅可以帮你完成工作，还可能让你充满信心——不仅仅局限于Coding，也可以是你的生活与工作伙伴。&lt;/p&gt;
+&lt;p&gt;产品选择：不要攻打别人的腹地，看看产品之间有什么可用的空隙你可以参与&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/zTYrumE.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;个人提问&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#个人提问&#34;&gt;&lt;/a&gt; 个人提问&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;作为一个近期遭遇学习瓶颈（主要体现在基础学习、方向选择上）的在校大学生，&lt;strong&gt;我&lt;/strong&gt;深感焦虑，我参与此次 Meetup 的目的更多的也是想了解一些&lt;strong&gt;AIGC/AI+&lt;strong&gt;对当前计算机行业&lt;/strong&gt;生产方式&lt;/strong&gt;发展趋势的影响，以更好地思考近期的规划同时抉择自己的钻研方向&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;以下对话为个人要点回顾，与实际对话可能有所差异&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q&lt;/strong&gt; (&lt;em&gt;virtualguard101&lt;/em&gt;):&lt;/p&gt;
+&lt;p&gt;在刚刚的分享中，您提到了 AI+ 产品能够使得研发进程具备极致的生产效率，那么作为一个已经参与工作的开发者，您认为计算机基础知识的学习还有必要吗？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;A&lt;/strong&gt; (&lt;em&gt;Tom Huang&lt;/em&gt;):&lt;/p&gt;
+&lt;p&gt;还是有必要的，至少大学校园中提供的基础课程还是需要掌握的。&lt;strong&gt;AI+ 产品只是一个生产工具&lt;/strong&gt;，扎实的理论基础才能够使得你具备高效利用它的能力，根据马斯克曾提到的&lt;a href=&#34;https://www.mbachina.com/html/FMBA2012/202202/412585.html&#34;&gt;第一性原理&lt;/a&gt;也不难得出这个结论。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q&lt;/strong&gt; (&lt;em&gt;virtualguard101&lt;/em&gt;):&lt;/p&gt;
+&lt;p&gt;假设我的主攻方向是 DevOps，我的工作有可能被AI+取代吗？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;A&lt;/strong&gt; (&lt;em&gt;Tom Huang&lt;/em&gt;):&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;好像还真有可能😂&lt;/s&gt;，不过要知道，AI 的底层是一个概率模型，概率模型最大的特点就是具有&lt;strong&gt;不稳定性&lt;/strong&gt;，因此在对稳定性或高精度的任务中，AI 就很难发挥主导作用了——举个例子：在今天的分享中，不难发现当前 AI 在前端开发中的应用程度要比其他领域（如后端）高出不少，这就是因为前端的产品可预览、容错度高，且比较容易发现问题；假设我们将场景切换到后端开发、服务器开发、DevOps等综合度较高的场景，一个小小的错误就有可能使得整个系统崩溃，那么这时 AI 能发挥的作用就非常有限了，还是需要人工不断地改进系统。这时能否更加高效地利用 AI+ &lt;strong&gt;工具&lt;/strong&gt;来处理业务需求或解决各式各样的运维问题就是区分普通运维与“新时代”运维的一个重要指标了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q&lt;/strong&gt; (&lt;em&gt;virtualguard101&lt;/em&gt;):&lt;/p&gt;
+&lt;p&gt;当前 AI 领域的快速发展与迭代，使得我时常陷入类似于“我当前的学习是否还具有实际意义”等问题的思考，导致我十分迷茫与焦虑，有什么办法能缓解这种情况吗？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;A&lt;/strong&gt; (&lt;em&gt;Tom Huang&lt;/em&gt;):&lt;/p&gt;
+&lt;p&gt;在学习的过程中伴随一些&lt;strong&gt;产出&lt;/strong&gt;，不论这个产出的形式、托管平台等要素，只要它具有实际意义，那么就能很大程度上缓解你的焦虑——另外如果你的产出能被他人所认可，我想这也会使你产生极大的慰藉（作为一个开源爱好者，这点我是真的感同身受）；同时，回到刚刚说的 AI+ 产品也可以在这个过程中为你提供很多帮助，包括但不限于帮助你掌握扎实的基础理论，即 作为你的一个&lt;strong&gt;学习与生活的伙伴&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ai时代的个人战略&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#ai时代的个人战略&#34;&gt;&lt;/a&gt; ⭐AI时代的个人战略&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;魏知 | 金融科技公司 AI 企业转型项目负责人&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这一模块我的朋友没有记录，同时我自己也没有认真听，但作为未来要踏入这个行业的“准社畜”而言，我认为这个模块分享的方法论对我而言还是挺有参考价值的，故将在现场拍摄的照片列出以供回顾&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/WX5HG9Y.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/rvZyPF8.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/3xrTVmB.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/n6rFOO4.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/wgHTSAP.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.imgur.com/ToyH1Ma.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;在当前发展阶段，大多数企业还处于&lt;strong&gt;第一阶段&lt;/strong&gt;，部分头部企业已经发展至&lt;strong&gt;第二阶段&lt;/strong&gt;，但还没有人敢说自己的企业已经发展至&lt;strong&gt;第三阶段&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;qa&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#qa&#34;&gt;&lt;/a&gt; Q&amp;amp;A&lt;/h2&gt;
+&lt;p&gt;防幻觉的rule：&lt;/p&gt;
+&lt;figure class=&#34;highlight js&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;confidence&lt;/span&gt;:int&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; confidence &amp;gt;= &lt;span class=&#34;number&#34;&gt;95&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;title function_&#34;&gt;answer&lt;/span&gt;()&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;else&lt;/span&gt;: ask-me-&lt;span class=&#34;title function_&#34;&gt;questions&lt;/span&gt;()&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;把大的任务分解为sub tasks&lt;/p&gt;
+&lt;p&gt;避免Vibe debug异常痛苦🤣&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;定一个清晰的需求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对于大的需求，设置一个好的rules，让AI按模块开发&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Spec-mode防止效果和需求便宜过大&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;init的时候写一些 basic rules： 基本的代码风格，模块设置等&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;debug workflow:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;讨论&lt;/strong&gt;：做了什么- 期待结果- 实际结果- 一些日志，报错等&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;规划&lt;/strong&gt;：要如何处理这些问题&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Action&lt;/strong&gt;：让AI写&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;相当于「AI 结对编程」，而不是「老板甩给员工 debug」&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;及时删除冗余代码&lt;/p&gt;
+&lt;p&gt;一个问题一个问题解决，不要设定过于宏大的任务&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>
