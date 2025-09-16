@@ -17,7 +17,7 @@
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"license_type":"by-nc-sa","content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.outdate = {"enable":true,"daysAgo":-1,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};window.REIMU_CONFIG.code_block = {"expand":5};window.REIMU_CONFIG.base = 'http://blog.virtualguard101.xyz';</script>
   
   <title>
-    Arch Linux安装要点记录 |
+    关于“时间紧，任务重”问题的反思 |
     
     virtualguard&#39;s Blog
   </title>
@@ -35,20 +35,18 @@
 
   
   
-    <meta name="description" content="记录一下在可移动设备&#x2F;真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题">
+    <meta name="description" content="关于2025-2026学上学期学期初反复出现各种任务（包括但不限于行政任务、学习任务、学业任务）短时间内大量堆积，导致手忙脚乱，无法冷静思考并高效处理的问题的反思">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Arch Linux安装要点记录">
-<meta property="og:url" content="http://blog.virtualguard101.xyz/2025/05/19/arch-linux/index.html">
+<meta property="og:title" content="关于“时间紧，任务重”问题的反思">
+<meta property="og:url" content="http://blog.virtualguard101.xyz/2025/09/16/250916-summary/index.html">
 <meta property="og:site_name" content="virtualguard&#39;s Blog">
-<meta property="og:description" content="记录一下在可移动设备&#x2F;真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题">
+<meta property="og:description" content="关于2025-2026学上学期学期初反复出现各种任务（包括但不限于行政任务、学习任务、学业任务）短时间内大量堆积，导致手忙脚乱，无法冷静思考并高效处理的问题的反思">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.imgur.com/8fTXOCP.jpeg">
-<meta property="article:published_time" content="2025-05-19T00:52:48.000Z">
-<meta property="article:modified_time" content="2025-09-16T06:03:10.248Z">
+<meta property="article:published_time" content="2025-09-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-16T06:03:10.271Z">
 <meta property="article:author" content="virtualguard">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="日常反思">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/8fTXOCP.jpeg">
   
   
     
@@ -200,7 +198,7 @@
           
         </picture>
         
-          <img  fetchpriority="high" src="https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg" alt="Arch Linux安装要点记录">
+          <img  fetchpriority="high" src="https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg" alt="关于“时间紧，任务重”问题的反思">
         
       
     
@@ -211,7 +209,7 @@
         
         
           <a href="/" id="logo">
-            <h1 data-aos="slide-up">Arch Linux安装要点记录</h1>
+            <h1 data-aos="slide-up">关于“时间紧，任务重”问题的反思</h1>
           </a>
         
       
@@ -238,7 +236,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text"> 基本安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96efi%E5%88%86%E5%8C%BA%E5%89%8D%E6%9C%AA%E5%A4%87%E4%BB%BD%E5%8E%9F%E6%9C%89%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC%E5%8F%8C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text"> 格式化EFI分区前未备份原有系统启动引导（双系统）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%B3%95%E5%BC%82%E5%B8%B8"><span class="toc-number">1.2.</span> <span class="toc-text"> 输入法异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%82%E9%A1%B9"><span class="toc-number">1.3.</span> <span class="toc-text"> 杂项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E5%8F%AF%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text"> 在可移动设备安装</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%98%E7%94%B1%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text"> 缘由分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.1.</span> <span class="toc-text"> 直接原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%B1%82%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 深层原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B9%E6%9C%AC%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.3.</span> <span class="toc-text"> 根本原因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text"> 解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text"> 直接方法</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -350,19 +348,19 @@
   
 </aside>
 
-          <section id="main"><article id="post-arch-linux" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main"><article id="post-250916-summary" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link" data-aos="zoom-in">
-    <time datetime="2025-05-19T00:52:48.000Z" itemprop="datePublished">2025-05-19</time>
+    <time datetime="2025-09-15T16:00:00.000Z" itemprop="datePublished">2025-09-16</time>
     <time style="display: none;" id="post-update-time">2025-09-16</time>
   </span>
 </div>
 
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Misc/" data-aos="zoom-in">Misc</a>
+    <a class="article-category-link" href="/categories/Summary/" data-aos="zoom-in">Summary</a>
   </div>
 
 
@@ -375,41 +373,67 @@
         <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
       
       
-        <p><strong>记录一下在可移动设备/真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题</strong></p>
-<p>Arch Linux是一个支持高度定制化的Linux发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。</p>
-<p>这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。</p>
+        <p>自2025年9月份起，开始转入新学院、新专业进行学习，<mark>反复出现各种任务（包括但不限于行政任务、学习任务、学业任务）短时间内大量堆积，导致<strong>手忙脚乱，无法冷静思考并高效处理</strong>的问题</mark>。典型表现如下：</p>
 <!-- more -->
-<h2 id="基本安装"><a class="markdownIt-Anchor" href="#基本安装"></a> 基本安装</h2>
-<p>针对这部分内容，教程<a target="_blank" rel="noopener" href="https://arch.icekylin.online/guide/">Arch Guide | Nakano Miku</a>有详尽的阐述，包括从安装准备到系统美化的所有内容。</p>
-<p>这里记录几个我在真机安装过程中遇到的问题。</p>
-<h3 id="格式化efi分区前未备份原有系统启动引导双系统"><a class="markdownIt-Anchor" href="#格式化efi分区前未备份原有系统启动引导双系统"></a> 格式化EFI分区前未备份原有系统启动引导（双系统）</h3>
-<p>我在安装过程中由于急于求成，在为EFI分区扩容时未备份原有系统（这里是Win11）的启动引导程序就直接将其格式化了，结果安装完Arch的基本系统才发现Win11进不去了…</p>
-<p>虽说安装前有备份Win11的系统映像，但为了一个EFI分区动用这个实属大材小用，因为基本数据的分区并没有任何问题。在这个问题上，我选择使用WinPE镜像系统对Win11的启动引导进行还原。只需准备一个装有WinPE镜像的U盘，启动进入WinPE，按照下图的提示，选择修<code>UEFI</code>引导进行修复即可：</p>
-<p><img src="https://i.imgur.com/8fTXOCP.jpeg" alt="" /></p>
-<h3 id="输入法异常"><a class="markdownIt-Anchor" href="#输入法异常"></a> 输入法异常</h3>
-<p>这在教程<a target="_blank" rel="noopener" href="https://arch.icekylin.online/guide/">Arch Guide | Nakano Miku</a>有提示，（如果是按照此教程进行的安装）执行命令<code>fcitx5-diagnose</code>进行问题诊断并按照输出提示修复即可。</p>
-<h3 id="杂项"><a class="markdownIt-Anchor" href="#杂项"></a> 杂项</h3>
-<p>关于桌面环境的选择，可以参考这篇文章：<a target="_blank" rel="noopener" href="https://linuxiac.com/xorg-x11-wayland-linux-display-servers-and-protocols-explained/">Xorg, X11, Wayland? Linux Display Servers And Protocols Explained<br />
-</a></p>
-<h2 id="在可移动设备安装"><a class="markdownIt-Anchor" href="#在可移动设备安装"></a> 在可移动设备安装</h2>
-<p>该部分可参考<a target="_blank" rel="noopener" href="https://b2og.com/archives/23">将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG</a>。</p>
-<p>第一次安装中，我就将Arch装在了一个256G、使用USB3.1的U盘上，同时由于使用<a target="_blank" rel="noopener" href="https://arch.icekylin.online/guide/rookie/pre-virt.html">虚拟机</a>运行安装镜像，所以并没有碰到什么大问题。</p>
-<hr />
-<p><strong>[参考文献]：</strong></p>
 <ul>
 <li>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinuxcn.org/zh-sg/%E5%9C%A8%E5%8F%AF%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E4%B8%8A%E5%AE%89%E8%A3%85_Arch_Linux">在可移动设备上安装 Arch Linux | Arch Wiki</a></p>
+<p>头脑思绪很乱，无法静下心来挨个处理单个问题</p>
 </li>
 <li>
-<p><a target="_blank" rel="noopener" href="https://b2og.com/archives/23">将Arch Linux系统安装在可移动设备上的要点 | ToBeHonest’s BLOG</a></p>
+<p><mark>并发任务能力低下，难以在一个时间段内同时处理多个/种事情</mark></p>
 </li>
 <li>
-<p><a target="_blank" rel="noopener" href="https://arch.icekylin.online/guide/">Arch Guide | Nakano Miku</a></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://archlinuxstudio.github.io/ArchLinuxTutorial/#/">ArchLinuxTutorial | Arch Linux Studio</a></p>
+<p>高度焦虑，心理负担大</p>
 </li>
 </ul>
+<h2 id="缘由分析"><a class="markdownIt-Anchor" href="#缘由分析"></a> 缘由分析</h2>
+<h3 id="直接原因"><a class="markdownIt-Anchor" href="#直接原因"></a> 直接原因</h3>
+<ul>
+<li>
+<p>转入初期有不少行政交接工作需要完成，同时还需兼顾系统性自学计划的制定、评估以及试运行工作</p>
+</li>
+<li>
+<p>参与了一个跨领域的科研级项目，部分理论知识需要从头开始学起，可支配时间被进一步压缩</p>
+</li>
+<li>
+<p>面临新的人际环境，人际往来极少或完全没有</p>
+</li>
+</ul>
+<h3 id="深层原因"><a class="markdownIt-Anchor" href="#深层原因"></a> 深层原因</h3>
+<ul>
+<li>
+<p>对学业评估政策了解程度不足</p>
+</li>
+<li>
+<p>抗拒主动交流，<mark>学业、行政信息闭塞</mark></p>
+</li>
+</ul>
+<h3 id="根本原因"><a class="markdownIt-Anchor" href="#根本原因"></a> 根本原因</h3>
+<ul>
+<li>
+<p>信息闭塞导致焦虑，焦虑使人难以冷静思考，无法冷静思考也会加剧焦虑问题，陷入恶性循环</p>
+</li>
+<li>
+<p>思维定势导致处世死板，从而无法灵活高效地处理各类问题</p>
+</li>
+<li>
+<p>对未知抱有恐惧</p>
+</li>
+</ul>
+<h2 id="解决方法"><a class="markdownIt-Anchor" href="#解决方法"></a> 解决方法</h2>
+<h3 id="直接方法"><a class="markdownIt-Anchor" href="#直接方法"></a> 直接方法</h3>
+<ul>
+<li>
+<p><strong>放松</strong></p>
+</li>
+<li>
+<p><strong>灵活</strong></p>
+</li>
+<li>
+<p><strong>交流</strong></p>
+</li>
+</ul>
+<p>⚠️以及注意身体健康问题</p>
 
       
     </div>
@@ -417,9 +441,9 @@
       
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>本文作者：</strong>virtualguard @ virtualguard's Blog</p>
-    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="http://blog.virtualguard101.xyz/2025/05/19/arch-linux/">http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</a></p>
-    <p><strong><span class="icon-pencil icon"></span>本文标题：</strong>「Arch Linux安装要点记录」</p>
-    <p><strong><span class="icon-calendar icon"></span>本文发布时间：</strong>2025-05-19 08:52:48</p>
+    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="http://blog.virtualguard101.xyz/2025/09/16/250916-summary/">http://blog.virtualguard101.xyz/2025/09/16/250916-summary/</a></p>
+    <p><strong><span class="icon-pencil icon"></span>本文标题：</strong>「关于“时间紧，任务重”问题的反思」</p>
+    <p><strong><span class="icon-calendar icon"></span>本文发布时间：</strong>2025-09-16 00:00:00</p>
     <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-09-16 14:03:10</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
@@ -429,13 +453,13 @@
       
         <div class="share-wrapper">
   
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=Arch%20Linux%E5%AE%89%E8%A3%85%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95&amp;desc=%E8%AE%B0%E5%BD%95%E4%B8%80%E4%B8%8B%E5%9C%A8%E5%8F%AF%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%2F%E7%9C%9F%E6%9C%BA%E4%B8%8A%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AEArch%20Linux%E7%9A%84%E8%BF%87%E7%A8%8B%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98&amp;source=http%3A%2F%2Fblog.virtualguard101.xyz" target="_blank" rel="noopener noreferrer" title="Arch Linux安装要点记录">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=%E5%85%B3%E4%BA%8E%E2%80%9C%E6%97%B6%E9%97%B4%E7%B4%A7%EF%BC%8C%E4%BB%BB%E5%8A%A1%E9%87%8D%E2%80%9D%E9%97%AE%E9%A2%98%E7%9A%84%E5%8F%8D%E6%80%9D&amp;desc=%E5%85%B3%E4%BA%8E2025-2026%E5%AD%A6%E4%B8%8A%E5%AD%A6%E6%9C%9F%E5%AD%A6%E6%9C%9F%E5%88%9D%E5%8F%8D%E5%A4%8D%E5%87%BA%E7%8E%B0%E5%90%84%E7%A7%8D%E4%BB%BB%E5%8A%A1%EF%BC%88%E5%8C%85%E6%8B%AC%E4%BD%86%E4%B8%8D%E9%99%90%E4%BA%8E%E8%A1%8C%E6%94%BF%E4%BB%BB%E5%8A%A1%E3%80%81%E5%AD%A6%E4%B9%A0%E4%BB%BB%E5%8A%A1%E3%80%81%E5%AD%A6%E4%B8%9A%E4%BB%BB%E5%8A%A1%EF%BC%89%E7%9F%AD%E6%97%B6%E9%97%B4%E5%86%85%E5%A4%A7%E9%87%8F%E5%A0%86%E7%A7%AF%EF%BC%8C%E5%AF%BC%E8%87%B4%E6%89%8B%E5%BF%99%E8%84%9A%E4%B9%B1%EF%BC%8C%E6%97%A0%E6%B3%95%E5%86%B7%E9%9D%99%E6%80%9D%E8%80%83%E5%B9%B6%E9%AB%98%E6%95%88%E5%A4%84%E7%90%86%E7%9A%84%E9%97%AE%E9%A2%98%E7%9A%84%E5%8F%8D%E6%80%9D&amp;source=http%3A%2F%2Fblog.virtualguard101.xyz" target="_blank" rel="noopener noreferrer" title="关于“时间紧，任务重”问题的反思">
       <div class="share-icon icon icon-qq">
         
       </div>
     </a>
   
-    <a href="javascript:;"  title="Arch Linux安装要点记录">
+    <a href="javascript:;"  title="关于“时间紧，任务重”问题的反思">
       <div class="share-icon icon icon-weixin">
         
           <div id="share-weixin">
@@ -467,7 +491,7 @@
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%8D%E6%80%9D/" rel="tag">日常反思</a></li></ul>
 
 
     </footer>
@@ -475,34 +499,17 @@
   
   <nav id="article-nav" data-aos="fade-up">
     
-      
-      <div class="article-nav-link-wrap article-nav-link-left">
-        
-          <img data-src="https://www.siliconera.com/wp-content/uploads/2023/12/frieren-second-cour-header-12222023.png?fit=1200%2C675" data-sizes="auto" alt="2024-2025：艰难的起步" class="lazyload">
-        
-        <a href="/2025/06/20/2024-2025summary/"></a>
-        <div class="article-nav-caption">前一篇</div>
-        <h3 class="article-nav-title">
-          
-            2024-2025：艰难的起步
-          
-        </h3>
-      </div>
-    
     
     
     <div class="article-nav-link-wrap article-nav-link-right">
       
-        
-        
-          <img data-src="https://i.imgtg.com/2023/03/09/Y0hOs.jpg" data-sizes="auto" alt="docker-compose + nginx快速构建个人站点" class="lazyload">
-        
+        <img data-src="https://i.imgur.com/9rjUDU1.jpeg" data-sizes="auto" alt="Cursor Meetup ShangHai 要点记录：学生视角下的 AI+ 产品" class="lazyload">
       
-      <a href="/2025/04/26/web-build/"></a>
+      <a href="/2025/08/16/cursor-meetup-shanghai/"></a>
       <div class="article-nav-caption">后一篇</div>
       <h3 class="article-nav-title">
         
-          docker-compose + nginx快速构建个人站点
+          Cursor Meetup ShangHai 要点记录：学生视角下的 AI+ 产品
         
       </h3>
     </div>
@@ -608,7 +615,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text"> 基本安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96efi%E5%88%86%E5%8C%BA%E5%89%8D%E6%9C%AA%E5%A4%87%E4%BB%BD%E5%8E%9F%E6%9C%89%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC%E5%8F%8C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text"> 格式化EFI分区前未备份原有系统启动引导（双系统）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%B3%95%E5%BC%82%E5%B8%B8"><span class="toc-number">1.2.</span> <span class="toc-text"> 输入法异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%82%E9%A1%B9"><span class="toc-number">1.3.</span> <span class="toc-text"> 杂项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E5%8F%AF%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text"> 在可移动设备安装</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%98%E7%94%B1%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text"> 缘由分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.1.</span> <span class="toc-text"> 直接原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%B1%82%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 深层原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B9%E6%9C%AC%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.3.</span> <span class="toc-text"> 根本原因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text"> 解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text"> 直接方法</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -809,17 +816,96 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "virtualguard",
-          title: "Arch Linux安装要点记录",
-          url: "http://blog.virtualguard101.xyz/2025/05/19/arch-linux/",
-          excerpt: "记录一下在可移动设备/真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题",
+          title: "关于“时间紧，任务重”问题的反思",
+          url: "http://blog.virtualguard101.xyz/2025/09/16/250916-summary/",
+          excerpt: "关于2025-2026学上学期学期初反复出现各种任务（包括但不限于行政任务、学习任务、学业任务）短时间内大量堆积，导致手忙脚乱，无法冷静思考并高效处理的问题的反思",
           description: "",
-          stripContent: "记录一下在可移动设备/真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题 Arch Linux是一个支持高度定制化的Linux发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。 这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。   基本安装 针对这部",
-          date: "Mon May 19 2025 08:52:48 GMT+0800",
+          stripContent: "自2025年9月份起，开始转入新学院、新专业进行学习，反复出现各种任务（包括但不限于行政任务、学习任务、学业任务）短时间内大量堆积，导致手忙脚乱，无法冷静思考并高效处理的问题。典型表现如下：    头脑思绪很乱，无法静下心来挨个处理单个问题   并发任务能力低下，难以在一个时间段内同时处理多个/种事情   高度焦虑，心理负担大    缘由分析  直接原因   转入初期有不少行政交接工作需要完成，同时还需兼顾系统性自学计划的制定、评估以及试运行工作   参与了一个跨领域的科研级项目，部分理论知识需",
+          date: "Tue Sep 16 2025 00:00:00 GMT+0800",
           updated: "Tue Sep 16 2025 14:03:10 GMT+0800",
           cover: "https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg",
         };
       </script>
        
+    
+      
+<script src="https://npm.webcache.cn/mermaid@9.4.3/dist/mermaid.min.js" integrity="sha384-aG3Gai4tbCHF0iXo48HwLoOZyut7mBl50oMC9GD1m75xyHfJDv6w8hD&#x2F;kZRD47aJ" crossorigin="anonymous" data-pjax></script>
+
+      
+<script src="https://npm.webcache.cn/dompurify@3.2.4/dist/purify.min.js" integrity="sha384-eEu5CTj3qGvu9PdJuS+YlkNi7d2XxQROAFYOr59zgObtlcux1ae1Il3u7jvdCSWu" crossorigin="anonymous"></script>
+
+      <script data-pjax>
+        if (window.mermaid) {
+          // https://github.com/mermaid-js/mermaid/issues/1945
+          const elementCode = '.mermaid'
+          const saveOriginalData = () => {
+            return new Promise((resolve, reject) => {
+              try {
+                let els = _$$(elementCode),
+                    count = els.length;
+                els.forEach(element => {
+                  if (element.getAttribute('data-original-code') == null){
+                    element.setAttribute('data-original-code', element.innerHTML)
+                  }
+                  count--
+                  if(count == 0){
+                    resolve()
+                  }
+                });
+              } catch (error) {
+              reject(error) 
+              }
+            })
+          }
+          const resetProcessed = () => {
+            return new Promise((resolve, reject) => {
+              try {
+                let els = _$$(elementCode),
+                    count = els.length;
+                els.forEach(element => {
+                  if(element.getAttribute('data-original-code') != null){
+                    element.removeAttribute('data-processed')
+                    element.innerHTML = DOMPurify.sanitize(element.getAttribute('data-original-code'))
+                  }
+                  count--
+                  if(count == 0){
+                    resolve()
+                  }
+                });
+              } catch (error) {
+              reject(error) 
+              }
+            })
+          } 
+          const loadMermaid = (theme) => {
+            window.mermaid.initialize({theme})
+            window.mermaid.init({theme}, _$$(elementCode))
+          }
+          document.body.addEventListener('dark-theme-set', () => {
+            saveOriginalData()
+            .then(resetProcessed())
+            .then(loadMermaid('dark'))
+            .catch(console.error)
+          })
+          document.body.addEventListener('light-theme-set', () => {
+            saveOriginalData()
+            .then(resetProcessed())
+            .then(loadMermaid('default'))
+            .catch(console.error)
+          })
+          if(localStorage.getItem('dark_mode') == 'true') {
+            saveOriginalData()
+            .then(resetProcessed())
+            .then(loadMermaid('dark'))
+            .catch(console.error)
+          } else {
+            saveOriginalData()
+            .then(resetProcessed())
+            .then(loadMermaid('default'))
+            .catch(console.error)
+          }
+        }
+      </script>
     
     
       
