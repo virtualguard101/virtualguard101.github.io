@@ -9,9 +9,9 @@
         <lastBuildDate>Mon, 19 May 2025 08:52:48 +0800</lastBuildDate>
         <category>日常反思</category>
         <category>学年总结</category>
+        <category>linux</category>
         <category>AI+</category>
         <category>Meetup</category>
-        <category>linux</category>
         <category>web开发</category>
         <category>docker</category>
         <item>
@@ -21,7 +21,7 @@
             <category>linux</category>
             <pubDate>Mon, 19 May 2025 08:52:48 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;strong&gt;记录一下在可移动设备/真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Arch Linux是一个支持高度定制化的Linux发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
+&lt;p&gt;Arch Linux是一个支持高度定制化的&lt;a href=&#34;../../notes/tools/linux/misc.md&#34;&gt;Linux&lt;/a&gt;发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
 &lt;p&gt;这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;h2 id=&#34;基本安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#基本安装&#34;&gt;&lt;/a&gt; 基本安装&lt;/h2&gt;

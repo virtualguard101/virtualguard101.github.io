@@ -6,9 +6,9 @@
     <updated>2025-09-15T16:00:00.000Z</updated>
     <category term="日常反思" />
     <category term="学年总结" />
+    <category term="linux" />
     <category term="AI+" />
     <category term="Meetup" />
-    <category term="linux" />
     <category term="web开发" />
     <category term="docker" />
     <entry>
@@ -401,7 +401,7 @@
 &lt;h4 id=&#34;5月份&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#5月份&#34;&gt;&lt;/a&gt; 5月份&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;构建了自己的&lt;a href=&#34;https://virtualguard101.xyz/&#34;&gt;第一个个人站点&lt;/a&gt;（这个才是真正的“斯大林格勒”）&lt;/p&gt;
+&lt;p&gt;构建了自己的&lt;a href=&#34;../../blog/posts/web-build.md&#34;&gt;第一个个人站点&lt;/a&gt;（这个才是真正的“斯大林格勒”）&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://i.imgur.com/euiV0r7.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -417,15 +417,15 @@
 &lt;p&gt;这是建设了个人站点后的第一个具有&lt;a href=&#34;https://note.virtualguard101.xyz/notes/Programming%20Language/c%2B%2B/C%2B%2B%20Fundamental/00-type-structure/&#34;&gt;相对完善笔记&lt;/a&gt;的自学课程，我快速过了一下，其中大部分的&lt;a href=&#34;https://github.com/virtualguard101/cs106l-assignments&#34;&gt;Assignments&lt;/a&gt;还没来得及做。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;开始使用Arch Linux作为主操作系统&lt;/p&gt;
+&lt;p&gt;开始使用&lt;a href=&#34;arch-linux.md&#34;&gt;Arch Linux&lt;/a&gt;作为主操作系统&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://i.imgur.com/oVkMHug.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;s&gt;因为我是南梁&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;使用了近半年的Ubuntu，终于还是对Arch动心了。&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/05/19/arch-linux/&#34;&gt;这篇文章&lt;/a&gt;记录了一些我在安装过程遇到的一些要点与问题。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;创建项目&lt;a href=&#34;https://github.com/virtualguard101/3BodySimulator&#34;&gt;3BodySimulator&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;这是我个人为学习C++项目构建与管理而创建的&lt;strong&gt;案例式项目&lt;/strong&gt;，学习的知识主要聚焦于cpp项目的构建流程与&lt;a href=&#34;https://note.virtualguard101.xyz/notes/tools/Build%20Tools/cmake/&#34;&gt;CMake等工具的使用&lt;/a&gt;，代码逻辑的所有内容以及项目架构的部分内容由AI代为完成。&lt;/p&gt;
-&lt;p&gt;按照惯例（自从有个人站点后，我有随手为自己的项目写文档的习惯，特别是用于学习的项目），我也为此写了一篇&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/05/23/3BodySimulator/&#34;&gt;解构文档&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;创建项目&lt;a href=&#34;../../projects/3BodySimulator.md&#34;&gt;3BodySimulator&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这是我个人为学习C++项目构建与管理而创建的&lt;strong&gt;案例式项目&lt;/strong&gt;，学习的知识主要聚焦于cpp项目的构建流程与&lt;a href=&#34;../../notes/tools/build-tools/cmake.md&#34;&gt;CMake等工具的使用&lt;/a&gt;，代码逻辑的所有内容以及项目架构的部分内容由AI代为完成。&lt;/p&gt;
+&lt;p&gt;按照惯例（自从有个人站点后，我有随手为自己的项目写文档的习惯，特别是用于学习的项目），我也为此写了一篇&lt;a href=&#34;../../projects/3BodySimulator.md&#34;&gt;解构文档&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;转专业拟接收名单公示，不出意外的话就是成功转入网络空间安全了&lt;/p&gt;
@@ -435,7 +435,7 @@
 &lt;h4 id=&#34;6月份&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#6月份&#34;&gt;&lt;/a&gt; 6月份&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;进一步完善了&lt;a href=&#34;https://note.virtualguard101.xyz/notes/tools/git/&#34;&gt;Git的学习&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;进一步完善了&lt;a href=&#34;../../notes/tools/git.md&#34;&gt;Git的学习&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;说的难听一点，对于Git在此之前我可能只会“三板斧（&lt;code&gt;add&lt;/code&gt;、&lt;code&gt;commit&lt;/code&gt;、&lt;code&gt;push&lt;/code&gt;）”&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
