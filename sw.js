@@ -1,4 +1,4 @@
-const VERSION = "1760689721454";const preCache = ["/images/taichi.png","https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg","/css/loader.css","/css/style.css","/js/script.js"];const cacheDomain = [
+const VERSION = "1761186293273";const preCache = ["/images/taichi.png","https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg","/css/loader.css","/css/style.css","/js/script.js"];const cacheDomain = [
   "fonts.googleapis.com",
   "npm.webcache.cn",
   "unpkg.com",
