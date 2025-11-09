@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://blog.virtualguard101.xyz</id>
-    <title>virtualguard&#39;s Blog • Posts by &#34;日常反思&#34; tag</title>
-    <link href="http://blog.virtualguard101.xyz" />
+    <id>http://blog.virtualguard101.com</id>
+    <title>vg101&#39;s Blog • Posts by &#34;日常反思&#34; tag</title>
+    <link href="http://blog.virtualguard101.com" />
     <updated>2025-09-15T16:00:00.000Z</updated>
+    <category term="学年总结" />
     <category term="日常反思" />
     <category term="AIGC" />
-    <category term="学年总结" />
+    <category term="linux" />
     <category term="AI+" />
     <category term="Meetup" />
-    <category term="linux" />
     <category term="web开发" />
     <category term="docker" />
     <entry>
-        <id>http://blog.virtualguard101.xyz/2025/09/16/250916-summary/</id>
+        <id>http://blog.virtualguard101.com/2025/09/16/250916-summary/</id>
         <title>关于“时间紧，任务重”问题的反思</title>
-        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/09/16/250916-summary/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/09/16/250916-summary/"/>
         <content type="html">&lt;p&gt;自2025年9月份起，开始转入新学院、新专业进行学习，&lt;mark&gt;反复出现各种任务（包括但不限于行政任务、学习任务、学业任务）短时间内大量堆积，导致&lt;strong&gt;手忙脚乱，无法冷静思考并高效处理&lt;/strong&gt;的问题&lt;/mark&gt;。典型表现如下：&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;ul&gt;

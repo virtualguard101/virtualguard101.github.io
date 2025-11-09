@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <rss version="2.0">
     <channel>
-        <title>virtualguard&#39;s Blog • Posts by &#34;summary&#34; category</title>
-        <link>http://blog.virtualguard101.xyz</link>
+        <title>vg101&#39;s Blog • Posts by &#34;summary&#34; category</title>
+        <link>http://blog.virtualguard101.com</link>
         <description>&lt;/&gt;</description>
         <language>zh-CN</language>
         <pubDate>Wed, 05 Nov 2025 20:00:00 +0800</pubDate>
         <lastBuildDate>Wed, 05 Nov 2025 20:00:00 +0800</lastBuildDate>
+        <category>学年总结</category>
         <category>日常反思</category>
         <category>AIGC</category>
-        <category>学年总结</category>
+        <category>linux</category>
         <category>AI+</category>
         <category>Meetup</category>
-        <category>linux</category>
         <category>web开发</category>
         <category>docker</category>
         <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/11/05/ai-coding/</guid>
+            <guid isPermalink="true">http://blog.virtualguard101.com/2025/11/05/ai-coding/</guid>
             <title>Cursor使用心得：从学习到开发</title>
-            <link>http://blog.virtualguard101.xyz/2025/11/05/ai-coding/</link>
+            <link>http://blog.virtualguard101.com/2025/11/05/ai-coding/</link>
             <category>AIGC</category>
             <pubDate>Wed, 05 Nov 2025 20:00:00 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;strong&gt;记录一下近期使用Cursor的一些心得体会，以及一些对AI Coding的思考🤔&lt;/strong&gt;&lt;/p&gt;
@@ -80,9 +80,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/09/16/250916-summary/</guid>
+            <guid isPermalink="true">http://blog.virtualguard101.com/2025/09/16/250916-summary/</guid>
             <title>关于“时间紧，任务重”问题的反思</title>
-            <link>http://blog.virtualguard101.xyz/2025/09/16/250916-summary/</link>
+            <link>http://blog.virtualguard101.com/2025/09/16/250916-summary/</link>
             <category>日常反思</category>
             <pubDate>Tue, 16 Sep 2025 00:00:00 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;自2025年9月份起，开始转入新学院、新专业进行学习，&lt;mark&gt;反复出现各种任务（包括但不限于行政任务、学习任务、学业任务）短时间内大量堆积，导致&lt;strong&gt;手忙脚乱，无法冷静思考并高效处理&lt;/strong&gt;的问题&lt;/mark&gt;。典型表现如下：&lt;/p&gt;
@@ -149,9 +149,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/08/16/cursor-meetup-shanghai/</guid>
+            <guid isPermalink="true">http://blog.virtualguard101.com/2025/08/16/cursor-meetup-shanghai/</guid>
             <title>Cursor Meetup ShangHai 要点记录：学生视角下的 AI+ 产品</title>
-            <link>http://blog.virtualguard101.xyz/2025/08/16/cursor-meetup-shanghai/</link>
+            <link>http://blog.virtualguard101.com/2025/08/16/cursor-meetup-shanghai/</link>
             <category>AI+</category>
             <category>Meetup</category>
             <pubDate>Sat, 16 Aug 2025 14:00:00 +0800</pubDate>
@@ -384,9 +384,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</guid>
+            <guid isPermalink="true">http://blog.virtualguard101.com/2025/06/20/2024-2025summary/</guid>
             <title>2024-2025：艰难的起步</title>
-            <link>http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</link>
+            <link>http://blog.virtualguard101.com/2025/06/20/2024-2025summary/</link>
             <category>学年总结</category>
             <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;strong&gt;对CS自学之路的第一年，也是大学生活的第一年的一个简单复盘&lt;/strong&gt;&lt;/p&gt;

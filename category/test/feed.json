@@ -1,12 +1,12 @@
 {
     "version": "https://jsonfeed.org/version/1",
-    "title": "virtualguard's Blog • All posts by \"test\" category",
+    "title": "vg101's Blog • All posts by \"test\" category",
     "description": "</>",
-    "home_page_url": "http://blog.virtualguard101.xyz",
+    "home_page_url": "http://blog.virtualguard101.com",
     "items": [
         {
-            "id": "http://blog.virtualguard101.xyz/2025/03/10/Hello/",
-            "url": "http://blog.virtualguard101.xyz/2025/03/10/Hello/",
+            "id": "http://blog.virtualguard101.com/2025/03/10/Hello/",
+            "url": "http://blog.virtualguard101.com/2025/03/10/Hello/",
             "title": "Hello :)",
             "date_published": "2025-03-09T18:09:15.000Z",
             "content_html": "<p>This is the first content for my blog 😃 <br></p>\n<p><img src=\"https://butterblock233.github.io/posts/images/Hello.gif\" alt=\"Hello\" /> <br></p>\n<p>GIF source: <a href=\"https://dribbble.com/shots/17347386-Hello-Apple\">Hello Apple by Meritt Thomas</a> <br></p>\n",

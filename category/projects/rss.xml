@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <rss version="2.0">
     <channel>
-        <title>virtualguard&#39;s Blog • Posts by &#34;projects&#34; category</title>
-        <link>http://blog.virtualguard101.xyz</link>
+        <title>vg101&#39;s Blog • Posts by &#34;projects&#34; category</title>
+        <link>http://blog.virtualguard101.com</link>
         <description>&lt;/&gt;</description>
         <language>zh-CN</language>
         <pubDate>Mon, 23 Jun 2025 12:38:07 +0800</pubDate>
         <lastBuildDate>Mon, 23 Jun 2025 12:38:07 +0800</lastBuildDate>
+        <category>学年总结</category>
         <category>日常反思</category>
         <category>AIGC</category>
-        <category>学年总结</category>
+        <category>linux</category>
         <category>AI+</category>
         <category>Meetup</category>
-        <category>linux</category>
         <category>web开发</category>
         <category>docker</category>
         <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/23/web/</guid>
+            <guid isPermalink="true">http://blog.virtualguard101.com/2025/06/23/web/</guid>
             <title>个人站点构建要点(改良版) &amp;&amp; Web 开发简要实践</title>
-            <link>http://blog.virtualguard101.xyz/2025/06/23/web/</link>
+            <link>http://blog.virtualguard101.com/2025/06/23/web/</link>
             <category>web开发</category>
             <category>docker</category>
             <pubDate>Mon, 23 Jun 2025 12:38:07 +0800</pubDate>
@@ -170,9 +170,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/04/26/web-build/</guid>
+            <guid isPermalink="true">http://blog.virtualguard101.com/2025/04/26/web-build/</guid>
             <title>docker-compose + nginx快速构建个人站点</title>
-            <link>http://blog.virtualguard101.xyz/2025/04/26/web-build/</link>
+            <link>http://blog.virtualguard101.com/2025/04/26/web-build/</link>
             <category>web开发</category>
             <category>docker</category>
             <pubDate>Sat, 26 Apr 2025 23:28:57 +0800</pubDate>

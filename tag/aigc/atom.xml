@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://blog.virtualguard101.xyz</id>
-    <title>virtualguard&#39;s Blog • Posts by &#34;aigc&#34; tag</title>
-    <link href="http://blog.virtualguard101.xyz" />
+    <id>http://blog.virtualguard101.com</id>
+    <title>vg101&#39;s Blog • Posts by &#34;aigc&#34; tag</title>
+    <link href="http://blog.virtualguard101.com" />
     <updated>2025-11-05T12:00:00.000Z</updated>
+    <category term="学年总结" />
     <category term="日常反思" />
     <category term="AIGC" />
-    <category term="学年总结" />
+    <category term="linux" />
     <category term="AI+" />
     <category term="Meetup" />
-    <category term="linux" />
     <category term="web开发" />
     <category term="docker" />
     <entry>
-        <id>http://blog.virtualguard101.xyz/2025/11/05/ai-coding/</id>
+        <id>http://blog.virtualguard101.com/2025/11/05/ai-coding/</id>
         <title>Cursor使用心得：从学习到开发</title>
-        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/11/05/ai-coding/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/11/05/ai-coding/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;记录一下近期使用Cursor的一些心得体会，以及一些对AI Coding的思考🤔&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;从 9 月份开始使用Cursor作为我的主力编辑器辅助我的学习与开发，到现在也已经用了近两月的时间。在此期间其可能是我的“学习导师”，也可能是我的“开发助手”。为了方便管理在&lt;a href=&#34;https://wiki.virtualguard101.com/&#34;&gt;Wiki&lt;/a&gt;上的&lt;a href=&#34;https://wiki.virtualguard101.com/notes/&#34;&gt;学习笔记&lt;/a&gt;，我在近期开发的一个&lt;a href=&#34;../../projects/MkDocs-Note.md&#34;&gt;MkDocs插件&lt;/a&gt;也借助了Cursor的力量。&lt;/p&gt;
 &lt;p&gt;然而，在使用Cursor的过程中也暴露了不少问题，无论是在学习过程中还是开发任务上。&lt;/p&gt;

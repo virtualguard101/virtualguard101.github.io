@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://blog.virtualguard101.xyz</id>
-    <title>virtualguard&#39;s Blog • Posts by &#34;misc&#34; category</title>
-    <link href="http://blog.virtualguard101.xyz" />
+    <id>http://blog.virtualguard101.com</id>
+    <title>vg101&#39;s Blog • Posts by &#34;misc&#34; category</title>
+    <link href="http://blog.virtualguard101.com" />
     <updated>2025-05-19T00:52:48.000Z</updated>
+    <category term="学年总结" />
     <category term="日常反思" />
     <category term="AIGC" />
-    <category term="学年总结" />
+    <category term="linux" />
     <category term="AI+" />
     <category term="Meetup" />
-    <category term="linux" />
     <category term="web开发" />
     <category term="docker" />
     <entry>
-        <id>http://blog.virtualguard101.xyz/2025/05/19/arch-linux/</id>
+        <id>http://blog.virtualguard101.com/2025/05/19/arch-linux/</id>
         <title>Arch Linux安装要点记录</title>
-        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/05/19/arch-linux/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/05/19/arch-linux/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;记录一下在可移动设备/真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Arch Linux是一个支持高度定制化的&lt;a href=&#34;../../notes/tools/linux/misc.md&#34;&gt;Linux&lt;/a&gt;发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
 &lt;p&gt;这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。&lt;/p&gt;

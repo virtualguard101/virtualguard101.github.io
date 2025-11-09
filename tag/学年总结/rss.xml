@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <rss version="2.0">
     <channel>
-        <title>virtualguard&#39;s Blog • Posts by &#34;学年总结&#34; tag</title>
-        <link>http://blog.virtualguard101.xyz</link>
+        <title>vg101&#39;s Blog • Posts by &#34;学年总结&#34; tag</title>
+        <link>http://blog.virtualguard101.com</link>
         <description>&lt;/&gt;</description>
         <language>zh-CN</language>
         <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
         <lastBuildDate>Fri, 20 Jun 2025 21:10:33 +0800</lastBuildDate>
+        <category>学年总结</category>
         <category>日常反思</category>
         <category>AIGC</category>
-        <category>学年总结</category>
+        <category>linux</category>
         <category>AI+</category>
         <category>Meetup</category>
-        <category>linux</category>
         <category>web开发</category>
         <category>docker</category>
         <item>
-            <guid isPermalink="true">http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</guid>
+            <guid isPermalink="true">http://blog.virtualguard101.com/2025/06/20/2024-2025summary/</guid>
             <title>2024-2025：艰难的起步</title>
-            <link>http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</link>
+            <link>http://blog.virtualguard101.com/2025/06/20/2024-2025summary/</link>
             <category>学年总结</category>
             <pubDate>Fri, 20 Jun 2025 21:10:33 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;strong&gt;对CS自学之路的第一年，也是大学生活的第一年的一个简单复盘&lt;/strong&gt;&lt;/p&gt;

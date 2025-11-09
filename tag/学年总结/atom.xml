@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://blog.virtualguard101.xyz</id>
-    <title>virtualguard&#39;s Blog • Posts by &#34;学年总结&#34; tag</title>
-    <link href="http://blog.virtualguard101.xyz" />
+    <id>http://blog.virtualguard101.com</id>
+    <title>vg101&#39;s Blog • Posts by &#34;学年总结&#34; tag</title>
+    <link href="http://blog.virtualguard101.com" />
     <updated>2025-06-20T13:10:33.000Z</updated>
+    <category term="学年总结" />
     <category term="日常反思" />
     <category term="AIGC" />
-    <category term="学年总结" />
+    <category term="linux" />
     <category term="AI+" />
     <category term="Meetup" />
-    <category term="linux" />
     <category term="web开发" />
     <category term="docker" />
     <entry>
-        <id>http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/</id>
+        <id>http://blog.virtualguard101.com/2025/06/20/2024-2025summary/</id>
         <title>2024-2025：艰难的起步</title>
-        <link rel="alternate" href="http://blog.virtualguard101.xyz/2025/06/20/2024-2025summary/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/06/20/2024-2025summary/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;对CS自学之路的第一年，也是大学生活的第一年的一个简单复盘&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;在大学的第一年——也是正式开始CS自学旅途的第一年（周年）随着暑假的临近也就快要结束了，是时候乘着 &lt;s&gt;期末复习&lt;/s&gt; 休闲的时间写一下这个学年的学年总结与复盘了。&lt;/p&gt;
 &lt;p&gt;事实上，对于这个学年的成果我个人并不满意，但也正因如此，才需要通过客观、辨证的总结来修正错误的方法与方向。&lt;/p&gt;
