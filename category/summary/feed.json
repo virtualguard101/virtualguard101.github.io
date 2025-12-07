@@ -5,6 +5,16 @@
     "home_page_url": "http://blog.virtualguard101.com",
     "items": [
         {
+            "id": "http://blog.virtualguard101.com/2025/11/23/trae/",
+            "url": "http://blog.virtualguard101.com/2025/11/23/trae/",
+            "title": "TRAE Friends @Fuzhou 要点记录",
+            "date_published": "2025-11-23T08:00:00.000Z",
+            "content_html": "<p><strong>参与了11月23号在福州举办的TRAE Friends活动，对活动分享的内容做一个简要记录</strong></p>\n<!-- more -->\n<h2 id=\"为什么不做cli产品\"><a class=\"markdownIt-Anchor\" href=\"#为什么不做cli产品\"></a> 为什么不做CLI产品</h2>\n<p>即类似Claude Code、Codex等的CLI Agent</p>\n<p>CLI -&gt; SOLO<br />\n(vi) -&gt; IDE</p>\n<p>CLI并不是产品的最终形态，IDE才是</p>\n<h2 id=\"如何高效进行vibecoding\"><a class=\"markdownIt-Anchor\" href=\"#如何高效进行vibecoding\"></a> 如何高效进行VibeCoding</h2>\n<p>工具只是载体，VibeCoding本身是工具无关、模型无关的。</p>\n<p>重要的是在开发过程中如何沉淀出自己的<strong>工作流</strong>与<strong>方法论</strong>。</p>\n<h3 id=\"软件开发的旧常态\"><a class=\"markdownIt-Anchor\" href=\"#软件开发的旧常态\"></a> 软件开发的“旧”常态</h3>\n<ul>\n<li>\n<p>繁琐的模板代码</p>\n</li>\n<li>\n<p>语法的细枝末节</p>\n</li>\n<li>\n<p>创意与实现之间的鸿沟</p>\n</li>\n</ul>\n<h2 id=\"ai-coding现状的破局\"><a class=\"markdownIt-Anchor\" href=\"#ai-coding现状的破局\"></a> AI Coding现状的破局</h2>\n<p>本身并不是一个“新”问题</p>\n<p>CTO如何协调掌握各个领域的专业知识，协调各个部门的工作?</p>\n<p>将VideCoding工具看作“能力很强的”实习生，如何去高效地指挥与协调?</p>\n<ul>\n<li>\n<p>从 “编码者” 到 “指挥者” 的转变</p>\n<ul>\n<li>\n<p>项目构想</p>\n</li>\n<li>\n<p>需求拆解</p>\n</li>\n<li>\n<p>结果验证</p>\n</li>\n<li>\n<p>审美决策</p>\n</li>\n</ul>\n</li>\n</ul>\n<h3 id=\"vibecoding-的核心心法\"><a class=\"markdownIt-Anchor\" href=\"#vibecoding-的核心心法\"></a> VibeCoding 的核心心法</h3>\n<div class=\"text-center-container\">\n    <strong>先求成，再求精 (Code First, Refine Later)</strong>\n</div>\n<ul>\n<li>\n<p>接受不完美</p>\n</li>\n<li>\n<p>拥抱迭代</p>\n</li>\n<li>\n<p>降低试错成本</p>\n</li>\n</ul>\n<h2 id=\"高效实践工作流\"><a class=\"markdownIt-Anchor\" href=\"#高效实践工作流\"></a> 高效实践工作流</h2>\n<ul>\n<li>\n<p>编写一份高质量的提示词</p>\n<ul>\n<li>\n<p>文档驱动开发 (Documentation-Driven Development)</p>\n</li>\n<li>\n<p>产品经理规划 (Vibe PMing)</p>\n</li>\n<li>\n<p>多模态输入 (视觉辅助等)</p>\n</li>\n</ul>\n</li>\n<li>\n<p>上下文精准注入与原子化</p>\n<ul>\n<li>\n<p>一次对话，实现一个功能</p>\n<p>拆分任务 -&gt; 精准提问 -&gt; AI实现 -&gt; 人类验证 -&gt; 优化迭代</p>\n</li>\n</ul>\n</li>\n<li>\n<p>将trae作为一个&quot;调试助手&quot;</p>\n<ul>\n<li>\n<p>测试驱动开发 (Test-Driven Development)</p>\n</li>\n<li>\n<p>错误信息 “投喂”</p>\n</li>\n<li>\n<p>代码 “体检” 与重构</p>\n</li>\n</ul>\n</li>\n</ul>\n<h3 id=\"高效vibecoding的核心原则\"><a class=\"markdownIt-Anchor\" href=\"#高效vibecoding的核心原则\"></a> 高效VibeCoding的核心原则</h3>\n<ul>\n<li>\n<p>原则一: <strong>指令清晰</strong>高于一切 (Clarity First)</p>\n</li>\n<li>\n<p>原则二: 小步快跑，持续验证 (Iterative Control)</p>\n</li>\n<li>\n<p>原则三: 人类监督，绝不缺位 (Human Oversight)</p>\n</li>\n<li>\n<p>原则四: 拥抱学习，共同成长 (Learning on the Go)</p>\n</li>\n</ul>\n<h2 id=\"杂项\"><a class=\"markdownIt-Anchor\" href=\"#杂项\"></a> 杂项</h2>\n<ul>\n<li>\n<p>前后端交互的最佳方式是<strong>API文档</strong></p>\n</li>\n<li>\n<p>在AI时代，得益于AI工具对信息差降低乃至抹平，人在不同行业间的流动性将获得极大提升</p>\n</li>\n</ul>\n",
+            "tags": [
+                "AIGC"
+            ]
+        },
+        {
             "id": "http://blog.virtualguard101.com/2025/11/05/ai-coding/",
             "url": "http://blog.virtualguard101.com/2025/11/05/ai-coding/",
             "title": "Cursor使用心得：从学习到开发",
