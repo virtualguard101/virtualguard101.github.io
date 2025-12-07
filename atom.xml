@@ -4,18 +4,16 @@
     <title>vg101&#39;s Blog</title>
     <link href="http://blog.virtualguard101.com" />
     <updated>2025-11-23T08:00:00.000Z</updated>
-    <category term="学年总结" />
-    <category term="日常反思" />
+    <category term="总结" />
+    <category term="Blog" />
+    <category term="Linux" />
     <category term="AIGC" />
-    <category term="linux" />
-    <category term="AI+" />
     <category term="Meetup" />
     <category term="web开发" />
-    <category term="docker" />
     <entry>
-        <id>http://blog.virtualguard101.com/2025/11/23/trae/</id>
+        <id>http://blog.virtualguard101.com/2025/11/23/TRAE%20Friends%20@Fuzhou%20%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95/</id>
         <title>TRAE Friends @Fuzhou 要点记录</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/11/23/trae/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/11/23/TRAE%20Friends%20@Fuzhou%20%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;参与了11月23号在福州举办的TRAE Friends活动，对活动分享的内容做一个简要记录&lt;/strong&gt;&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;h2 id=&#34;为什么不做cli产品&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#为什么不做cli产品&#34;&gt;&lt;/a&gt; 为什么不做CLI产品&lt;/h2&gt;
@@ -141,20 +139,22 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 </content>
+        <category term="Blog" />
         <category term="AIGC" />
+        <category term="Meetup" />
         <updated>2025-11-23T08:00:00.000Z</updated>
     </entry>
     <entry>
-        <id>http://blog.virtualguard101.com/2025/11/05/ai-coding/</id>
+        <id>http://blog.virtualguard101.com/2025/11/05/Cursor%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97%EF%BC%9A%E4%BB%8E%E5%AD%A6%E4%B9%A0%E5%88%B0%E5%BC%80%E5%8F%91/</id>
         <title>Cursor使用心得：从学习到开发</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/11/05/ai-coding/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/11/05/Cursor%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97%EF%BC%9A%E4%BB%8E%E5%AD%A6%E4%B9%A0%E5%88%B0%E5%BC%80%E5%8F%91/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;记录一下近期使用Cursor的一些心得体会，以及一些对AI Coding的思考🤔&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;从 9 月份开始使用Cursor作为我的主力编辑器辅助我的学习与开发，到现在也已经用了近两月的时间。在此期间其可能是我的“学习导师”，也可能是我的“开发助手”。为了方便管理在&lt;a href=&#34;https://wiki.virtualguard101.com/&#34;&gt;Wiki&lt;/a&gt;上的&lt;a href=&#34;https://wiki.virtualguard101.com/notes/&#34;&gt;学习笔记&lt;/a&gt;，我在近期开发的一个&lt;a href=&#34;../../projects/MkDocs-Note.md&#34;&gt;MkDocs插件&lt;/a&gt;也借助了Cursor的力量。&lt;/p&gt;
 &lt;p&gt;然而，在使用Cursor的过程中也暴露了不少问题，无论是在学习过程中还是开发任务上。&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;h2 id=&#34;订阅的初衷&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#订阅的初衷&#34;&gt;&lt;/a&gt; 订阅的初衷&lt;/h2&gt;
 &lt;p&gt;我订阅Cursor的最初目的是为了辅助我的学习。&lt;/p&gt;
-&lt;p&gt;在参与了8月份上海的&lt;a href=&#34;cursor-meetup-shanghai.md&#34;&gt;Cursor Meetup&lt;/a&gt;之后，我对Cursor的期待有了一些变化——或许其可以不只是一个简单的开发工具。&lt;/p&gt;
+&lt;p&gt;在参与了8月份上海的&lt;a href=&#34;Cursor%20Meetup%20ShangHai%20%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%AD%A6%E7%94%9F%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84%20AI+%20%E4%BA%A7%E5%93%81.md&#34;&gt;Cursor Meetup&lt;/a&gt;之后，我对Cursor的期待有了一些变化——或许其可以不只是一个简单的开发工具。&lt;/p&gt;
 &lt;p&gt;从开发角度来看，我需要一个能够辅助我完成开发任务的工具，比如代码补全、代码生成、代码重构等AI Agent工具；从学习角度而言，我也需要一个能随时为我答疑解惑的“学习导师”。在这样的需求下，我转而选择了Cursor作为我的主力编辑器，并订阅了它的Pro版本。&lt;/p&gt;
 &lt;h2 id=&#34;一些问题与思考&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#一些问题与思考&#34;&gt;&lt;/a&gt; 一些问题与思考&lt;/h2&gt;
 &lt;p&gt;Cursor的强大毋庸置疑，网上的解读也很多，这里就不再赘述了，下面主要分享一下我在使用Cursor过程中遇到的一些问题以及我的思考。&lt;/p&gt;
@@ -180,7 +180,7 @@
 &lt;h3 id=&#34;辅助开发&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#辅助开发&#34;&gt;&lt;/a&gt; 辅助开发&lt;/h3&gt;
 &lt;p&gt;&lt;s&gt;好了，正片开始&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;说到开发，相比较前面的辅助学习第一反应或许会觉得Cursor就“专业对口”了，事实也确实如此。。。吗？&lt;/p&gt;
-&lt;p&gt;从8月下旬开始，我决定开发一个MkDocs插件方便我的笔记管理，同时学习一些&lt;a href=&#34;../../notes/language/python/package.md&#34;&gt;Python包管理&lt;/a&gt;的相关知识与&lt;a href=&#34;../../notes/misc/open-source-license.md&#34;&gt;开源项目&lt;/a&gt;的运作。&lt;/p&gt;
+&lt;p&gt;从8月下旬开始，我决定开发一个MkDocs插件方便我的笔记管理，同时学习一些&lt;a href=&#34;../../obsidian/ProgrammingLanguage/python/Python%E5%8C%85%E7%AE%A1%E7%90%86.md&#34;&gt;Python包管理&lt;/a&gt;的相关知识与&lt;a href=&#34;../../obsidian/Misc/%E5%BC%80%E6%BA%90%E5%8D%8F%E8%AE%AE.md&#34;&gt;开源项目&lt;/a&gt;的运作。&lt;/p&gt;
 &lt;p&gt;近四个月的mkdocs使用经历以及一些可参考的项目让我对这个插件的架构设计有了一些眉目，加上有Cursor这个“神器”加持，我便“稀里糊涂”地开始了这个插件的开发。&lt;/p&gt;
 &lt;p&gt;在开发之初，我对Cursor抱有过大的期望，以至于我直接把一个原型mkdocs hook丢给它，在对话框添加了一点象征性的约束提示词就开始让它写代码了；这还不是最难绷的，最搞笑的是我当初连一个mkdocs插件是如何运作的都没有一个明确的概念，mkdocs的官方文档也是一点没看，更不用说应该如何优雅地使用mkdocs原生的api接口了。以及，当时我甚至不知道作为一个插件，在打包前需要在项目配置中引入&lt;code&gt;entry-points&lt;/code&gt;，结果自然是不用多说，&lt;code&gt;v0.0.1&lt;/code&gt;在打包后甚至无法被正确加载，我为此还将插件的仓库转为私有一段时间（实在是太丢人了）。&lt;/p&gt;
 &lt;p&gt;开学后，在忙完转专业的行政流程后，我开始重新审视这个插件的开发。期间，我开始慢慢静下心来研究插件的架构并采用逐步引入功能与特性的方式进行开发。&lt;/p&gt;
@@ -198,89 +198,21 @@
 &lt;hr class=&#34;footnotes-sep&#34; /&gt;
 &lt;section class=&#34;footnotes&#34;&gt;
 &lt;ol class=&#34;footnotes-list&#34;&gt;
-&lt;li id=&#34;fn1&#34; class=&#34;footnote-item&#34;&gt;&lt;p&gt;&lt;a href=&#34;cursor-meetup-shanghai.md#Cursor-Memories&#34;&gt;Cursor Meetup ShangHai 要点记录&lt;/a&gt; &lt;a href=&#34;#fnref1&#34; class=&#34;footnote-backref&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
+&lt;li id=&#34;fn1&#34; class=&#34;footnote-item&#34;&gt;&lt;p&gt;&lt;a href=&#34;Cursor%20Meetup%20ShangHai%20%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%AD%A6%E7%94%9F%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84%20AI+%20%E4%BA%A7%E5%93%81.md#Cursor-Memories&#34;&gt;Cursor Meetup ShangHai 要点记录&lt;/a&gt; &lt;a href=&#34;#fnref1&#34; class=&#34;footnote-backref&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id=&#34;fn2&#34; class=&#34;footnote-item&#34;&gt;&lt;p&gt;&lt;a href=&#34;https://blog.virtualguard101.com/mkdocs-note/about/changelog/#300---2025-11-04-Architecture-Simplification&#34;&gt;Changelog&lt;/a&gt; &lt;a href=&#34;#fnref2&#34; class=&#34;footnote-backref&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/section&gt;
 </content>
+        <category term="Blog" />
         <category term="AIGC" />
         <updated>2025-11-05T12:00:00.000Z</updated>
     </entry>
     <entry>
-        <id>http://blog.virtualguard101.com/2025/09/16/250916-summary/</id>
-        <title>关于“时间紧，任务重”问题的反思</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/09/16/250916-summary/"/>
-        <content type="html">&lt;p&gt;自2025年9月份起，开始转入新学院、新专业进行学习，&lt;mark&gt;反复出现各种任务（包括但不限于行政任务、学习任务、学业任务）短时间内大量堆积，导致&lt;strong&gt;手忙脚乱，无法冷静思考并高效处理&lt;/strong&gt;的问题&lt;/mark&gt;。典型表现如下：&lt;/p&gt;
-&lt;!-- more --&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;头脑思绪很乱，无法静下心来挨个处理单个问题&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;mark&gt;并发任务能力低下，难以在一个时间段内同时处理多个/种事情&lt;/mark&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;高度焦虑，心理负担大&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;缘由分析&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#缘由分析&#34;&gt;&lt;/a&gt; 缘由分析&lt;/h2&gt;
-&lt;h3 id=&#34;直接原因&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#直接原因&#34;&gt;&lt;/a&gt; 直接原因&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;转入初期有不少行政交接工作需要完成，同时还需兼顾系统性自学计划的制定、评估以及试运行工作&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;参与了一个跨领域的科研级项目，部分理论知识需要从头开始学起，可支配时间被进一步压缩&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;面临新的人际环境，人际往来极少或完全没有&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;深层原因&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#深层原因&#34;&gt;&lt;/a&gt; 深层原因&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;对学业评估政策了解程度不足&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;抗拒主动交流，&lt;mark&gt;学业、行政信息闭塞&lt;/mark&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;根本原因&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#根本原因&#34;&gt;&lt;/a&gt; 根本原因&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;信息闭塞导致焦虑，焦虑使人难以冷静思考，无法冷静思考也会加剧焦虑问题，陷入恶性循环&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;思维定势导致处世死板，从而无法灵活高效地处理各类问题&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;对未知抱有恐惧&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;解决方法&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#解决方法&#34;&gt;&lt;/a&gt; 解决方法&lt;/h2&gt;
-&lt;h3 id=&#34;直接方法&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#直接方法&#34;&gt;&lt;/a&gt; 直接方法&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;放松&lt;/strong&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;灵活&lt;/strong&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;交流&lt;/strong&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;⚠️以及注意身体健康问题&lt;/p&gt;
-</content>
-        <category term="日常反思" />
-        <updated>2025-09-15T16:00:00.000Z</updated>
-    </entry>
-    <entry>
-        <id>http://blog.virtualguard101.com/2025/08/16/cursor-meetup-shanghai/</id>
+        <id>http://blog.virtualguard101.com/2025/08/16/Cursor%20Meetup%20ShangHai%20%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%AD%A6%E7%94%9F%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84%20AI+%20%E4%BA%A7%E5%93%81/</id>
         <title>Cursor Meetup ShangHai 要点记录：学生视角下的 AI+ 产品</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/08/16/cursor-meetup-shanghai/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/08/16/Cursor%20Meetup%20ShangHai%20%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%AD%A6%E7%94%9F%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84%20AI+%20%E4%BA%A7%E5%93%81/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;在朋友的邀请下参加了8月16号在上海浦东软件园举行的 Cursor Meetup，对朋友现场记录的内容以及我的个人提问做一个整理，同时站在计算机专业在校大学生视角简单记录一下当前的看法&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;整个 Meetup 的流程持续了一整个下午，分上下两场，个人感觉上半场更倾向于实际应用场景的“踩坑”分享，而下半场则更倾向于方法论的解析。&lt;/p&gt;
 &lt;p&gt;站在学生视角，前半场的实际应用场景我个人基本无法很好消化，毕竟还没有参与工作，没有这样的环境与条件去感受这一方面的内容；但方法论模块的分享对于当前的我们来说还是很有参考价值的，无论是我的朋友（医学生）还是我（CSer），特别是针对未来大概率要进入这个行业的我而言。&lt;/p&gt;
@@ -508,22 +440,23 @@
 &lt;p&gt;及时删除冗余代码&lt;/p&gt;
 &lt;p&gt;一个问题一个问题解决，不要设定过于宏大的任务&lt;/p&gt;
 </content>
-        <category term="AI+" />
+        <category term="Blog" />
+        <category term="AIGC" />
         <category term="Meetup" />
         <updated>2025-08-16T06:00:00.000Z</updated>
     </entry>
     <entry>
-        <id>http://blog.virtualguard101.com/2025/06/23/web/</id>
+        <id>http://blog.virtualguard101.com/2025/06/23/%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9%E6%9E%84%E5%BB%BA%E8%A6%81%E7%82%B9(%E6%94%B9%E8%89%AF%E7%89%88)%20&amp;&amp;%20Web%20%E5%BC%80%E5%8F%91%E7%AE%80%E8%A6%81%E5%AE%9E%E8%B7%B5/</id>
         <title>个人站点构建要点(改良版) &amp;&amp; Web 开发简要实践</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/06/23/web/"/>
-        <content type="html">&lt;p&gt;&lt;strong&gt;对今年四月份写的&lt;a href=&#34;web-build.md&#34;&gt;“docker-compose + nginx快速构建个人站点”&lt;/a&gt;中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新&lt;/strong&gt;&lt;/p&gt;
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/06/23/%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9%E6%9E%84%E5%BB%BA%E8%A6%81%E7%82%B9(%E6%94%B9%E8%89%AF%E7%89%88)%20&amp;&amp;%20Web%20%E5%BC%80%E5%8F%91%E7%AE%80%E8%A6%81%E5%AE%9E%E8%B7%B5/"/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;对今年四月份写的&lt;a href=&#34;docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9.md&#34;&gt;“docker-compose + nginx快速构建个人站点”&lt;/a&gt;中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;近期在&lt;a href=&#34;https://www.spaceship.com/zh/&#34;&gt;spaceship&lt;/a&gt;上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。&lt;/p&gt;
 &lt;p&gt;做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;h2 id=&#34;部署要点-杂项&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署要点-杂项&#34;&gt;&lt;/a&gt; 部署要点 &amp;amp; 杂项&lt;/h2&gt;
 &lt;h3 id=&#34;部署改良&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署改良&#34;&gt;&lt;/a&gt; 部署改良&lt;/h3&gt;
 &lt;h4 id=&#34;改良要点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#改良要点&#34;&gt;&lt;/a&gt; 改良要点&lt;/h4&gt;
-&lt;p&gt;在今年的四月份我曾发布了一篇&lt;a href=&#34;web-build.md&#34;&gt;文章&lt;/a&gt;，里面主要提及了 &lt;strong&gt;Docker Compose + Nginx&lt;/strong&gt; “一键部署”的部署方式。如果所部署的服务模块基本高度稳定，基本不需要通过暂停服务来处理集成/交付问题，或者服务之间几乎不存在依赖关系或依赖关系十分简单，那么这这种部署方式就不会有什么太大的问题；然而，倘若需要灵活的开发场景，例如需要经常性为站点添加新的服务，或是存在需要通过停止服务来进行配置的服务，同时服务与服务之间的依赖关系错综复杂，使用这样&lt;strong&gt;一体化&lt;/strong&gt;的部署方式就需要将所有服务一并停止，这样就不利于高效开发且会降低站点的可访问性。&lt;/p&gt;
+&lt;p&gt;在今年的四月份我曾发布了一篇&lt;a href=&#34;docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9.md&#34;&gt;文章&lt;/a&gt;，里面主要提及了 &lt;strong&gt;Docker Compose + Nginx&lt;/strong&gt; “一键部署”的部署方式。如果所部署的服务模块基本高度稳定，基本不需要通过暂停服务来处理集成/交付问题，或者服务之间几乎不存在依赖关系或依赖关系十分简单，那么这这种部署方式就不会有什么太大的问题；然而，倘若需要灵活的开发场景，例如需要经常性为站点添加新的服务，或是存在需要通过停止服务来进行配置的服务，同时服务与服务之间的依赖关系错综复杂，使用这样&lt;strong&gt;一体化&lt;/strong&gt;的部署方式就需要将所有服务一并停止，这样就不利于高效开发且会降低站点的可访问性。&lt;/p&gt;
 &lt;p&gt;会降低可访问性很好理解——需要频繁地关闭服务在访问者眼里就是不稳定的表现。对于不利于高效开发的问题我们举一个例子：假设你想部署一个服务，但是这个服务需要调用另一个同样部署在该主机上的某个服务的API。为了添加这个服务，你首先需要把该主机上部署的所有服务先通过&lt;code&gt;docker compose down&lt;/code&gt;停止运行，然后添加这个服务的配置；在正式部署前，你想要测试一下这个服务的功能如何，结果发现依赖的API无法调用——因为它被停止了；然后你索性就不测试了，直接&lt;code&gt;docker compose up -d&lt;/code&gt;一键部署，结果配置出了问题——运气好点的话，只有新服务的容器无法运行；运气不好的话，新服务可能执行了一个未定义行为在，或者传入了一个未定义参数到API服务里，结果导致API服务也崩溃了，依赖这个API服务的其他服务也就跟着崩溃了，留下一大堆与看上去新服务毫无关联的报错信息和阅读着如💩山一般报错信息风中凌乱的你…原本只要看一个服务的报错，现在要看好几个，而且其中的依赖关系可能还很复杂！那样的报错信息懂的都懂，根本就不是给人看的。这种情况就会大大增加debug的压力，也就降低了开发效率。&lt;/p&gt;
 &lt;p&gt;解决这个问题，我们就需要通过把原来高度集中的微服务分散开来配置与部署来解决可能被“一锅端”的问题。针对普通的个人站点，实现的思路也很简单，现成服务的部署工具仍然是Docker + Nginx，但这次我们将二者独立开来。简单来说，旧版的部署方式是&lt;strong&gt;将Nginx的转发服务也一并运行于Docker&lt;/strong&gt;，各个由Nginx转发的子服务由Docker部署，&lt;strong&gt;所有的服务均配置于单个&lt;code&gt;docker-compose.yml&lt;/code&gt;中&lt;/strong&gt;，可参考下图理解：&lt;/p&gt;
 &lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
@@ -658,18 +591,18 @@
 &lt;p&gt;对于逻辑比较简单（比如线性逻辑）且shell命令相对密集的系列操作，我们就可以通过编写shell脚本来解决；而对于逻辑相对复杂或对可扩展性要求较高的系列操作与功能，我们就可以交给python脚本来解决，这样不容易出错。&lt;/p&gt;
 &lt;p&gt;编写python脚本前，我们需要先安装python：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install python3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install pip&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;Ubuntu默认安装python3.10，如果对版本有特殊要求，可以安装一个虚拟环境管理器。这里以&lt;a href=&#34;https://docs.astral.sh/uv/&#34;&gt;uv&lt;/a&gt;为例：&lt;/p&gt;
+&lt;p&gt;Ubuntu默认安装python3.10，如果对版本有特殊要求，可以安装一个虚拟环境管理器。这里以&lt;a href=&#34;../../obsidian/Tools/Astral%20uv.md&#34;&gt;Astral uv&lt;/a&gt;为例：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -LsSf https://astral.sh/uv/install.sh | sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;针对我的个人站点，我为其写了一个集成了&lt;strong&gt;服务注册&lt;/strong&gt;、&lt;strong&gt;服务管理&lt;/strong&gt;以及&lt;strong&gt;服务删除&lt;/strong&gt;三个主要操作的脚本集合，并将其作为一个用户自定义包使用。项目地址可见&lt;a href=&#34;https://github.com/virtualguard101/WebServicesManager&#34;&gt;GitHub&lt;/a&gt;或我的&lt;a href=&#34;https://gitea.virtualguard101.com/virtualguard101/webscripts&#34;&gt;个人远程仓库&lt;/a&gt;。&lt;/p&gt;
 </content>
+        <category term="Blog" />
         <category term="web开发" />
-        <category term="docker" />
         <updated>2025-06-23T04:38:07.000Z</updated>
     </entry>
     <entry>
-        <id>http://blog.virtualguard101.com/2025/06/20/2024-2025summary/</id>
+        <id>http://blog.virtualguard101.com/2025/06/20/2024-2025%EF%BC%9A%E8%89%B0%E9%9A%BE%E7%9A%84%E8%B5%B7%E6%AD%A5/</id>
         <title>2024-2025：艰难的起步</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/06/20/2024-2025summary/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/06/20/2024-2025%EF%BC%9A%E8%89%B0%E9%9A%BE%E7%9A%84%E8%B5%B7%E6%AD%A5/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;对CS自学之路的第一年，也是大学生活的第一年的一个简单复盘&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;在大学的第一年——也是正式开始CS自学旅途的第一年（周年）随着暑假的临近也就快要结束了，是时候乘着 &lt;s&gt;期末复习&lt;/s&gt; 休闲的时间写一下这个学年的学年总结与复盘了。&lt;/p&gt;
 &lt;p&gt;事实上，对于这个学年的成果我个人并不满意，但也正因如此，才需要通过客观、辨证的总结来修正错误的方法与方向。&lt;/p&gt;
@@ -752,7 +685,7 @@
 &lt;h4 id=&#34;5月份&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#5月份&#34;&gt;&lt;/a&gt; 5月份&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;构建了自己的&lt;a href=&#34;../../blog/posts/web-build.md&#34;&gt;第一个个人站点&lt;/a&gt;（这个才是真正的“斯大林格勒”）&lt;/p&gt;
+&lt;p&gt;构建了自己的&lt;a href=&#34;docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9.md&#34;&gt;第一个个人站点&lt;/a&gt;（这个才是真正的“斯大林格勒”）&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://i.imgur.com/euiV0r7.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -768,14 +701,14 @@
 &lt;p&gt;这是建设了个人站点后的第一个具有&lt;a href=&#34;https://note.virtualguard101.xyz/notes/Programming%20Language/c%2B%2B/C%2B%2B%20Fundamental/00-type-structure/&#34;&gt;相对完善笔记&lt;/a&gt;的自学课程，我快速过了一下，其中大部分的&lt;a href=&#34;https://github.com/virtualguard101/cs106l-assignments&#34;&gt;Assignments&lt;/a&gt;还没来得及做。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;开始使用&lt;a href=&#34;arch-linux.md&#34;&gt;Arch Linux&lt;/a&gt;作为主操作系统&lt;/p&gt;
+&lt;p&gt;开始使用&lt;a href=&#34;Arch%20Linux%E5%AE%89%E8%A3%85%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95.md&#34;&gt;Arch Linux&lt;/a&gt;作为主操作系统&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://i.imgur.com/oVkMHug.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;s&gt;因为我是南梁&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;使用了近半年的Ubuntu，终于还是对Arch动心了。&lt;a href=&#34;https://blog.virtualguard101.xyz/2025/05/19/arch-linux/&#34;&gt;这篇文章&lt;/a&gt;记录了一些我在安装过程遇到的一些要点与问题。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;创建项目&lt;a href=&#34;../../projects/3BodySimulator.md&#34;&gt;3BodySimulator&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;这是我个人为学习C++项目构建与管理而创建的&lt;strong&gt;案例式项目&lt;/strong&gt;，学习的知识主要聚焦于cpp项目的构建流程与&lt;a href=&#34;../../notes/tools/build-tools/cmake.md&#34;&gt;CMake等工具的使用&lt;/a&gt;，代码逻辑的所有内容以及项目架构的部分内容由AI代为完成。&lt;/p&gt;
+&lt;p&gt;这是我个人为学习C++项目构建与管理而创建的&lt;strong&gt;案例式项目&lt;/strong&gt;，学习的知识主要聚焦于cpp项目的构建流程与&lt;a href=&#34;../../obsidian/Tools/BuildTools/CMake.md&#34;&gt;CMake等工具的使用&lt;/a&gt;，代码逻辑的所有内容以及项目架构的部分内容由AI代为完成。&lt;/p&gt;
 &lt;p&gt;按照惯例（自从有个人站点后，我有随手为自己的项目写文档的习惯，特别是用于学习的项目），我也为此写了一篇&lt;a href=&#34;../../projects/3BodySimulator.md&#34;&gt;解构文档&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -786,7 +719,7 @@
 &lt;h4 id=&#34;6月份&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#6月份&#34;&gt;&lt;/a&gt; 6月份&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;进一步完善了&lt;a href=&#34;../../notes/tools/git.md&#34;&gt;Git的学习&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;进一步完善了&lt;a href=&#34;../../obsidian/Tools/Git.md&#34;&gt;Git的学习&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;说的难听一点，对于Git在此之前我可能只会“三板斧（&lt;code&gt;add&lt;/code&gt;、&lt;code&gt;commit&lt;/code&gt;、&lt;code&gt;push&lt;/code&gt;）”&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -889,15 +822,16 @@
   -- virtualguard101，2025.6.23凌晨于福建理工大学
 &lt;/div&gt;
 </content>
-        <category term="学年总结" />
+        <category term="总结" />
+        <category term="Blog" />
         <updated>2025-06-20T13:10:33.000Z</updated>
     </entry>
     <entry>
-        <id>http://blog.virtualguard101.com/2025/05/19/arch-linux/</id>
+        <id>http://blog.virtualguard101.com/2025/05/19/Arch%20Linux%E5%AE%89%E8%A3%85%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95/</id>
         <title>Arch Linux安装要点记录</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/05/19/arch-linux/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/05/19/Arch%20Linux%E5%AE%89%E8%A3%85%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;记录一下在可移动设备/真机上安装和配置Arch Linux的过程安装过程中遇到的一些问题&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Arch Linux是一个支持高度定制化的&lt;a href=&#34;../../notes/tools/linux/misc.md&#34;&gt;Linux&lt;/a&gt;发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
+&lt;p&gt;Arch Linux是一个支持高度定制化的&lt;a href=&#34;../../obsidian/Tools/linux/Linux%E5%9F%BA%E7%A1%80%E3%80%81%E6%9D%82%E9%A1%B9.md&#34;&gt;Linux&lt;/a&gt;发行版，其采用滚动更新的方式对系统进行更新，更新策略激进，适合愿意花时间在自己系统的计算机用户或喜欢折腾的计算机用户。&lt;/p&gt;
 &lt;p&gt;这里需要特别说明一点，在安装之前，需要反思自己是否真的适合使用Arch！否则Arch的高度定制化与激进的更新策略将会使你陷入极大的麻烦！毕竟高度定制化的代价就是你需要为系统付出比其他稳定发行版多得多的时间去维护它。&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;h2 id=&#34;基本安装&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#基本安装&#34;&gt;&lt;/a&gt; 基本安装&lt;/h2&gt;
@@ -932,13 +866,14 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 </content>
-        <category term="linux" />
+        <category term="Blog" />
+        <category term="Linux" />
         <updated>2025-05-19T00:52:48.000Z</updated>
     </entry>
     <entry>
-        <id>http://blog.virtualguard101.com/2025/04/26/web-build/</id>
+        <id>http://blog.virtualguard101.com/2025/04/26/docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9/</id>
         <title>docker-compose + nginx快速构建个人站点</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/04/26/web-build/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/04/26/docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;本文主要讲解如何从零开始利用docker-compose + nginx快速构建一个个人站点；并利用Github Action实现文章部署自动化；最后是如何使用certbot为站点自动化申请ssl证书。整套配置流程做下来用时基本上不会超过3天&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了&lt;a href=&#34;https://github.com/kasuie/remio-home&#34;&gt;remio-home | kasuie&lt;/a&gt;，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行&lt;code&gt;docker-compose up -d&lt;/code&gt;即可。结合大佬的一些建议和我自己的一些 &lt;s&gt;偷懒&lt;/s&gt; 自动化的想法，便有了下文。&lt;/p&gt;
 &lt;p&gt;如题，本文主要讲解如何从零开始在一台云服务器上利用docker-compose + nginx快速构建一个个人站点。得益于强大的现代化工具链以及开源社区的支持，我们完成这个简易项目所需的计算机理论基础并不多，甚至可以说是几乎为零，只需要知道文档应该怎么读，如何正确打开开发中的“cv大法”来为自己的自动化工具链编写配置文件。当然，最好有一点web开发的基础，这样在遇到意料之外的问题时不至于束手无策。&lt;/p&gt;
@@ -946,7 +881,7 @@
 &lt;p&gt;通过该项目你会了解到以下内容：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;../../notes/tools/ssh.md&#34;&gt;远程服务器的基础使用&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../obsidian/Tools/%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80.md&#34;&gt;远程服务器的基础使用&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;docker、docker-compose部署服务的基础操作&lt;/p&gt;
@@ -976,7 +911,7 @@
 &lt;p&gt;&lt;strong&gt;域名&lt;/strong&gt;同样需要在运营商购买，也可通过特殊手段申请免费域名（不过免费申请的域名如有人出钱购买就会被回收）。获得域名后根据DNS云解析平台的文档进行解析配置即可。&lt;/p&gt;
 &lt;h2 id=&#34;准备工作&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#准备工作&#34;&gt;&lt;/a&gt; 准备工作&lt;/h2&gt;
 &lt;h3 id=&#34;部署环境&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署环境&#34;&gt;&lt;/a&gt; 部署环境&lt;/h3&gt;
-&lt;p&gt;服务器的初始配置可参考这篇文章&lt;a href=&#34;../../notes/tools/ssh.md&#34;&gt;远程服务器的基础使用&lt;/a&gt;，这里不再赘述。由于需要使用&lt;code&gt;docker&lt;/code&gt;进行部署，我们需要先在服务器上安装一下docker。通过以下命令安装：&lt;/p&gt;
+&lt;p&gt;服务器的初始配置可参考这篇文章&lt;a href=&#34;../../obsidian/Tools/%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80.md&#34;&gt;远程服务器的基础使用&lt;/a&gt;，这里不再赘述。由于需要使用&lt;code&gt;docker&lt;/code&gt;进行部署，我们需要先在服务器上安装一下docker。通过以下命令安装：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -fsSL https://get.docker.com | bash -s docker&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install docker-compose&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;将当前用户添加到docker用户组：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; groupadd docker &lt;span class=&#34;comment&#34;&gt;# 若尚不存在 docker 组，则需先创建&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; usermod -aG docker &lt;span class=&#34;variable&#34;&gt;$USER&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -1149,8 +1084,8 @@ ssh私钥需在服务器上生成。&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&lt;strong&gt;END&lt;/strong&gt;&lt;/p&gt;
 </content>
+        <category term="Blog" />
         <category term="web开发" />
-        <category term="docker" />
         <updated>2025-04-26T15:28:57.000Z</updated>
     </entry>
     <entry>

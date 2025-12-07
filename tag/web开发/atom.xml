@@ -4,26 +4,24 @@
     <title>vg101&#39;s Blog • Posts by &#34;web开发&#34; tag</title>
     <link href="http://blog.virtualguard101.com" />
     <updated>2025-06-23T04:38:07.000Z</updated>
-    <category term="学年总结" />
-    <category term="日常反思" />
+    <category term="总结" />
+    <category term="Blog" />
+    <category term="Linux" />
     <category term="AIGC" />
-    <category term="linux" />
-    <category term="AI+" />
     <category term="Meetup" />
     <category term="web开发" />
-    <category term="docker" />
     <entry>
-        <id>http://blog.virtualguard101.com/2025/06/23/web/</id>
+        <id>http://blog.virtualguard101.com/2025/06/23/%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9%E6%9E%84%E5%BB%BA%E8%A6%81%E7%82%B9(%E6%94%B9%E8%89%AF%E7%89%88)%20&amp;&amp;%20Web%20%E5%BC%80%E5%8F%91%E7%AE%80%E8%A6%81%E5%AE%9E%E8%B7%B5/</id>
         <title>个人站点构建要点(改良版) &amp;&amp; Web 开发简要实践</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/06/23/web/"/>
-        <content type="html">&lt;p&gt;&lt;strong&gt;对今年四月份写的&lt;a href=&#34;web-build.md&#34;&gt;“docker-compose + nginx快速构建个人站点”&lt;/a&gt;中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新&lt;/strong&gt;&lt;/p&gt;
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/06/23/%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9%E6%9E%84%E5%BB%BA%E8%A6%81%E7%82%B9(%E6%94%B9%E8%89%AF%E7%89%88)%20&amp;&amp;%20Web%20%E5%BC%80%E5%8F%91%E7%AE%80%E8%A6%81%E5%AE%9E%E8%B7%B5/"/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;对今年四月份写的&lt;a href=&#34;docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9.md&#34;&gt;“docker-compose + nginx快速构建个人站点”&lt;/a&gt;中提到的构建方式作一下改良，同时根据学到的技能添加一些自定义的玩意，2025暑假期间持续更新&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;近期在&lt;a href=&#34;https://www.spaceship.com/zh/&#34;&gt;spaceship&lt;/a&gt;上订阅了一个新的域名；同时还订阅了一台美国硅谷的VPS用于重构我的个人站点，也可以理解为是要搭第二个个人站点。&lt;/p&gt;
 &lt;p&gt;做出这个决定的原因，一方面是想精进自己web开发的能力，多点亮一些相关的技能树；另一方面，第一个站点的服务器配置已经被我搅成一坨了——虽然还称不上💩山，但我实在是懒得整理了，干脆直接搞台新的来重构；同时新服务器的连接速度比原来那个快上不少也是一个原因，这样虽然还称不上是“方便管理”，但提供点情绪价值还是有的。&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;h2 id=&#34;部署要点-杂项&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署要点-杂项&#34;&gt;&lt;/a&gt; 部署要点 &amp;amp; 杂项&lt;/h2&gt;
 &lt;h3 id=&#34;部署改良&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署改良&#34;&gt;&lt;/a&gt; 部署改良&lt;/h3&gt;
 &lt;h4 id=&#34;改良要点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#改良要点&#34;&gt;&lt;/a&gt; 改良要点&lt;/h4&gt;
-&lt;p&gt;在今年的四月份我曾发布了一篇&lt;a href=&#34;web-build.md&#34;&gt;文章&lt;/a&gt;，里面主要提及了 &lt;strong&gt;Docker Compose + Nginx&lt;/strong&gt; “一键部署”的部署方式。如果所部署的服务模块基本高度稳定，基本不需要通过暂停服务来处理集成/交付问题，或者服务之间几乎不存在依赖关系或依赖关系十分简单，那么这这种部署方式就不会有什么太大的问题；然而，倘若需要灵活的开发场景，例如需要经常性为站点添加新的服务，或是存在需要通过停止服务来进行配置的服务，同时服务与服务之间的依赖关系错综复杂，使用这样&lt;strong&gt;一体化&lt;/strong&gt;的部署方式就需要将所有服务一并停止，这样就不利于高效开发且会降低站点的可访问性。&lt;/p&gt;
+&lt;p&gt;在今年的四月份我曾发布了一篇&lt;a href=&#34;docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9.md&#34;&gt;文章&lt;/a&gt;，里面主要提及了 &lt;strong&gt;Docker Compose + Nginx&lt;/strong&gt; “一键部署”的部署方式。如果所部署的服务模块基本高度稳定，基本不需要通过暂停服务来处理集成/交付问题，或者服务之间几乎不存在依赖关系或依赖关系十分简单，那么这这种部署方式就不会有什么太大的问题；然而，倘若需要灵活的开发场景，例如需要经常性为站点添加新的服务，或是存在需要通过停止服务来进行配置的服务，同时服务与服务之间的依赖关系错综复杂，使用这样&lt;strong&gt;一体化&lt;/strong&gt;的部署方式就需要将所有服务一并停止，这样就不利于高效开发且会降低站点的可访问性。&lt;/p&gt;
 &lt;p&gt;会降低可访问性很好理解——需要频繁地关闭服务在访问者眼里就是不稳定的表现。对于不利于高效开发的问题我们举一个例子：假设你想部署一个服务，但是这个服务需要调用另一个同样部署在该主机上的某个服务的API。为了添加这个服务，你首先需要把该主机上部署的所有服务先通过&lt;code&gt;docker compose down&lt;/code&gt;停止运行，然后添加这个服务的配置；在正式部署前，你想要测试一下这个服务的功能如何，结果发现依赖的API无法调用——因为它被停止了；然后你索性就不测试了，直接&lt;code&gt;docker compose up -d&lt;/code&gt;一键部署，结果配置出了问题——运气好点的话，只有新服务的容器无法运行；运气不好的话，新服务可能执行了一个未定义行为在，或者传入了一个未定义参数到API服务里，结果导致API服务也崩溃了，依赖这个API服务的其他服务也就跟着崩溃了，留下一大堆与看上去新服务毫无关联的报错信息和阅读着如💩山一般报错信息风中凌乱的你…原本只要看一个服务的报错，现在要看好几个，而且其中的依赖关系可能还很复杂！那样的报错信息懂的都懂，根本就不是给人看的。这种情况就会大大增加debug的压力，也就降低了开发效率。&lt;/p&gt;
 &lt;p&gt;解决这个问题，我们就需要通过把原来高度集中的微服务分散开来配置与部署来解决可能被“一锅端”的问题。针对普通的个人站点，实现的思路也很简单，现成服务的部署工具仍然是Docker + Nginx，但这次我们将二者独立开来。简单来说，旧版的部署方式是&lt;strong&gt;将Nginx的转发服务也一并运行于Docker&lt;/strong&gt;，各个由Nginx转发的子服务由Docker部署，&lt;strong&gt;所有的服务均配置于单个&lt;code&gt;docker-compose.yml&lt;/code&gt;中&lt;/strong&gt;，可参考下图理解：&lt;/p&gt;
 &lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
@@ -158,18 +156,18 @@
 &lt;p&gt;对于逻辑比较简单（比如线性逻辑）且shell命令相对密集的系列操作，我们就可以通过编写shell脚本来解决；而对于逻辑相对复杂或对可扩展性要求较高的系列操作与功能，我们就可以交给python脚本来解决，这样不容易出错。&lt;/p&gt;
 &lt;p&gt;编写python脚本前，我们需要先安装python：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install python3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install pip&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;Ubuntu默认安装python3.10，如果对版本有特殊要求，可以安装一个虚拟环境管理器。这里以&lt;a href=&#34;https://docs.astral.sh/uv/&#34;&gt;uv&lt;/a&gt;为例：&lt;/p&gt;
+&lt;p&gt;Ubuntu默认安装python3.10，如果对版本有特殊要求，可以安装一个虚拟环境管理器。这里以&lt;a href=&#34;../../obsidian/Tools/Astral%20uv.md&#34;&gt;Astral uv&lt;/a&gt;为例：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -LsSf https://astral.sh/uv/install.sh | sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;针对我的个人站点，我为其写了一个集成了&lt;strong&gt;服务注册&lt;/strong&gt;、&lt;strong&gt;服务管理&lt;/strong&gt;以及&lt;strong&gt;服务删除&lt;/strong&gt;三个主要操作的脚本集合，并将其作为一个用户自定义包使用。项目地址可见&lt;a href=&#34;https://github.com/virtualguard101/WebServicesManager&#34;&gt;GitHub&lt;/a&gt;或我的&lt;a href=&#34;https://gitea.virtualguard101.com/virtualguard101/webscripts&#34;&gt;个人远程仓库&lt;/a&gt;。&lt;/p&gt;
 </content>
+        <category term="Blog" />
         <category term="web开发" />
-        <category term="docker" />
         <updated>2025-06-23T04:38:07.000Z</updated>
     </entry>
     <entry>
-        <id>http://blog.virtualguard101.com/2025/04/26/web-build/</id>
+        <id>http://blog.virtualguard101.com/2025/04/26/docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9/</id>
         <title>docker-compose + nginx快速构建个人站点</title>
-        <link rel="alternate" href="http://blog.virtualguard101.com/2025/04/26/web-build/"/>
+        <link rel="alternate" href="http://blog.virtualguard101.com/2025/04/26/docker-compose%20+%20nginx%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9/"/>
         <content type="html">&lt;p&gt;&lt;strong&gt;本文主要讲解如何从零开始利用docker-compose + nginx快速构建一个个人站点；并利用Github Action实现文章部署自动化；最后是如何使用certbot为站点自动化申请ssl证书。整套配置流程做下来用时基本上不会超过3天&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;起因是我决定搭建一个个人站点用于模块化整合资源，在搜罗主页主题时因为部署简单相中了&lt;a href=&#34;https://github.com/kasuie/remio-home&#34;&gt;remio-home | kasuie&lt;/a&gt;，有多简单呢？简单到只需要进行一些及其简单的配置（cv大法可用）后，在服务器上输入一行&lt;code&gt;docker-compose up -d&lt;/code&gt;即可。结合大佬的一些建议和我自己的一些 &lt;s&gt;偷懒&lt;/s&gt; 自动化的想法，便有了下文。&lt;/p&gt;
 &lt;p&gt;如题，本文主要讲解如何从零开始在一台云服务器上利用docker-compose + nginx快速构建一个个人站点。得益于强大的现代化工具链以及开源社区的支持，我们完成这个简易项目所需的计算机理论基础并不多，甚至可以说是几乎为零，只需要知道文档应该怎么读，如何正确打开开发中的“cv大法”来为自己的自动化工具链编写配置文件。当然，最好有一点web开发的基础，这样在遇到意料之外的问题时不至于束手无策。&lt;/p&gt;
@@ -177,7 +175,7 @@
 &lt;p&gt;通过该项目你会了解到以下内容：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;../../notes/tools/ssh.md&#34;&gt;远程服务器的基础使用&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../obsidian/Tools/%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80.md&#34;&gt;远程服务器的基础使用&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;docker、docker-compose部署服务的基础操作&lt;/p&gt;
@@ -207,7 +205,7 @@
 &lt;p&gt;&lt;strong&gt;域名&lt;/strong&gt;同样需要在运营商购买，也可通过特殊手段申请免费域名（不过免费申请的域名如有人出钱购买就会被回收）。获得域名后根据DNS云解析平台的文档进行解析配置即可。&lt;/p&gt;
 &lt;h2 id=&#34;准备工作&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#准备工作&#34;&gt;&lt;/a&gt; 准备工作&lt;/h2&gt;
 &lt;h3 id=&#34;部署环境&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#部署环境&#34;&gt;&lt;/a&gt; 部署环境&lt;/h3&gt;
-&lt;p&gt;服务器的初始配置可参考这篇文章&lt;a href=&#34;../../notes/tools/ssh.md&#34;&gt;远程服务器的基础使用&lt;/a&gt;，这里不再赘述。由于需要使用&lt;code&gt;docker&lt;/code&gt;进行部署，我们需要先在服务器上安装一下docker。通过以下命令安装：&lt;/p&gt;
+&lt;p&gt;服务器的初始配置可参考这篇文章&lt;a href=&#34;../../obsidian/Tools/%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80.md&#34;&gt;远程服务器的基础使用&lt;/a&gt;，这里不再赘述。由于需要使用&lt;code&gt;docker&lt;/code&gt;进行部署，我们需要先在服务器上安装一下docker。通过以下命令安装：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;curl -fsSL https://get.docker.com | bash -s docker&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; apt install docker-compose&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;将当前用户添加到docker用户组：&lt;/p&gt;
 &lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; groupadd docker &lt;span class=&#34;comment&#34;&gt;# 若尚不存在 docker 组，则需先创建&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;built_in&#34;&gt;sudo&lt;/span&gt; usermod -aG docker &lt;span class=&#34;variable&#34;&gt;$USER&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -380,8 +378,8 @@ ssh私钥需在服务器上生成。&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&lt;strong&gt;END&lt;/strong&gt;&lt;/p&gt;
 </content>
+        <category term="Blog" />
         <category term="web开发" />
-        <category term="docker" />
         <updated>2025-04-26T15:28:57.000Z</updated>
     </entry>
 </feed>
