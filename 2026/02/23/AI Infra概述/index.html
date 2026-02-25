@@ -1,0 +1,1709 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  
+    
+      data-theme-mode="auto"
+    
+  >
+  <head>
+  
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"license_type":"by-nc-sa","content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.outdate = {"enable":true,"daysAgo":-1,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};window.REIMU_CONFIG.code_block = {"expand":5};window.REIMU_CONFIG.base = 'http://blog.virtualguard101.com';</script>
+  
+  <title>
+    AI Infra概述 |
+    
+    vg101&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="去年11月份在CS的自学生涯中遭遇了瓶颈，加上连续遭遇生理与心理上的双重打击，消沉了一段时间。考虑到接下来学业方面大概率以推进11408为主，在研究与工程方面上决定尽可能寻找一个贴近计算机基础学科的方向。经过一段时间的观察与思考，截至写这篇文章时，准备将AI Infra作为日后的主要研究方向.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Infra概述">
+<meta property="og:url" content="http://blog.virtualguard101.com/2026/02/23/AI%20Infra%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="vg101&#39;s Blog">
+<meta property="og:description" content="去年11月份在CS的自学生涯中遭遇了瓶颈，加上连续遭遇生理与心理上的双重打击，消沉了一段时间。考虑到接下来学业方面大概率以推进11408为主，在研究与工程方面上决定尽可能寻找一个贴近计算机基础学科的方向。经过一段时间的观察与思考，截至写这篇文章时，准备将AI Infra作为日后的主要研究方向.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pica.zhimg.com/80/v2-8bc58636edd071cb09538ac7071367c6_1440w.webp?source=2c26e567">
+<meta property="og:image" content="https://picx.zhimg.com/80/v2-8f9bbcc77dba850c42d36d6c15610b2a_1440w.webp?source=2c26e567">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-03545ba48df4c0b2dfee6afc195b47a3_1440w.webp?source=2c26e567">
+<meta property="article:published_time" content="2026-02-23T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-25T14:52:59.549Z">
+<meta property="article:author" content="virtualguard101">
+<meta property="article:tag" content="Blog">
+<meta property="article:tag" content="AI Infra">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pica.zhimg.com/80/v2-8bc58636edd071cb09538ac7071367c6_1440w.webp?source=2c26e567">
+  
+  
+    
+  
+  
+    <link rel="shortcut icon" href="https://i.imgur.com/svZd9e6.jpeg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" crossorigin="anonymous">
+  
+    
+      
+        
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+
+      
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" crossorigin="anonymous">
+
+  
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      
+      
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/">首页</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/archives">归档</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/about">关于</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/friend">友链</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" target="_blank"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+  
+</div>
+<header id="header">
+  
+    
+      
+        <picture>
+          
+        </picture>
+        
+          <img  fetchpriority="high" src="https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg" alt="AI Infra概述">
+        
+      
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">AI Infra概述</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="sidebar-left"  >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        
+          <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ai-infra%E6%8A%80%E6%9C%AF%E6%A0%88%E5%88%86%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text"> AI Infra技术栈分层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%B1%82"><span class="toc-number">1.1.</span> <span class="toc-text"> 硬件层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text"> 软件层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ai-infra%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text"> AI Infra的发展历程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ai-infra%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E7%A7%91"><span class="toc-number">3.</span> <span class="toc-text"> AI Infra依赖的基础学科[4][5]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E%E4%BC%A0%E7%BB%9Finfra%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">4.</span> <span class="toc-text"> 与传统Infra的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E4%B8%9A%E5%88%86%E6%9E%90"><span class="toc-number">5.</span> <span class="toc-text"> 行业分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E4%B8%9A%E7%8E%B0%E7%8A%B6%E6%A6%82%E8%BF%B0"><span class="toc-number">5.1.</span> <span class="toc-text"> 行业现状概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%B1%E4%B8%9A%E5%88%86%E6%9E%90"><span class="toc-number">5.2.</span> <span class="toc-text"> 就业分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A0%B8%E5%BF%83%E6%96%B9%E5%90%91"><span class="toc-number">5.2.1.</span> <span class="toc-text"> 三大核心方向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.2.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text"> 开源项目参考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E8%B5%84%E6%96%99"><span class="toc-number">6.1.</span> <span class="toc-text"> 理论资料</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%A4%BE%E5%8C%BA%E6%95%99%E7%A8%8B"><span class="toc-number">6.1.1.</span> <span class="toc-text"> 学习社区&#x2F;教程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A6%E6%9C%AF%E8%B5%84%E6%96%99"><span class="toc-number">6.1.2.</span> <span class="toc-text"> 学术资料[4:1]</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AB%98%E5%BD%B1%E5%93%8D%E5%8A%9B%E8%AE%BA%E6%96%87"><span class="toc-number">6.1.2.1.</span> <span class="toc-text"> 高影响力论文</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BC%9A%E8%AE%AE"><span class="toc-number">6.1.2.2.</span> <span class="toc-text"> 核心会议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AB%98%E5%BD%B1%E5%93%8D%E5%8A%9B%E9%A1%B9%E7%9B%AE%E7%BB%84"><span class="toc-number">6.1.2.3.</span> <span class="toc-text"> 高影响力项目组</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E8%B5%84%E6%96%99"><span class="toc-number">6.2.</span> <span class="toc-text"> 工程资料</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/bocchi.jpg" data-sizes="auto" alt="virtualguard101" class="lazyload">
+  <div class="sidebar-author-name">virtualguard101</div>
+  <div class="sidebar-description">&lt;/&gt;</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">9</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=mailto:virtualguard101@gmail.com itemprop="url" target="_blank" aria-label="email" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/virtualguard101 itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-twitter sidebar-social-icon">
+      <a href=https://twitter.com/virtualguardi01 itemprop="url" target="_blank" aria-label="twitter" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-telegram sidebar-social-icon">
+      <a href=https://t.me/virtualguard101 itemprop="url" target="_blank" aria-label="telegram" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-steam sidebar-social-icon">
+      <a href=https://steamcommunity.com/id/virtualguard101 itemprop="url" target="_blank" aria-label="steam" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+        
+      
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+  
+</aside>
+
+          <section id="main"><article id="post-AI Infra概述" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link" data-aos="zoom-in">
+    <time datetime="2026-02-23T08:00:00.000Z" itemprop="datePublished">2026-02-23</time>
+    <time style="display: none;" id="post-update-time">2026-02-25</time>
+  </span>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Projects/" data-aos="zoom-in">Projects</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <p><strong>去年11月份在CS的自学生涯中遭遇了瓶颈，加上连续遭遇生理与心理上的双重打击，消沉了一段时间。考虑到接下来学业方面大概率以推进11408为主，在研究与工程方面上决定尽可能寻找一个贴近<i>计算机基础学科</i>的方向。经过一段时间的观察与思考，截至写这篇文章时，准备将<i>AI Infra</i>作为日后的主要研究方向</strong>。</p>
+<p>AI Infra（AI Infrastructure, AI基础设施）技术栈<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>，是支撑现代大模型训练、微调、推理、服务化部署和AI Agent运行的整套软硬件体系。它不像传统后端服务那样“搭几台服务器装个k8s”就行，而是高度依赖计算效率、成本控制、稳定性和弹性。</p>
+<p>AI Infra 并非单一技术模块，而是通过硬件与软件的深度协同，构建起支撑 AI 大模型任务全流程的技术底座，其核心特征在于“垂直整合”，从物理硬件到上层工具，各环节形成闭环，确保 AI 计算高效、稳定落地<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。</p>
+<!-- more -->
+<h2 id="ai-infra技术栈分层"><a class="markdownIt-Anchor" href="#ai-infra技术栈分层"></a> AI Infra技术栈分层</h2>
+<p>自底向上，AI Infra 可分为<strong>硬件层</strong>和<strong>软件层</strong>，软件层又可分为<strong>资源调度&amp;管理层</strong>、<strong>编译&amp;计算架构</strong>、<strong>模型训练&amp;推理框架</strong>、<strong>第三方框架</strong>、<strong>大模型&amp;应用层</strong>、<strong>数据&amp;存储层</strong>等。若系统庞大，还会设置<strong>观测/运维层</strong>以方便对系统进行监控与维护。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">应用层（LLM / CV / ASR）</span><br><span class="line">        ↓</span><br><span class="line">推理引擎 / 训练框架</span><br><span class="line">        ↓</span><br><span class="line">通信库 + 调度器</span><br><span class="line">        ↓</span><br><span class="line">Kubernetes + 容器</span><br><span class="line">        ↓</span><br><span class="line">OS + 驱动</span><br><span class="line">        ↓</span><br><span class="line">GPU / Network / Storage</span><br></pre></td></tr></table></figure>
+<h3 id="硬件层"><a class="markdownIt-Anchor" href="#硬件层"></a> 硬件层</h3>
+<p><img src="https://pica.zhimg.com/80/v2-8bc58636edd071cb09538ac7071367c6_1440w.webp?source=2c26e567" alt="" /></p>
+<p>硬件层面虽然看似简单，但是却是AI Infra领域投入成本最大的部分，是 AI Infra 的“骨架”。</p>
+<p>如上图<sup class="footnote-ref"><a href="#fn2" id="fnref2:1">[2:1]</a></sup>，其主要模块可以根据职能划分为<strong>AI芯片（计算）</strong>、<strong>存储系统（存储）</strong>、<strong>高性能网卡（通信）</strong>。</p>
+<p>形成一个AI集群，需要合理组合这些硬件模块，并利用软件层中的**IaaS（Infrastructure as a Service）**实现对资源的高效管理与调度。</p>
+<h3 id="软件层"><a class="markdownIt-Anchor" href="#软件层"></a> 软件层</h3>
+<p><img src="https://picx.zhimg.com/80/v2-8f9bbcc77dba850c42d36d6c15610b2a_1440w.webp?source=2c26e567" alt="" /></p>
+<p>软件层主要负责高效处理数据流动和资源管理与调度，AI Infra 的 “神经中枢”。可参考云计算<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>中的架构层次将其划分为如下几个层次:</p>
+<ul>
+<li>
+<p><strong>IaaS（Infrastructure as a Service, 基础设施即服务）层</strong>: 聚焦<em>资源落地</em>，整合分散的计算、存储和网络资源，满足 AI 任务对海量数据的存储与快速读取需求，核心解决“计算、通信、存储”三大底层需求。除了后端所熟知的容器化技术（<a target="_blank" rel="noopener" href="https://www.docker.com/">Docker</a>等）、分布式调度框架（<a target="_blank" rel="noopener" href="https://kubernetes.io/">Kubernetes</a>等）外，还有网络层（Interconnect &amp; Cluster Network）的分布式训练与通信技术（<a target="_blank" rel="noopener" href="https://github.com/horovod/horovod">Horovod</a>、<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/nccl">NCCL</a>、<a target="_blank" rel="noopener" href="https://github.com/facebookincubator/gloo">Gloo</a>等）；存储层（Storage Layer）的分布式存储技术（<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph">Ceph</a>、<a target="_blank" rel="noopener" href="https://github.com/lustre/lustre">Lustre</a>、<a target="_blank" rel="noopener" href="https://github.com/minio/minio">MinIO</a>等）。</p>
+</li>
+<li>
+<p><strong>PaaS（Platform as a Service, 平台即服务）层</strong>: 聚焦<em>硬件衔接与模型开发</em>，负责编译上层代码、优化核心算子、将底层细节封装起来，提供模型搭建与训练的基础工具，从而提高算力利用率、降低底层基础门槛。如底层算子加速库（<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/cudnn">NVIDIA cuDNN</a>、<a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/compiler/xla">TensorFlow XLA</a>、<a target="_blank" rel="noopener" href="https://github.com/rapidsai/rapids">RAPIDS</a>等）；深度学习框架（<a target="_blank" rel="noopener" href="https://pytorch.org/">PyTorch</a>、<a target="_blank" rel="noopener" href="https://www.tensorflow.org/">TensorFlow</a>、<a target="_blank" rel="noopener" href="https://github.com/google/jax">Jax</a>等）；推理加速框架（<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT">NVIDIA TensorRT</a>、<a target="_blank" rel="noopener" href="https://github.com/vllm-project/vllm">vLLM</a>、<a target="_blank" rel="noopener" href="https://github.com/microsoft/onnxruntime">ONNX Runtime</a>等）。</p>
+</li>
+<li>
+<p><strong>SaaS（Software as a Service, 软件即服务）层</strong>: 聚焦<em>AI任务的“高效执行”</em>，而非通用应用。核心包含推理服务，如 <a target="_blank" rel="noopener" href="https://github.com/triton-inference-server/server">Triton Inference Server</a>，实现模型部署后的低延迟、高并发响应，支持动态批处理、模型动态加载；分布式并行框架，如 <a target="_blank" rel="noopener" href="https://github.com/microsoft/DeepSpeed">DeepSpeed</a>、<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/Megatron-LM">Megatron-LM</a>、VeRL 通过数据并行、张量并行等技术，拆分大规模训练任务，适配多卡/多节点集群，解决单设备算力不足问题，直接支撑 AI 任务的落地执行<sup class="footnote-ref"><a href="#fn2" id="fnref2:2">[2:2]</a></sup>。</p>
+</li>
+<li>
+<p><strong>Maas（Model as a Service, 模型即服务）层</strong>: <em>AI 领域特有的中间层，衔接 SaaS 层与终端用户</em>，核心提供模型托管（存储、管理预训练模型、微调后模型）、模型版本、轻量化微调与 API 调用服务，让用户无需关注底层框架与硬件，直接通过接口调用模型能力，是<em>大模型能力普惠化</em>的关键环节，填补了 “模型开发” 与 “业务应用” 间的空白<sup class="footnote-ref"><a href="#fn2" id="fnref2:3">[2:3]</a></sup>。</p>
+</li>
+</ul>
+<p>!!! tip “一些前沿方向”<br />
+- 异构计算与编译优化</p>
+<pre><code>    - [TVM](https://github.com/apache/tvm): 开源的机器学习编译器，支持将高效计算图部署到不同硬件上，优化加速.
+
+    - [MLIR](https://github.com/llvm/mlir): LLVM 提供的多层次中间表示（MLIR），适用于编译与优化AI计算.
+
+- Serverless AI
+
+    - [FaaS](https://github.com/openfaas/faas): 提供一个Serverless框架，支持快速部署机器学习模型，优化推理延迟.
+</code></pre>
+<h2 id="ai-infra的发展历程"><a class="markdownIt-Anchor" href="#ai-infra的发展历程"></a> AI Infra的发展历程</h2>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/4023337465/answer/1950623317519242011?share_code=wOgLUTuVp9MB&amp;utm_psn=2009324012581458495">AI Infra 发展历程-有没有大佬帮我解释一下AI Infra到底是干啥的？| 知乎</a></p>
+</blockquote>
+<h2 id="ai-infra依赖的基础学科"><a class="markdownIt-Anchor" href="#ai-infra依赖的基础学科"></a> AI Infra依赖的基础学科<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup><sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></h2>
+<blockquote>
+<p><em>斜体标注为11408考察内容</em></p>
+</blockquote>
+<ul>
+<li>
+<p><strong>计算机科学与技术</strong></p>
+<ul>
+<li>
+<p><strong><i>计算机体系结构（Computer Architecture）</i></strong></p>
+<ul>
+<li>
+<p>基础理论: 处理器设计、内存层次结构、缓存优化、并行计算架构等</p>
+</li>
+<li>
+<p>关联: 硬件层（如 GPU、TPU、NPU）设计及优化、内存层次等。</p>
+</li>
+<li>
+<p>代表技术栈: H100/B200/Blackwell架构、RoCEv2、InfiniBand、Chiplet</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><i>操作系统（Operating System）</i></strong></p>
+<ul>
+<li>
+<p>基础理论: 进程调度、内存管理、I/O 管理、文件系统等</p>
+</li>
+<li>
+<p>关联: AI Infra依赖操作系统（属软件层IaaS）来进行资源调度与管理，尤其是在容器化和虚拟化环境中的资源隔离和调度（例如 Kubernetes 和容器）。操作系统中的优化技术直接影响到 AI 训练时的效率和稳定性。</p>
+</li>
+<li>
+<p>代表技术栈: Ubuntu（Linux）、容器化技术（Docker、Containerd、Kubernetes）、SLURM、Flux、Volcano</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><i>计算机网络（Computer Networking）</i></strong></p>
+<ul>
+<li>
+<p>基础理论: 网络协议、数据通信、网络拓扑等</p>
+</li>
+<li>
+<p>关联: 分布式训练依赖高速、低延迟的网络环境，如 InfiniBand、RDMA 等。网络优化对数据传输和模型参数同步至关重要。</p>
+</li>
+<li>
+<p>代表技术栈: RoCEv2、Ultra Ethernet、NCCL优化、SHARP</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>并行与分布式计算（Parallel &amp; Distributed Computing）</strong></p>
+<ul>
+<li>
+<p>基础理论: 分布式计算、负载均衡、容错性、消息队列、通信原语优化等</p>
+</li>
+<li>
+<p>关联: 大规模分布式训练、分布式文件系统（如 Ceph、Lustre）和分布式数据库的架构设计都依赖分布式系统的理论。高效的分布式计算可大幅度提升训练速度。</p>
+</li>
+<li>
+<p>代表技术栈: Megatron、DeepSpeed、FSDP、Colossal-AI、vLLM PagedAttention</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据库管理（Database Management Systems）</strong></p>
+<ul>
+<li>
+<p>基础理论: 数据库设计、查询优化、事务管理、分布式数据库等</p>
+</li>
+<li>
+<p>关联: AI Infra 中的数据存储（尤其是大规模数据集的存储和管理）需要强大的数据库支持。开源数据库（如 MySQL、PostgreSQL）和分布式数据库（如 Cassandra、HBase）常用于存储训练数据和模型参数。</p>
+</li>
+<li>
+<p>代表技术栈: MySQL、PostgreSQL、Cassandra、HBase等</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>编译原理（Compiler Theory）</strong></p>
+<ul>
+<li>
+<p>基础理论: 编译原理、语法分析、语义分析、代码生成、优化等</p>
+</li>
+<li>
+<p>关联: 编译优化决定资源利用是否高效，低效的优化会导致内核效率低下，同样硬件跑不出SOTA性能。</p>
+</li>
+<li>
+<p>代表技术栈: TorchInductor、OpenXLA、MoE路由编译优化、TVM等</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>人工智能与机器学习</strong></p>
+<ul>
+<li>
+<p><strong>机器学习与深度学习（Machine Learning &amp; Deep Learning）</strong></p>
+<ul>
+<li>
+<p>基础理论: 监督学习、无监督学习、强化学习、神经网络等</p>
+</li>
+<li>
+<p>关联: AI Infra 的核心目标是高效训练与部署机器学习和深度学习模型。所有的模型训练框架、加速工具、推理引擎等都基于机器学习与深度学习的基础理论。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>自然语言处理（NLP）</p>
+<ul>
+<li>
+<p>基础理论: 语言模型、序列建模、BERT、GPT 等</p>
+</li>
+<li>
+<p>关联: 在大语言模型（如 GPT、BERT）的训练过程中，AI Infra 需要大规模的计算资源、存储和通信能力，这些都与 NLP 的发展息息相关。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数学</strong></p>
+<ul>
+<li>
+<p><strong><i>线性代数（Linear Algebra）</i></strong></p>
+<ul>
+<li>
+<p>基础理论: 向量、矩阵运算、特征值分解、奇异值分解等</p>
+</li>
+<li>
+<p>关联: 线性代数是深度学习和AI的核心工具，模型训练过程中大量的矩阵运算依赖于线性代数。在优化算法（如梯度下降）和神经网络训练中，线性代数为数据处理提供了基础。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><i>概率论与数理统计（Probability Theory &amp; Mathematical Statistics）</i></strong></p>
+<ul>
+<li>
+<p>基础理论: 概率分布、贝叶斯推断、假设检验等</p>
+</li>
+<li>
+<p>关联: AI 模型的构建、优化和评估都需要统计学原理。深度学习中的优化算法（如梯度下降）和调优技巧（如正则化、早停等）都离不开统计分析。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>控制论&amp;优化理论（Control Theory &amp; Optimization Theory）</strong></p>
+<ul>
+<li>
+<p>基础理论: 函数优化、梯度下降、凸优化、MoE路由、学习率调度、混合精度训练稳定性等</p>
+</li>
+<li>
+<p>关联: 训练过程依赖于多种优化算法。无论是深度学习的参数优化，还是分布式系统中的负载均衡、资源调度，都需要优化理论的支持。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>信息论（Information Theory）</strong></p>
+<ul>
+<li>
+<p>基础理论: 熵、信息增益、编码理论等</p>
+</li>
+<li>
+<p>关联: 在大规模数据处理和深度学习模型设计中，信息论为模型压缩、数据传输和通信提供了理论支持。例如，神经网络中的量化、蒸馏技术就借鉴了信息论中的编码与压缩思想。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>物理学</strong></p>
+<ul>
+<li>
+<p><strong>信号处理与通信（Signal Processing &amp; Communications）</strong></p>
+<ul>
+<li>
+<p>基础理论: 信号编码、解码、噪声抑制、滤波等</p>
+</li>
+<li>
+<p>关联: 在分布式训练中，通信效率至关重要。数据传输和模型同步需要应用信号处理理论，如压缩感知、量化、编码等技术，以优化带宽使用和减少通信开销。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>电路与半导体物理（Circuits &amp; Semiconductor Physics）</p>
+<ul>
+<li>
+<p>基础理论: 电流、电压、功率、晶体管、集成电路等</p>
+</li>
+<li>
+<p>关联: AI Infra 需要依赖硬件进行大规模并行计算，如 GPU 和 TPU。这些硬件的设计与工作原理需要半导体物理学、电子学等领域的支持。电路设计直接决定了计算性能与能效。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>工程自动化</p>
+<ul>
+<li>
+<p>自动化与控制理论（Automation &amp; Control Theory）</p>
+<ul>
+<li>
+<p>基础理论: 控制系统设计、反馈机制、优化控制等</p>
+</li>
+<li>
+<p>关联: 在 AI Infra 中，尤其是在资源调度、负载均衡和自适应学习等方面，自动化与控制理论帮助实现智能调度与自我优化。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>系统工程（Systems Engineering）</p>
+<ul>
+<li>
+<p>基础理论: 复杂系统建模、系统集成、性能分析等</p>
+</li>
+<li>
+<p>关联: AI Infra 本质上是一个高度复杂的系统工程。它需要考虑各个组件的协同工作、系统性能的调优、故障容错等。系统工程的理论和方法帮助设计高效、稳定的基础设施。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>综合来看，AI Infra涉及广泛的基础学科，涵盖了计算机科学、数学、物理、工程以及人工智能等领域，综合度较高。但实际依赖占比最大的是<strong>计算机体系结构</strong>、<strong>并行与分布式计算</strong>、<strong>操作系统</strong>这三个学科。</p>
+<h2 id="与传统infra的关系"><a class="markdownIt-Anchor" href="#与传统infra的关系"></a> 与传统Infra的关系</h2>
+<ul>
+<li>
+<p>二者的<strong>共性</strong>不言而喻，无论是传统Infra还是AI Infra，二者都需要高效、稳定整合“计算、通信、存储”三大核心资源。基础设施之所以被称为基础设施，就是因为它能够为上层应用提供基础的支撑，使得上层应用能够更加高效、稳定地运行。</p>
+</li>
+<li>
+<p>二者的<strong>差异</strong>则更为关键，且根源在于核心硬件不同：传统 Infra 以 CPU 为核心，AI Infra 以 GPU 为核心，这种差异直接导致了通信、存储、软件适配的全链路不同<sup class="footnote-ref"><a href="#fn2" id="fnref2:4">[2:4]</a></sup>。</p>
+<p>从硬件逻辑看，CPU 擅长串行计算，适合处理复杂但低并发的任务；GPU 擅长并行计算，适合处理简单但高并发的任务。</p>
+<p>AI Infra 对通信与存储的要求远超传统 Infra：通信层面，GPU 集群需高带宽、低延迟的网络，否则会因数据传输慢拖慢并行计算；传统 Infra 用 10G/100G 以太网即可满足需求。</p>
+<p>存储层面，AI Infra 需高 IOPS 的 NVMe SSD 存储，以支撑每秒数十 GB 的训练数据读取；传统 Infra 用 HDD 机械硬盘即可应对文档、交易数据的存储需求。</p>
+</li>
+</ul>
+<h2 id="行业分析"><a class="markdownIt-Anchor" href="#行业分析"></a> 行业分析</h2>
+<p><img src="https://pic1.zhimg.com/80/v2-03545ba48df4c0b2dfee6afc195b47a3_1440w.webp?source=2c26e567" alt="" /></p>
+<h3 id="行业现状概述"><a class="markdownIt-Anchor" href="#行业现状概述"></a> 行业现状概述</h3>
+<p>人工智能基础设施市场持续呈现显著增长态势，这一趋势预计将在未来长期延续<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/4023337465/answer/1950623317519242011?share_code=A6LoAAhNcnIU&amp;utm_psn=2009692977648395347">有没有大佬帮我解释一下AI Infra到底是干啥的？ - wxz131的回答-1 | 知乎</a></p>
+</blockquote>
+<h3 id="就业分析"><a class="markdownIt-Anchor" href="#就业分析"></a> 就业分析</h3>
+<p>根据业务定位，AI Infra可分为<strong>数据Infra</strong>、<strong>训练Infra</strong>和<strong>推理Infra</strong>三类，分别从事大模型从数据管线搭建，训练到上线部署三个环节的工程化工作<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>。</p>
+<p>行业内需求较高的通常是推理Infra，也有部分厂商将其与训练Infra合并为<strong>推训Infra</strong>一个岗位，主要处理的工作大概就是优化调度算法（用Python）；把某些模型网络层面的计算抽象成OP，再用Cuda kernel重写一遍（用C++）；又或者对着供应商那边工程师都有概率无法提供解决方案的特种AI加速器斗智斗勇，写了半年你自以为优雅的框架驱动洋洋得意，然后被通知今年硬件供应商换了一批<sup class="footnote-ref"><a href="#fn7" id="fnref7:1">[7:1]</a></sup>。</p>
+<h4 id="三大核心方向"><a class="markdownIt-Anchor" href="#三大核心方向"></a> 三大核心方向</h4>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/4023337465/answer/1968440172141085052">有没有大佬帮我解释一下AI infra到底是干啥的？ - wxz131的回答-2 | 知乎</a></p>
+</blockquote>
+<h4 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h4>
+<p><strong>AI Infra 行业的竞争本质是“垂直整合能力”与“认知深度”的竞争</strong><sup class="footnote-ref"><a href="#fn2" id="fnref2:5">[2:5]</a></sup>。</p>
+<p><em>核心原则是靠近模型、靠近硬件</em>: AI Infra 的价值不在于孤立的中间层优化，而在于与上下游的垂直整合。要么主动参与模型设计，将 Infra 优化逻辑融入模型结构；要么深度协同硬件厂商，把硬件特性转化为 Infra 的技术壁垒<sup class="footnote-ref"><a href="#fn2" id="fnref2:6">[2:6]</a></sup>。</p>
+<p><em>充分利用算力的，长远是赢家</em>: AI Infra 的本质是“延续摩尔定律”，在硬件性能增速放缓的背景下，通过软硬件协同优化将硬件潜力发挥到极致。例如英伟达 GPU 正是凭借 Infra 层面的并行计算优化，实现每两年算力翻一倍，持续抢占 CPU 在 AI 领域的市场份额<sup class="footnote-ref"><a href="#fn2" id="fnref2:7">[2:7]</a></sup>。</p>
+<h2 id="开源项目参考"><a class="markdownIt-Anchor" href="#开源项目参考"></a> 开源项目参考</h2>
+<h3 id="理论资料"><a class="markdownIt-Anchor" href="#理论资料"></a> 理论资料</h3>
+<h4 id="学习社区教程"><a class="markdownIt-Anchor" href="#学习社区教程"></a> 学习社区/教程</h4>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://github.com/Infrasys-AI/AIInfra">AIInfra | GitHub</a> - <a target="_blank" rel="noopener" href="https://github.com/Infrasys-AI/AIInfra">https://github.com/Infrasys-AI/AIInfra</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://infrasys-ai.github.io/aiinfra-docs/">AIInfra AI基础设施 - Home</a> - <a target="_blank" rel="noopener" href="https://infrasys-ai.github.io/aiinfra-docs/">https://infrasys-ai.github.io/aiinfra-docs/</a></p>
+</li>
+</ul>
+<h4 id="学术资料"><a class="markdownIt-Anchor" href="#学术资料"></a> 学术资料<sup class="footnote-ref"><a href="#fn4" id="fnref4:1">[4:1]</a></sup></h4>
+<h5 id="高影响力论文"><a class="markdownIt-Anchor" href="#高影响力论文"></a> 高影响力论文</h5>
+<ul>
+<li>
+<p>分布式训练 &amp; 并行策略</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/3394486.3406703">DeepSpeed系列</a>（Microsoft）: <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/3458817.3476205">ZeRO系列</a>、<a target="_blank" rel="noopener" href="https://proceedings.mlr.press/v162/rajbhandari22a.html?ref=https://githubhelp.com">DeepSpeed-MoE</a>、<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/10046087">DeepSpeed-Inference</a>等</p>
+</li>
+<li>
+<p>Megatron系列（NVIDIA）: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1909.08053">Megatron-LM</a>等</p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2412.19437">DeepSeek-V3 Technical Report</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>推理 &amp; Serving系统</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/3600006.3613165">Efficient Memory Management for Large Language Model Serving with PagedAttention</a>（vLLM原论文, SOSP 2023）: PagedAttention奠基作，vLLM 的核心论文，几乎所有高吞吐推理引擎的起点</p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/724be4472168f31ba1c9ac630f15dec8-Abstract-Conference.html">SGLang: Efficient Execution of Structured Language Model Programs</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/3620666.3651335">SpecInfer: Accelerating Large Language Model Serving with Tree-based Speculative Inference and Verification</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://proceedings.mlsys.org/">MLSys Proceedings</a>: 重点看2024卷和2025卷</p>
+</li>
+</ul>
+<h5 id="核心会议"><a class="markdownIt-Anchor" href="#核心会议"></a> 核心会议</h5>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://mlsys.org/">MLSys</a>: ML + Systems 交叉，最直接的AI Infra顶级会</p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.usenix.org/conferences">USENIX Symposium on Operating Systems Design and Implementation</a>: 系统顶级会，很多AI Infra突破首发在这里</p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.usenix.org/conferences">USENIX Symposium on Networked Systems Design and Implementation</a>: 网络 + 分布式系统，RoCE/InfiniBand优化常见</p>
+</li>
+</ul>
+<h5 id="高影响力项目组"><a class="markdownIt-Anchor" href="#高影响力项目组"></a> 高影响力项目组</h5>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://dawn.cs.stanford.edu/">Stanford DAWN</a>: A Five-Year Research Project to Democratize AI</p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://rise.cs.berkeley.edu/">UC Berkeley RISELab</a>: REAL-TIME INTELLIGENT SECURE EXPLAINABLE SYSTEMS</p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.nvidia.com/en-us/research/">NVIDIA Research</a>: Research at NVIDIA</p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/project/deepspeed/">Microsoft DeepSpeed | Microsoft Research</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://github.com/deepseek-ai/open-infra-index">*DeepSeek Infra</a></p>
+</li>
+</ul>
+<h3 id="工程资料"><a class="markdownIt-Anchor" href="#工程资料"></a> 工程资料</h3>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://github.com/topics/ai-infrastructure">ai-infrastructure | GitHub Topics</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://github.com/hpcaitech/ColossalAI">ColossalAI | HPC-AI Tech</a> - <a target="_blank" rel="noopener" href="https://github.com/hpcaitech/ColossalAI">https://github.com/hpcaitech/ColossalAI</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.deepspeed.ai/">DeepSpeed</a> - <a target="_blank" rel="noopener" href="https://www.deepspeed.ai/">https://www.deepspeed.ai/</a></p>
+</li>
+</ul>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.ibm.com/cn-zh/think/topics/ai-infrastructure">什么是 AI 基础设施？| IBM</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/4023337465/answer/1950623317519242011?share_code=A6LoAAhNcnIU&amp;utm_psn=2009692977648395347">有没有大佬帮我解释一下AI infra到底是干啥的？ - wxz131的回答-1 | 知乎</a> <a href="#fnref2" class="footnote-backref">↩︎</a> <a href="#fnref2:1" class="footnote-backref">↩︎</a> <a href="#fnref2:2" class="footnote-backref">↩︎</a> <a href="#fnref2:3" class="footnote-backref">↩︎</a> <a href="#fnref2:4" class="footnote-backref">↩︎</a> <a href="#fnref2:5" class="footnote-backref">↩︎</a> <a href="#fnref2:6" class="footnote-backref">↩︎</a> <a href="#fnref2:7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.thebyte.com.cn/">深入高可用系统原理与设计</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://grok.com/share/bGVnYWN5_3aa8e1f8-780a-4107-9afa-1c3197c4dde6">2025-2026 AI Infra技术栈全景 | Grok</a> <a href="#fnref4" class="footnote-backref">↩︎</a> <a href="#fnref4:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://chatgpt.com/share/699d7417-4ee0-800e-95bd-93c8e08e5901">AI Infra技术栈分析 | ChatGPT</a> <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.spglobal.com/market-intelligence/en/news-insights/research/2025/10/ai-infrastructure-midyear-2025-update-and-future-technology-considerations">AI infrastructure: Midyear 2025 update and future technology considerations | S&amp;P Global</a> <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/1896947197616046279/answer/1962610179456636485?share_code=LEc9JPp9mnOF&amp;utm_psn=2009692824292054560">在找工作过程中发现社交媒体上好多人在唱衰 AI infra，大家怎么看？ - 锦恢的回答| 知乎</a> <a href="#fnref7" class="footnote-backref">↩︎</a> <a href="#fnref7:1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>本文作者：</strong>virtualguard101 @ vg101's Blog</p>
+    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="http://blog.virtualguard101.com/2026/02/23/AI%20Infra%E6%A6%82%E8%BF%B0/">http://blog.virtualguard101.com/2026/02/23/AI%20Infra%E6%A6%82%E8%BF%B0/</a></p>
+    <p><strong><span class="icon-pencil icon"></span>本文标题：</strong>「AI Infra概述」</p>
+    <p><strong><span class="icon-calendar icon"></span>本文发布时间：</strong>2026-02-23 16:00:00</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2026-02-25 22:52:59</p>
+    <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+      
+      
+      
+        <div class="share-wrapper">
+  
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=AI%20Infra%E6%A6%82%E8%BF%B0&amp;desc=%E5%8E%BB%E5%B9%B411%E6%9C%88%E4%BB%BD%E5%9C%A8CS%E7%9A%84%E8%87%AA%E5%AD%A6%E7%94%9F%E6%B6%AF%E4%B8%AD%E9%81%AD%E9%81%87%E4%BA%86%E7%93%B6%E9%A2%88%EF%BC%8C%E5%8A%A0%E4%B8%8A%E8%BF%9E%E7%BB%AD%E9%81%AD%E9%81%87%E7%94%9F%E7%90%86%E4%B8%8E%E5%BF%83%E7%90%86%E4%B8%8A%E7%9A%84%E5%8F%8C%E9%87%8D%E6%89%93%E5%87%BB%EF%BC%8C%E6%B6%88%E6%B2%89%E4%BA%86%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E3%80%82%E8%80%83%E8%99%91%E5%88%B0%E6%8E%A5%E4%B8%8B%E6%9D%A5%E5%AD%A6%E4%B8%9A%E6%96%B9%E9%9D%A2%E5%A4%A7%E6%A6%82%E7%8E%87%E4%BB%A5%E6%8E%A8%E8%BF%9B11408%E4%B8%BA%E4%B8%BB%EF%BC%8C%E5%9C%A8%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%B7%A5%E7%A8%8B%E6%96%B9%E9%9D%A2%E4%B8%8A%E5%86%B3%E5%AE%9A%E5%B0%BD%E5%8F%AF%E8%83%BD%E5%AF%BB%E6%89%BE%E4%B8%80%E4%B8%AA%E8%B4%B4%E8%BF%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E5%AD%A6%E7%A7%91%E7%9A%84%E6%96%B9%E5%90%91%E3%80%82%E7%BB%8F%E8%BF%87%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E7%9A%84%E8%A7%82%E5%AF%9F%E4%B8%8E%E6%80%9D%E8%80%83%EF%BC%8C%E6%88%AA%E8%87%B3%E5%86%99%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E6%97%B6%EF%BC%8C%E5%87%86%E5%A4%87%E5%B0%86AI%20Infra%E4%BD%9C%E4%B8%BA%E6%97%A5%E5%90%8E%E7%9A%84%E4%B8%BB%E8%A6%81%E7%A0%94%E7%A9%B6%E6%96%B9%E5%90%91.&amp;source=http%3A%2F%2Fblog.virtualguard101.com" target="_blank" rel="noopener noreferrer" title="AI Infra概述">
+      <div class="share-icon icon icon-qq">
+        
+      </div>
+    </a>
+  
+    <a href="javascript:;"  title="AI Infra概述">
+      <div class="share-icon icon icon-weixin">
+        
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+        
+      </div>
+    </a>
+  
+</div>
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/AI-Infra/" rel="tag">AI Infra</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/Blog/" rel="tag">Blog</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://i.imgur.com/rsm0tiV.png" data-sizes="auto" alt="TRAE Friends @Fuzhou 要点记录" class="lazyload">
+        
+      
+      <a href="/2025/11/23/TRAE%20Friends%20@Fuzhou%20%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          TRAE Friends @Fuzhou 要点记录
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+      
+      
+      <h2 class="comment-title">说些什么吧！</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            
+            <div class="selector-item" data-selector="giscus">
+              <span>giscus</span>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+      
+        <div class="comment giscus-comment" data-aos="fade-up"
+          id="giscus-comment">
+        </div>
+      
+    </div>
+  </section>
+
+
+</section>
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+      
+      
+        2024-2026
+      
+      <span class="footer-info-sep rotate"></span>
+      virtualguard101
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        26.4k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:33
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ai-infra%E6%8A%80%E6%9C%AF%E6%A0%88%E5%88%86%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text"> AI Infra技术栈分层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%B1%82"><span class="toc-number">1.1.</span> <span class="toc-text"> 硬件层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text"> 软件层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ai-infra%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text"> AI Infra的发展历程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ai-infra%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E7%A7%91"><span class="toc-number">3.</span> <span class="toc-text"> AI Infra依赖的基础学科[4][5]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E%E4%BC%A0%E7%BB%9Finfra%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">4.</span> <span class="toc-text"> 与传统Infra的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E4%B8%9A%E5%88%86%E6%9E%90"><span class="toc-number">5.</span> <span class="toc-text"> 行业分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E4%B8%9A%E7%8E%B0%E7%8A%B6%E6%A6%82%E8%BF%B0"><span class="toc-number">5.1.</span> <span class="toc-text"> 行业现状概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%B1%E4%B8%9A%E5%88%86%E6%9E%90"><span class="toc-number">5.2.</span> <span class="toc-text"> 就业分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A0%B8%E5%BF%83%E6%96%B9%E5%90%91"><span class="toc-number">5.2.1.</span> <span class="toc-text"> 三大核心方向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.2.2.</span> <span class="toc-text"> 总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text"> 开源项目参考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E8%B5%84%E6%96%99"><span class="toc-number">6.1.</span> <span class="toc-text"> 理论资料</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%A4%BE%E5%8C%BA%E6%95%99%E7%A8%8B"><span class="toc-number">6.1.1.</span> <span class="toc-text"> 学习社区&#x2F;教程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A6%E6%9C%AF%E8%B5%84%E6%96%99"><span class="toc-number">6.1.2.</span> <span class="toc-text"> 学术资料[4:1]</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AB%98%E5%BD%B1%E5%93%8D%E5%8A%9B%E8%AE%BA%E6%96%87"><span class="toc-number">6.1.2.1.</span> <span class="toc-text"> 高影响力论文</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BC%9A%E8%AE%AE"><span class="toc-number">6.1.2.2.</span> <span class="toc-text"> 核心会议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AB%98%E5%BD%B1%E5%93%8D%E5%8A%9B%E9%A1%B9%E7%9B%AE%E7%BB%84"><span class="toc-number">6.1.2.3.</span> <span class="toc-text"> 高影响力项目组</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E8%B5%84%E6%96%99"><span class="toc-number">6.2.</span> <span class="toc-text"> 工程资料</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/bocchi.jpg" data-sizes="auto" alt="virtualguard101" class="lazyload">
+  <div class="sidebar-author-name">virtualguard101</div>
+  <div class="sidebar-description">&lt;/&gt;</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">9</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=mailto:virtualguard101@gmail.com itemprop="url" target="_blank" aria-label="email" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/virtualguard101 itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-twitter sidebar-social-icon">
+      <a href=https://twitter.com/virtualguardi01 itemprop="url" target="_blank" aria-label="twitter" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-telegram sidebar-social-icon">
+      <a href=https://t.me/virtualguard101 itemprop="url" target="_blank" aria-label="telegram" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-steam sidebar-social-icon">
+      <a href=https://steamcommunity.com/id/virtualguard101 itemprop="url" target="_blank" aria-label="steam" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.1.1/dist/index.umd.js" integrity="sha384-8LyaidD9GPxQQgLJO&#x2F;WRw&#x2F;O2h3BoNq&#x2F;ApI&#x2F;ecpvM6RsrCz2qP2ppBXUKihP4V&#x2F;2d" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/live2d-widgets@0.9.0/autoload.js" integrity="sha384-poTN7wN&#x2F;SqNhQqo3jdFeX20ikddWeFGkUkDEzsKjgH&#x2F;ez8aQLn81oI0Cw6q5xNyB" crossorigin="anonymous"></script>
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "virtualguard101",
+          title: "AI Infra概述",
+          url: "http://blog.virtualguard101.com/2026/02/23/AI%20Infra%E6%A6%82%E8%BF%B0/",
+          excerpt: "去年11月份在CS的自学生涯中遭遇了瓶颈，加上连续遭遇生理与心理上的双重打击，消沉了一段时间。考虑到接下来学业方面大概率以推进11408为主，在研究与工程方面上决定尽可能寻找一个贴近计算机基础学科的方向。经过一段时间的观察与思考，截至写这篇文章时，准备将AI Infra作为日后的主要研究方向.",
+          description: "",
+          stripContent: "去年11月份在CS的自学生涯中遭遇了瓶颈，加上连续遭遇生理与心理上的双重打击，消沉了一段时间。考虑到接下来学业方面大概率以推进11408为主，在研究与工程方面上决定尽可能寻找一个贴近计算机基础学科的方向。经过一段时间的观察与思考，截至写这篇文章时，准备将AI Infra作为日后的主要研究方向。 AI Infra（AI Infrastructure, AI基础设施）技术栈[1]，是支撑现代大模型训练、微调、推理、服务化部署和AI Agent运行的整套软硬件体系。它不像传统后端服务那样“搭几台服务器",
+          date: "Mon Feb 23 2026 16:00:00 GMT+0800",
+          updated: "Wed Feb 25 2026 22:52:59 GMT+0800",
+          cover: "https://image.tmdb.org/t/p/original/c0y8ScAJnSs5xMZ9b1lm2k9gSwz.jpg",
+        };
+      </script>
+       
+    
+      
+<script src="https://npm.webcache.cn/mermaid@9.4.3/dist/mermaid.min.js" integrity="sha384-aG3Gai4tbCHF0iXo48HwLoOZyut7mBl50oMC9GD1m75xyHfJDv6w8hD&#x2F;kZRD47aJ" crossorigin="anonymous" data-pjax></script>
+
+      
+<script src="https://npm.webcache.cn/dompurify@3.2.4/dist/purify.min.js" integrity="sha384-eEu5CTj3qGvu9PdJuS+YlkNi7d2XxQROAFYOr59zgObtlcux1ae1Il3u7jvdCSWu" crossorigin="anonymous"></script>
+
+      <script data-pjax>
+        if (window.mermaid) {
+          // https://github.com/mermaid-js/mermaid/issues/1945
+          const elementCode = '.mermaid'
+          const saveOriginalData = () => {
+            return new Promise((resolve, reject) => {
+              try {
+                let els = _$$(elementCode),
+                    count = els.length;
+                els.forEach(element => {
+                  if (element.getAttribute('data-original-code') == null){
+                    element.setAttribute('data-original-code', element.innerHTML)
+                  }
+                  count--
+                  if(count == 0){
+                    resolve()
+                  }
+                });
+              } catch (error) {
+              reject(error) 
+              }
+            })
+          }
+          const resetProcessed = () => {
+            return new Promise((resolve, reject) => {
+              try {
+                let els = _$$(elementCode),
+                    count = els.length;
+                els.forEach(element => {
+                  if(element.getAttribute('data-original-code') != null){
+                    element.removeAttribute('data-processed')
+                    element.innerHTML = DOMPurify.sanitize(element.getAttribute('data-original-code'))
+                  }
+                  count--
+                  if(count == 0){
+                    resolve()
+                  }
+                });
+              } catch (error) {
+              reject(error) 
+              }
+            })
+          } 
+          const loadMermaid = (theme) => {
+            window.mermaid.initialize({theme})
+            window.mermaid.init({theme}, _$$(elementCode))
+          }
+          document.body.addEventListener('dark-theme-set', () => {
+            saveOriginalData()
+            .then(resetProcessed())
+            .then(loadMermaid('dark'))
+            .catch(console.error)
+          })
+          document.body.addEventListener('light-theme-set', () => {
+            saveOriginalData()
+            .then(resetProcessed())
+            .then(loadMermaid('default'))
+            .catch(console.error)
+          })
+          if(localStorage.getItem('dark_mode') == 'true') {
+            saveOriginalData()
+            .then(resetProcessed())
+            .then(loadMermaid('dark'))
+            .catch(console.error)
+          } else {
+            saveOriginalData()
+            .then(resetProcessed())
+            .then(loadMermaid('default'))
+            .catch(console.error)
+          }
+        }
+      </script>
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+        
+          
+<script src="https://npm.webcache.cn/html-to-image@1.11.11/dist/html-to-image.js" integrity="sha384-UbfRVKN3&#x2F;elS1r7JcK2FhmPP+KlJ4CvYwbyYD7tH+uTkbT9bNJr9eJeQ0FoFbAgz" crossorigin="anonymous" defer data-pjax></script>
+
+          
+<script src="https://npm.webcache.cn/qrcode@1.4.4/build/qrcode.min.js" integrity="sha384-0RsG1yo&#x2F;crf&#x2F;1Qc14sho26SXXOTngNCjgJw7fuvXBt9W&#x2F;OChF&#x2F;Ijx+aUuBDqQwEk" crossorigin="anonymous" defer data-pjax></script>
+
+        
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+        
+
+
+
+
+
+
+
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus'];
+  var commentConfig = {
+    valine: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.valine-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/valine@1.5.1/dist/Valine.min.js',
+          'sha384-3ma91AExDeMAZ1rjTjaP8V2A2obQE+s5ltKRwYlwdpArz9xVbp0tF3b0VV2ACNPn'
+        );
+        script.onload = () => {
+          var GUEST_INFO = ['nick', 'mail', 'link'];
+          var guest_info = 'nick,mail,link'.split(',').filter((item) => {
+            return GUEST_INFO.indexOf(item) > -1
+          });
+          var recordIP = JSON.parse('true');
+          var highlight = JSON.parse('true');
+          var visitor = JSON.parse('false');
+          var serverURLs = undefined;
+
+          if (window.Valine) {
+            new Valine({
+              el: '.valine-comment',
+              appId: "",
+              appKey: "",
+              placeholder: "Just go go",
+              pageSize: '10',
+              avatar: 'mp',
+              lang: document.documentElement.lang || 'en',
+              recordIP: recordIP,
+              highlight: highlight,
+              visitor: visitor,
+              requiredFields: guest_info,
+              path: window.location.pathname,
+              serverURLs
+            });
+          }
+        };
+        document.head.appendChild(script);
+      }
+    },
+    waline: {
+      enable: false,
+      load: async () => {
+        const container = document.querySelector('.waline-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        let walineInit;
+        const walineCdn = 'https://npm.webcache.cn/@waline/client@2.15.8/dist/waline.mjs';
+        const walineIntegrity = 'sha384-9sbqJjrfGjbkI6/PI4nU/MvBfEmkkPC4YK9I4zBeMIf1CVCZdCMH/KinBEAZII/5';
+
+        const module = await safeImport(walineCdn, walineIntegrity);
+        walineInit = module.init;
+
+        window.walineInstance = walineInit({
+          el: '.waline-comment',
+          serverURL: '',
+          lang: document.documentElement.lang || 'en',
+          locale: {},
+          emoji: ["https://unpkg.com/@waline/emojis@1.2.0/weibo","https://unpkg.com/@waline/emojis@1.2.0/alus","https://unpkg.com/@waline/emojis@1.2.0/bilibili","https://unpkg.com/@waline/emojis@1.2.0/qq","https://unpkg.com/@waline/emojis@1.2.0/tieba","https://unpkg.com/@waline/emojis@1.2.0/tw-emoji"],
+          meta: ["nick","mail","link"],
+          requiredMeta: ["nick","mail"],
+          wordLimit: JSON.parse('0'),
+          comment: true,
+          pageSize: JSON.parse('10'),
+          dark: 'html[data-theme="dark"]',
+          pageview: JSON.parse('true'),
+        });
+      }
+    },
+    twikoo: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.twikoo-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/twikoo@1.6.16/dist/twikoo.all.min.js',
+          'sha384-lDHsr5aZmkMS0eKnsUu6e9RWP+dRmn7sgjRAKGOAoXfMyzbUK6Qi86zZK7R+KvRV'
+        );
+
+        script.onload = () => {
+          if (window.twikoo) {
+            twikoo.init({
+              envId: '',
+              el: '.twikoo-comment',
+              region: '',
+              lang: document.documentElement.lang || 'en',
+            });
+
+            twikoo.getCommentsCount({
+              envId: '',
+              region: '',
+              urls: [
+                '/about/index.html'
+              ],
+              includeReply: false
+            }).then((res) => {
+              _$('.twikoo-comment-count').innerText = res[0].count;
+            }).catch((err) => {
+              console.error(err);
+            });
+          }
+        } 
+        document.head.appendChild(script);
+      }
+    },
+    gitalk: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.gitalk-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/gitalk@1.8.0/dist/gitalk.min.js',
+          'sha384-kspnZUWBoSWwoJHa0hBCXYbHGbhvU/lcEH5O8eVbSDhbPwsiVUTp/aGX/z/5EuMA'
+        );
+
+        script.onload = () => {
+          if (false) {
+            const md5Script = loadScript(
+              'https://npm.webcache.cn/blueimp-md5@2.19.0/js/md5.min.js',
+              'sha384-JmVtRz6RWiXnA14QbIOJzPuU3MidULOpBP66deeLLyyoF4Tr/gZlbkHkL6vTthxH'
+            );
+            md5Script.onload = initGitalk;
+            document.head.appendChild(md5Script);
+          } else {
+            initGitalk();
+          }
+        }
+        document.head.appendChild(script);
+
+        function initGitalk() {
+          var gitalkId = location.pathname;
+          var gitalk = new Gitalk({
+            clientID: '',
+            clientSecret: '',
+            repo: '',
+            owner: '',
+            admin: null,
+            id: gitalkId,
+            distractionFreeMode: false,
+            language: document.documentElement.lang || 'en',
+          })
+          gitalk.render('gitalk-comment');
+        }
+      }
+    },
+    giscus: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.giscus-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        // 删除可能已存在的 giscus 脚本和 iframe
+        const existingScript = container.querySelector('script[src*="giscus.app/client.js"]');
+        if (existingScript) existingScript.remove();
+        const existingFrame = document.querySelector('iframe.giscus-frame');
+        if (existingFrame) existingFrame.remove();
+
+        const giscusScript = document.createElement('script');
+        const domMode = document.documentElement.getAttribute("data-theme");
+        giscusScript.src = 'https://giscus.app/client.js';
+        giscusScript.setAttribute('data-repo', 'virtualguard101/virtualguard101.github.io');
+        giscusScript.setAttribute('data-repo-id', 'R_kgDOOGPc1w');
+        giscusScript.setAttribute('data-category', 'Announcements'); 
+        giscusScript.setAttribute('data-category-id', 'DIC_kwDOOGPc184CprGJ');
+        giscusScript.setAttribute('data-mapping', '0');
+        giscusScript.setAttribute('data-strict', '0');
+        giscusScript.setAttribute('data-reactions-enabled', '1');
+        giscusScript.setAttribute('data-emit-metadata', '0');
+        giscusScript.setAttribute('data-input-position', 'bottom');
+        giscusScript.setAttribute('data-theme', domMode === 'dark' ? 'dark' : 'light');
+        giscusScript.setAttribute('data-lang', document.documentElement.lang || 'en');
+        giscusScript.setAttribute('crossorigin', 'anonymous');
+        giscusScript.async = true;
+        container.appendChild(giscusScript);
+        document.body.addEventListener('light-theme-set', () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'light' } } }, 'https://giscus.app');
+        });
+        document.body.addEventListener('dark-theme-set', () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'dark' } } }, 'https://giscus.app');
+        });
+      }
+    }
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'giscus';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    // 评论组件加载状态跟踪
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+      
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.8.5' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
+
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.REIMU_CONFIG.outdate;
+    if (days >= daysAgo) {
+      let message = `This article was last updated on ${updateTime}. Please note that the content may no longer be applicable.`;
+      if (typeof template === 'string') {
+        message = template.replace(/{time}/, updateTime);
+      } else if (typeof template === 'object') {
+        const lang = document.documentElement.lang;
+        const messageKey = Object.keys(template).find(key => key.toLowerCase() === lang.toLowerCase());
+        if (messageKey && template[messageKey]) {
+          message = template[messageKey].replace(/{time}/, updateTime);
+        }
+      }
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
+</script>
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+  
+
+
+
+
+
+
+
+    
+  </body>
+  </html>
+
